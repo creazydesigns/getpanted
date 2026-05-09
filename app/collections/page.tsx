@@ -5,9 +5,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { ThemeToggle } from "../components/theme-toggle";
 import { useShop } from "../context/shop-context";
+import { useScrollReveal } from "../hooks/use-scroll-reveal";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
-type FilterKey = "all" | "solid" | "printed" | "coords" | "denim" | "new";
+type FilterKey = "all" | "solid" | "new";
 
 interface Product {
   id: number;
@@ -39,36 +40,9 @@ const COLLECTIONS: Collection[] = [
     title: "Solid Luxe",
     subtitle: "The foundation of power dressing",
     description: "Clean lines, rich fabrics, zero distractions. These are the trousers that do the talking.",
-    itemCount: 24,
+    itemCount: 12,
     accentColor: "#c9a96e",
     bg: "from-[#1a1410] via-[#2a1e12] to-[#1a1410]",
-  },
-  {
-    id: "printed",
-    title: "Printed",
-    subtitle: "Bold patterns for bold women",
-    description: "From abstract geometry to fluid florals — print trousers that refuse to whisper.",
-    itemCount: 18,
-    accentColor: "#8b6b9e",
-    bg: "from-[#140f1a] via-[#1e1428] to-[#140f1a]",
-  },
-  {
-    id: "coord-sets",
-    title: "Coord Sets",
-    subtitle: "Top + bottom, perfectly matched",
-    description: "Effortless two-piece sets designed to be worn together or styled apart.",
-    itemCount: 12,
-    accentColor: "#4a7c6f",
-    bg: "from-[#0f1a16] via-[#14241e] to-[#0f1a16]",
-  },
-  {
-    id: "denim",
-    title: "Denim Edit",
-    subtitle: "Wide-leg denim reimagined",
-    description: "Dark-wash, fluid, and impossibly wide. Denim like you've never worn it before.",
-    itemCount: 9,
-    accentColor: "#4a6080",
-    bg: "from-[#0f1420] via-[#14202e] to-[#0f1420]",
   },
 ];
 
@@ -76,9 +50,6 @@ const FILTERS: { key: FilterKey; label: string }[] = [
   { key: "all", label: "All Styles" },
   { key: "new", label: "New In" },
   { key: "solid", label: "Solid Luxe" },
-  { key: "printed", label: "Printed" },
-  { key: "coords", label: "Coord Sets" },
-  { key: "denim", label: "Denim Edit" },
 ];
 
 const SORT_OPTIONS = [
@@ -99,14 +70,9 @@ const PRODUCTS: Product[] = [
   { id: 7,  name: "Solar Statement",price: "₦38,000", image: "/images/gp-solar-statement.png", category: ["solid","new"],    colors: ["#FFC107"],            badge: "New",        isNew: true,  sizes: ["XS","S","M","L","XL"] },
   { id: 8,  name: "Nude Palazzo",   price: "₦44,000", image: "/images/gp-nude-palazzo.png",    category: ["solid"],          colors: ["#d4b896"],            badge: undefined,    isNew: false, sizes: ["S","M","L","XL","2XL"] },
   { id: 9,  name: "Cacao Wide",     price: "₦44,000", image: "/images/gp-cacao-wide.png",      category: ["solid"],          colors: ["#3E1C0D"],            badge: undefined,    isNew: false, sizes: ["XS","S","M","L","XL"] },
-  { id: 10, name: "Lagos Dot",         price: "₦40,000",                                          category: ["printed"],        colors: ["#ffffff","#1a1a1a"],  badge: "Bestseller", isNew: false, sizes: ["S","M","L","XL","2XL"] },
-  { id: 11, name: "Stripe & Pleat Set",price: "₦58,000",                                          category: ["printed","coords"],colors: ["#1a1a1a","#ffffff"], badge: "Set",        isNew: false, sizes: ["XS","S","M","L","XL"] },
-  { id: 12, name: "Caramel Geo Set",   price: "₦62,000",                                          category: ["printed","coords"],colors: ["#c4a882","#3a2a10"], badge: "Set",        isNew: false, sizes: ["S","M","L","XL","2XL"] },
-  { id: 13, name: "Midnight Ink Print",price: "₦44,000",                                          category: ["printed","new"],  colors: ["#1a1a2e","#f5f0e8"],  badge: "New",        isNew: true,  sizes: ["XS","S","M","L","XL","2XL","3XL"] },
-  { id: 14, name: "Pleated Coord — Taupe", price: "₦55,000",                                      category: ["coords","solid"], colors: ["#b8a898","#1a1a1a"],  badge: undefined,    isNew: false, sizes: ["S","M","L","XL"] },
-  { id: 15, name: "Amber Wrap Set",    price: "₦60,000",                                          category: ["coords","solid","new"], colors: ["#c4882a","#1a1a1a"], badge: "New",   isNew: true,  sizes: ["XS","S","M","L","XL","2XL"] },
-  { id: 16, name: "Dark Wash Drama",   price: "₦48,000",                                          category: ["denim"],          colors: ["#1a2030","#2a3040"],  badge: "Bestseller", isNew: false, sizes: ["XS","S","M","L","XL","2XL"] },
-  { id: 17, name: "Indigo Wide",       price: "₦46,000", originalPrice: "₦54,000",                category: ["denim","new"],    colors: ["#2a3a5a","#1a2030"],  badge: "Sale",       isNew: true,  sizes: ["S","M","L","XL","2XL"] },
+  { id: 10, name: "Blush Ultra Wide",  price: "₦41,000", image: "/images/gp-blush-ultra-wide.png", category: ["solid","new"],    colors: ["#f2b8c6"],            badge: "New",        isNew: true,  sizes: ["XS","S","M","L","XL","2XL"] },
+  { id: 11, name: "Lemon Luxe",        price: "₦39,000", image: "/images/gp-lemon-luxe.png",       category: ["solid","new"],    colors: ["#f5e642"],            badge: "New",        isNew: true,  sizes: ["S","M","L","XL","2XL"] },
+  { id: 12, name: "Peach Sovereign",   price: "₦43,000", image: "/images/gp-peach-sovereign.png",  category: ["solid","new"],    colors: ["#f4a07a"],            badge: "New",        isNew: true,  sizes: ["XS","S","M","L","XL"] },
 ];
 
 const FOOTER_LINK_HREFS: Record<string, string> = {
@@ -289,7 +255,7 @@ function ProductCard({ product, viewMode }: { product: Product; viewMode: "grid"
 
   if (viewMode === "list") {
     return (
-      <div className="group flex gap-6 border-b border-[rgb(var(--gp-fg-rgb) / 0.07)] py-6 hover:bg-[rgb(var(--gp-fg-rgb) / 0.015)] transition-colors px-2">
+      <div data-reveal="up" className="group flex gap-6 border-b border-[rgb(var(--gp-fg-rgb) / 0.07)] py-6 hover:bg-[rgb(var(--gp-fg-rgb) / 0.015)] transition-colors px-2">
         {/* Thumb */}
         <div className="w-28 h-36 flex-shrink-0 bg-[var(--gp-card)] relative overflow-hidden">
           {product.image ? (
@@ -362,6 +328,7 @@ function ProductCard({ product, viewMode }: { product: Product; viewMode: "grid"
 
   return (
     <div
+      data-reveal="up"
       className="group cursor-pointer"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
@@ -479,6 +446,8 @@ export default function CollectionsPage() {
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [visibleCount, setVisibleCount] = useState(8);
   const sortRef = useRef<HTMLDivElement>(null);
+
+  useScrollReveal();
 
   // Close sort dropdown on outside click
   useEffect(() => {

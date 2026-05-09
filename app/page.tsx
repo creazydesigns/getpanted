@@ -6,6 +6,7 @@ import Link from "next/link";
 import "./homepage.css";
 import { ThemeToggle } from "./components/theme-toggle";
 import { useShop } from "./context/shop-context";
+import { useScrollReveal } from "./hooks/use-scroll-reveal";
 
 // ── Types ────────────────────────────────────────────────────────────────────
 interface Product {
@@ -183,13 +184,15 @@ function MarqueeBanner() {
   );
 }
 
-function ProductCard({ product }: { product: Product }) {
+function ProductCard({ product, delay = 0 }: { product: Product; delay?: number }) {
   const [hovered, setHovered] = useState(false);
   const { addToCart, isWishlisted, toggleWishlist } = useShop();
   const wishlisted = isWishlisted(product.id);
 
   return (
     <div
+      data-reveal="up"
+      data-delay={delay > 0 ? String(delay) : undefined}
       className="group cursor-pointer"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
@@ -272,9 +275,14 @@ function ProductCard({ product }: { product: Product }) {
   );
 }
 
-function CategoryCard({ cat }: { cat: Category }) {
+function CategoryCard({ cat, delay = 0 }: { cat: Category; delay?: number }) {
   return (
-    <Link href="/collections" className="relative aspect-[4/5] overflow-hidden cursor-pointer group block">
+    <Link
+      data-reveal="scale"
+      data-delay={delay > 0 ? String(delay) : undefined}
+      href="/collections"
+      className="relative aspect-[4/5] overflow-hidden cursor-pointer group block"
+    >
       {/* Photo */}
       <Image
         src={cat.image}
@@ -303,6 +311,8 @@ function CategoryCard({ cat }: { cat: Category }) {
 
 // ── Main Page ─────────────────────────────────────────────────────────────────
 export default function HomePage() {
+  useScrollReveal();
+
   return (
     <main className="home-page-root bg-[var(--gp-canvas)] text-[var(--gp-fg)] min-h-screen overflow-x-hidden">
       <Navbar />
@@ -343,17 +353,17 @@ export default function HomePage() {
         </div>
 
         {/* Visual side */}
-        <div className="relative bg-[var(--gp-elevated)] order-1 md:order-2 min-h-[60vw] md:min-h-0">
+        <div className="relative bg-[var(--gp-elevated)] order-1 md:order-2 min-h-[60vw] md:min-h-0 overflow-hidden">
           <Image
             src="/images/gp-lady-white.png"
             alt="Model in wide-leg trousers"
             fill
-            className="object-cover object-top"
+            className="object-cover object-top hero-img"
             priority
           />
 
           {/* Floating product tag */}
-          <div className="absolute bottom-10 right-8 bg-[rgb(var(--gp-ink-rgb) / 0.88)] border border-[rgba(201,169,110,0.22)] px-5 py-4 min-w-[160px]">
+          <div className="hero-tag absolute bottom-10 right-8 bg-[rgb(var(--gp-ink-rgb) / 0.88)] border border-[rgba(201,169,110,0.22)] px-5 py-4 min-w-[160px]">
             <p className="text-[9px] tracking-[0.18em] uppercase text-[var(--gp-accent)] mb-1">Featured Piece</p>
             <p className="font-cormorant text-base font-normal text-[var(--gp-fg)] mb-0.5">The Royal Pleat</p>
             <p className="text-[13px] text-[rgb(var(--gp-fg-rgb) / 0.45)] font-light">₦45,000</p>
@@ -369,7 +379,7 @@ export default function HomePage() {
 
       {/* ── New Arrivals ──────────────────────────────────────────────────── */}
       <section className="max-w-[1400px] mx-auto px-8 py-20">
-        <div className="flex items-end justify-between mb-12">
+        <div data-reveal="up" className="flex items-end justify-between mb-12">
           <h2 className="font-cormorant text-[clamp(36px,4vw,52px)] font-light leading-tight">
             New <em className="italic text-[var(--gp-accent)]">Arrivals</em>
           </h2>
@@ -384,15 +394,15 @@ export default function HomePage() {
           </Link>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-7">
-          {PRODUCTS.map((p) => (
-            <ProductCard key={p.id} product={p} />
+          {PRODUCTS.map((p, i) => (
+            <ProductCard key={p.id} product={p} delay={i + 1} />
           ))}
         </div>
       </section>
 
       {/* ── Editorial Banner ──────────────────────────────────────────────── */}
       <div id="bespoke" className="mx-8 mb-20 grid md:grid-cols-2 border border-[rgb(var(--gp-fg-rgb) / 0.07)]">
-        <div className="relative min-h-[420px] overflow-hidden">
+        <div data-reveal="left" className="relative min-h-[420px] overflow-hidden">
           <Image
             src="/images/wide-pant-sneakers.png"
             alt="GetPanted editorial"
@@ -402,7 +412,7 @@ export default function HomePage() {
         </div>
 
         {/* Copy */}
-        <div className="p-14 flex flex-col justify-center border-t md:border-t-0 md:border-l border-[rgb(var(--gp-fg-rgb) / 0.07)]">
+        <div data-reveal="right" className="p-14 flex flex-col justify-center border-t md:border-t-0 md:border-l border-[rgb(var(--gp-fg-rgb) / 0.07)]">
           <p className="text-[10px] tracking-[0.22em] uppercase text-[var(--gp-accent)] mb-5">The GetPanted Story</p>
           <h2 className="font-cormorant text-[clamp(32px,3vw,44px)] font-light leading-[1.15] mb-5 text-[var(--gp-fg)]">
             Trousers that tell<br />
@@ -425,14 +435,14 @@ export default function HomePage() {
 
       {/* ── Categories ────────────────────────────────────────────────────── */}
       <section id="collections" className="max-w-[1400px] mx-auto px-8 mb-20">
-        <div className="flex items-end justify-between mb-12">
+        <div data-reveal="up" className="flex items-end justify-between mb-12">
           <h2 className="font-cormorant text-[clamp(36px,4vw,52px)] font-light">
             Shop by <em className="italic text-[var(--gp-accent)]">Style</em>
           </h2>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          {CATEGORIES.map((cat) => (
-            <CategoryCard key={cat.name} cat={cat} />
+          {CATEGORIES.map((cat, i) => (
+            <CategoryCard key={cat.name} cat={cat} delay={i + 1} />
           ))}
         </div>
       </section>
@@ -481,6 +491,8 @@ export default function HomePage() {
         ].map((item, i) => (
           <div
             key={i}
+            data-reveal="up"
+            data-delay={String(i + 1)}
             className="flex gap-4 items-start p-8 border-r border-[rgb(var(--gp-fg-rgb) / 0.07)] last:border-r-0"
           >
             <span className="text-[var(--gp-accent)] mt-0.5 flex-shrink-0">{item.icon}</span>
@@ -493,7 +505,7 @@ export default function HomePage() {
       </div>
 
       {/* ── Newsletter ────────────────────────────────────────────────────── */}
-      <section className="max-w-[640px] mx-auto px-8 text-center mb-24">
+      <section data-reveal="up" className="max-w-[640px] mx-auto px-8 text-center mb-24">
         <p className="text-[10px] tracking-[0.22em] uppercase text-[var(--gp-accent)] mb-4">Join the Clan</p>
         <h2 className="font-cormorant text-[clamp(32px,4vw,44px)] font-light mb-4 text-[var(--gp-fg)]">
           Style drops, first.

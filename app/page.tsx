@@ -26,10 +26,10 @@ interface Category {
 
 // ── Data ─────────────────────────────────────────────────────────────────────
 const PRODUCTS: Product[] = [
-  { id: 1, name: "The Royal Pleat", price: "₦45,000", badge: "Bestseller", colors: ["#6B2D8B"], image: "/images/gp-royal-pleat.png" },
-  { id: 2, name: "Onyx Statement",  price: "₦38,000", badge: "New",        colors: ["#1a1a1a"], image: "/images/gp-onyx-statement.png" },
-  { id: 3, name: "Ivory Sovereign", price: "₦42,000", badge: "New",        colors: ["#f5f0e8"], image: "/images/gp-ivory-sovereign.png" },
-  { id: 4, name: "Sahara Wide",     price: "₦36,000", badge: "New",        colors: ["#c4a882"], image: "/images/gp-sahara-wide.png" },
+  { id: 1, name: "Royal Pleat",    price: "₦45,000", badge: "Bestseller", colors: ["#6B2D8B"], image: "/images/gp-royal-pleat.png" },
+  { id: 2, name: "Onyx Statement", price: "₦38,000", badge: "New",        colors: ["#1a1a1a"], image: "/images/gp-onyx-statement.png" },
+  { id: 3, name: "Ivory Sovereign",price: "₦42,000", badge: "New",        colors: ["#f5f0e8"], image: "/images/gp-ivory-sovereign.png" },
+  { id: 4, name: "Sahara Wide",    price: "₦36,000", badge: "New",        colors: ["#c4a882"], image: "/images/gp-sahara-wide.png" },
 ];
 
 const CATEGORIES: Category[] = [

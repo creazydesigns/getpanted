@@ -230,7 +230,7 @@ export default function HomePage() {
       {/* ── SECTION 2: HERO ─────────────────────────────────────────────── */}
       <section
         className="relative w-full overflow-hidden"
-        style={{ height: "100vh", background: "var(--midnight)" }}
+        style={{ height: "100vh", background: "var(--cloud-white)" }}
       >
         {/* Full-bleed image */}
         <Image
@@ -240,28 +240,29 @@ export default function HomePage() {
           className="object-cover object-top hero-img"
           priority
         />
-        {/* Cinematic gradient overlay */}
+        {/* Subtle light gradient so content text stays readable */}
         <div
           className="absolute inset-0"
           style={{
             background:
-              "linear-gradient(to bottom, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.55) 100%)",
+              "linear-gradient(to right, rgba(250,250,247,0.72) 0%, rgba(250,250,247,0.10) 60%, rgba(250,250,247,0) 100%)",
           }}
         />
 
         {/* Hero content — bottom left */}
-        <div className="absolute bottom-10 md:bottom-20 left-5 md:left-12 right-5 md:right-auto md:max-w-[680px]">
+        <div className="absolute bottom-10 md:bottom-20 left-5 md:left-12 right-5 md:right-auto md:max-w-[600px]">
           <p
             className="font-barlow-cond font-bold text-[11px] tracking-[0.25em] uppercase mb-5 animate-fade-up"
-            style={{ color: "var(--power-gold)" }}
+            style={{ color: "var(--reign-purple)" }}
           >
             NEW COLLECTION — SS 2026
           </p>
           <h1
-            className="font-playfair font-black text-white leading-[1.0] mb-8 animate-fade-up animation-delay-100"
+            className="font-playfair font-black leading-[1.0] mb-8 animate-fade-up animation-delay-100"
             style={{
               fontSize: "clamp(52px, 7vw, 96px)",
               letterSpacing: "-1.5px",
+              color: "var(--midnight)",
             }}
           >
             Dress the Power.<br />
@@ -277,8 +278,12 @@ export default function HomePage() {
             </Link>
             <Link
               href="/about"
-              className="btn-hp-outline font-barlow-cond font-bold text-[13px] tracking-[0.15em] uppercase text-white inline-block"
-              style={{ padding: "14px 36px" }}
+              className="font-barlow-cond font-bold text-[13px] tracking-[0.15em] uppercase inline-block transition-colors duration-300"
+              style={{
+                padding: "14px 36px",
+                border: "1px solid var(--midnight)",
+                color: "var(--midnight)",
+              }}
             >
               View Lookbook
             </Link>
@@ -289,13 +294,13 @@ export default function HomePage() {
         <div className="absolute bottom-10 left-1/2 -translate-x-1/2 hidden sm:flex flex-col items-center gap-2">
           <p
             className="font-barlow-cond font-bold text-[10px] tracking-[0.3em] uppercase"
-            style={{ color: "rgba(255,255,255,0.4)" }}
+            style={{ color: "rgba(10,10,10,0.35)" }}
           >
             SCROLL
           </p>
           <div
             className="w-px"
-            style={{ height: "40px", background: "rgba(255,255,255,0.25)" }}
+            style={{ height: "40px", background: "rgba(10,10,10,0.2)" }}
           />
         </div>
       </section>

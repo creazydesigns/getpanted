@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { ThemeToggle } from "../components/theme-toggle";
 
 const ENTRIES = [
   {
@@ -25,44 +24,8 @@ const ENTRIES = [
 export default function ShopPage() {
   return (
     <main className="min-h-screen bg-[var(--gp-canvas)] text-[var(--gp-fg)]">
-      <header className="sticky top-0 z-40 border-b border-[rgb(var(--gp-fg-rgb) / 0.08)] bg-[var(--gp-header)] backdrop-blur">
-        <div className="mx-auto flex h-16 w-full max-w-[1400px] items-center justify-between px-8">
-          <Link href="/" className="text-xl tracking-[0.16em] uppercase">
-            Get<span className="text-[var(--gp-accent)]">Panted</span>
-          </Link>
-          <nav className="hidden gap-8 text-[11px] uppercase tracking-[0.14em] text-[rgb(var(--gp-fg-rgb) / 0.58)] md:flex">
-            <Link href="/about" className="hover:text-[var(--gp-accent)] transition-colors">
-              About
-            </Link>
-            <Link href="/new-arrivals" className="hover:text-[var(--gp-accent)] transition-colors">
-              New Arrivals
-            </Link>
-            <Link href="/collections" className="hover:text-[var(--gp-accent)] transition-colors">
-              Collections
-            </Link>
-            <Link href="/bespoke" className="hover:text-[var(--gp-accent)] transition-colors">
-              Bespoke
-            </Link>
-          </nav>
-          <div className="flex items-center gap-4">
-            <ThemeToggle />
-            <Link href="/wishlist" className="text-[rgb(var(--gp-fg-rgb) / 0.6)] hover:text-[var(--gp-accent)] transition-colors" aria-label="Wishlist">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z" />
-              </svg>
-            </Link>
-            <Link href="/cart" className="text-[rgb(var(--gp-fg-rgb) / 0.6)] hover:text-[var(--gp-accent)] transition-colors" aria-label="Cart">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
-                <line x1="3" y1="6" x2="21" y2="6" />
-                <path d="M16 10a4 4 0 0 1-8 0" />
-              </svg>
-            </Link>
-          </div>
-        </div>
-      </header>
 
-      <section className="mx-auto max-w-[1400px] px-8 pb-16 pt-14">
+      <section className="mx-auto max-w-[1400px] px-8 pb-16 pt-24">
         <p className="mb-4 text-[11px] uppercase tracking-[0.2em] text-[var(--gp-accent)]">Shop</p>
         <h1 className="mb-4 text-[clamp(36px,6vw,64px)] font-light leading-tight">
           Find your <em className="text-[var(--gp-accent)] not-italic">signature</em> pair

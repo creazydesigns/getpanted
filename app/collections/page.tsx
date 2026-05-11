@@ -3,7 +3,6 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ThemeToggle } from "../components/theme-toggle";
 import { useShop } from "../context/shop-context";
 import { useScrollReveal } from "../hooks/use-scroll-reveal";
 
@@ -90,86 +89,6 @@ const FOOTER_LINK_HREFS: Record<string, string> = {
   "Track Order": "/checkout",
   "Contact Us": "/about",
 };
-
-// ── Navbar ─────────────────────────────────────────────────────────────────────
-function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
-  const { cartCount, wishlistCount, openMiniCart } = useShop();
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-      scrolled ? "bg-[var(--gp-header)] backdrop-blur-md border-b border-[rgb(var(--gp-fg-rgb) / 0.08)]" : "bg-transparent"
-    }`}>
-      <div className="max-w-[1400px] mx-auto px-8 h-16 flex items-center justify-between">
-        <Link href="/" className="font-cormorant text-2xl font-light tracking-[0.18em] uppercase text-[var(--gp-fg)]">
-          Get<span className="text-[var(--gp-accent)]">Panted</span>
-        </Link>
-        <ul className="hidden md:flex gap-8 list-none">
-          {[
-            { label: "About", href: "/about" },
-            { label: "New Arrivals", href: "/new-arrivals" },
-            { label: "Collections", href: "/collections" },
-            { label: "Bespoke", href: "/bespoke" },
-          ].map((item) => (
-            <li key={item.label}>
-              <Link
-                href={item.href}
-                className={`text-[11px] tracking-[0.14em] uppercase transition-colors duration-200 ${
-                  item.label === "Collections"
-                    ? "text-[var(--gp-accent)]"
-                    : "text-[rgb(var(--gp-fg-rgb) / 0.55)] hover:text-[var(--gp-accent)]"
-                }`}
-              >
-                {item.label}
-              </Link>
-            </li>
-          ))}
-        </ul>
-        <div className="flex items-center gap-5">
-          <ThemeToggle />
-          <Link href="/collections" aria-label="Search products" className="text-[rgb(var(--gp-fg-rgb) / 0.6)] hover:text-[var(--gp-accent)] transition-colors">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-              <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
-            </svg>
-          </Link>
-          <Link href="/wishlist" aria-label="Wishlist" className="relative text-[rgb(var(--gp-fg-rgb) / 0.6)] hover:text-[var(--gp-accent)] transition-colors">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/>
-            </svg>
-            {wishlistCount > 0 && (
-              <span className="absolute -top-1 -right-1.5 min-w-4 h-4 px-1 bg-[var(--gp-accent)] rounded-full text-[var(--gp-accent-ink)] text-[9px] font-medium flex items-center justify-center">
-                {wishlistCount}
-              </span>
-            )}
-          </Link>
-          <button
-            type="button"
-            aria-label="Cart"
-            onClick={openMiniCart}
-            className="relative text-[rgb(var(--gp-fg-rgb) / 0.6)] hover:text-[var(--gp-accent)] transition-colors"
-          >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-              <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
-              <line x1="3" y1="6" x2="21" y2="6"/>
-              <path d="M16 10a4 4 0 0 1-8 0"/>
-            </svg>
-            {cartCount > 0 && (
-              <span className="absolute -top-1 -right-1.5 min-w-4 h-4 px-1 bg-[var(--gp-accent)] rounded-full text-[var(--gp-accent-ink)] text-[9px] font-medium flex items-center justify-center">
-                {cartCount}
-              </span>
-            )}
-          </button>
-        </div>
-      </div>
-    </nav>
-  );
-}
 
 // ── Collection Feature Card ────────────────────────────────────────────────────
 function CollectionCard({ collection, index }: { collection: Collection; index: number }) {
@@ -487,7 +406,6 @@ export default function CollectionsPage() {
 
   return (
     <main className="bg-[var(--gp-canvas)] text-[var(--gp-fg)] min-h-screen overflow-x-hidden">
-      <Navbar />
 
       {/* ── Page Hero ─────────────────────────────────────────────────────── */}
       <section className="relative pt-32 pb-16 px-8 overflow-hidden border-b border-[rgb(var(--gp-fg-rgb) / 0.07)]">

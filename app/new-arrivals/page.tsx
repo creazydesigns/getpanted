@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { ThemeToggle } from "../components/theme-toggle";
 import { useShop } from "../context/shop-context";
 
 interface ArrivalItem {
@@ -27,7 +26,7 @@ const NEW_ARRIVALS: ArrivalItem[] = [
 const FILTERS = ["All", "Wide-Leg", "High-Waist", "Limited", "In Stock", "Under ₦45k"] as const;
 
 export default function NewArrivalsPage() {
-  const { addToCart, toggleWishlist, isWishlisted, cartCount, wishlistCount, openMiniCart } = useShop();
+  const { addToCart, toggleWishlist, isWishlisted } = useShop();
   const [activeFilter, setActiveFilter] = useState<(typeof FILTERS)[number]>("All");
   const [sortNewestFirst, setSortNewestFirst] = useState(true);
 
@@ -51,59 +50,8 @@ export default function NewArrivalsPage() {
 
   return (
     <main className="min-h-screen bg-[var(--gp-canvas)] text-[var(--gp-fg)]">
-      <header className="sticky top-0 z-40 border-b border-[rgb(var(--gp-fg-rgb) / 0.08)] bg-[var(--gp-header)] backdrop-blur">
-        <div className="mx-auto flex h-16 w-full max-w-[1400px] items-center justify-between px-8">
-          <Link href="/" className="text-xl tracking-[0.16em] uppercase">
-            Get<span className="text-[var(--gp-accent)]">Panted</span>
-          </Link>
-          <nav className="hidden gap-8 text-[11px] uppercase tracking-[0.14em] text-[rgb(var(--gp-fg-rgb) / 0.58)] md:flex">
-            <Link href="/about" className="hover:text-[var(--gp-accent)] transition-colors">
-              About
-            </Link>
-            <Link href="/new-arrivals" className="text-[var(--gp-accent)]">
-              New Arrivals
-            </Link>
-            <Link href="/collections" className="hover:text-[var(--gp-accent)] transition-colors">
-              Collections
-            </Link>
-            <Link href="/bespoke" className="hover:text-[var(--gp-accent)] transition-colors">
-              Bespoke
-            </Link>
-          </nav>
-          <div className="flex items-center gap-4">
-            <ThemeToggle />
-            <Link href="/wishlist" aria-label="Wishlist" className="relative text-[rgb(var(--gp-fg-rgb) / 0.6)] hover:text-[var(--gp-accent)] transition-colors">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z" />
-              </svg>
-              {wishlistCount > 0 && (
-                <span className="absolute -top-1 -right-1.5 min-w-4 h-4 px-1 bg-[var(--gp-accent)] rounded-full text-[var(--gp-accent-ink)] text-[9px] font-medium flex items-center justify-center">
-                  {wishlistCount}
-                </span>
-              )}
-            </Link>
-            <button
-              type="button"
-              aria-label="Cart"
-              onClick={openMiniCart}
-              className="relative text-[rgb(var(--gp-fg-rgb) / 0.6)] hover:text-[var(--gp-accent)] transition-colors"
-            >
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
-                <line x1="3" y1="6" x2="21" y2="6" />
-                <path d="M16 10a4 4 0 0 1-8 0" />
-              </svg>
-              {cartCount > 0 && (
-                <span className="absolute -top-1 -right-1.5 min-w-4 h-4 px-1 bg-[var(--gp-accent)] rounded-full text-[var(--gp-accent-ink)] text-[9px] font-medium flex items-center justify-center">
-                  {cartCount}
-                </span>
-              )}
-            </button>
-          </div>
-        </div>
-      </header>
 
-      <section className="mx-auto grid w-full max-w-[1400px] gap-10 px-8 pb-10 pt-14 md:grid-cols-[1.1fr_0.9fr] md:items-end">
+      <section className="mx-auto grid w-full max-w-[1400px] gap-10 px-8 pb-10 pt-24 md:grid-cols-[1.1fr_0.9fr] md:items-end">
         <div>
           <p className="mb-4 text-[11px] uppercase tracking-[0.2em] text-[var(--gp-accent)]">Fresh Drop</p>
           <h1 className="mb-5 text-[clamp(38px,6vw,72px)] leading-[1.02]">

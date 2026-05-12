@@ -228,9 +228,9 @@ export default function HomePage() {
           className="flex flex-col md:grid md:h-screen"
           style={{ gridTemplateColumns: "60% 40%" }}
         >
-          {/* Left: text */}
+          {/* Left: text — order-2 on mobile (image shows first), order-1 on desktop */}
           <div
-            className="flex flex-col justify-center pt-20 pb-10 md:pt-0 md:pb-0"
+            className="flex flex-col justify-center pt-8 pb-10 md:pt-0 md:pb-0 order-2 md:order-1"
             style={{
               paddingLeft: "clamp(24px, 5.5vw, 80px)",
               paddingRight: "clamp(16px, 2vw, 40px)",
@@ -268,9 +268,9 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Right: image */}
+          {/* Right: image — order-1 on mobile (shows first), order-2 on desktop */}
           <div
-            className="relative overflow-hidden hero-right-col"
+            className="relative overflow-hidden hero-right-col order-1 md:order-2 pt-14 md:pt-0"
             style={{ background: "#FFFFFF" }}
           >
             <Image

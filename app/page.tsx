@@ -228,56 +228,36 @@ export default function HomePage() {
           className="flex flex-col md:grid md:h-screen"
           style={{ gridTemplateColumns: "60% 40%" }}
         >
-          {/* Left: text — vertically centered, 80px left padding */}
+          {/* Left: text */}
           <div
-            className="flex flex-col justify-center pt-20 pb-12 md:pt-0 md:pb-0"
+            className="flex flex-col justify-center pt-20 pb-10 md:pt-0 md:pb-0"
             style={{
               paddingLeft: "clamp(24px, 5.5vw, 80px)",
               paddingRight: "clamp(16px, 2vw, 40px)",
             }}
           >
-            <h1
-              className="font-barlow-cond uppercase animate-fade-up"
-              style={{
-                fontSize: "clamp(80px, 7.2vw, 106px)",
-                fontWeight: 600,
-                letterSpacing: "-0.01em",
-                lineHeight: 0.95,
-                color: "#1A1A1A",
-                whiteSpace: "nowrap",
-              }}
-            >
+            <h1 className="hero-headline font-barlow-cond uppercase animate-fade-up">
               <span style={{ display: "block" }}>DRESS THE POWER</span>
               <span style={{ display: "block" }}>OWN THE ROOM.</span>
             </h1>
 
             <div
               className="flex flex-wrap items-center animate-fade-up animation-delay-100"
-              style={{ gap: "16px", marginTop: "40px" }}
+              style={{ gap: "12px", marginTop: "32px" }}
             >
-              {/* Button 1: filled #8B52CC */}
               <Link
                 href="/collections"
                 className="btn-hero-primary font-barlow-cond uppercase inline-block text-white"
-                style={{
-                  fontSize: "15px",
-                  fontWeight: 600,
-                  letterSpacing: "0.12em",
-                  padding: "18px 48px",
-                  background: "#8B52CC",
-                }}
+                style={{ fontWeight: 600, letterSpacing: "0.12em", background: "#8B52CC" }}
               >
                 SHOP NOW
               </Link>
-              {/* Button 2: outlined #8B52CC */}
               <Link
                 href="/collections"
                 className="btn-hero-secondary font-barlow-cond uppercase inline-block"
                 style={{
-                  fontSize: "15px",
                   fontWeight: 600,
                   letterSpacing: "0.12em",
-                  padding: "16px 46px",
                   border: "2px solid #8B52CC",
                   color: "#8B52CC",
                   background: "transparent",
@@ -288,7 +268,7 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Right: image — full figure, bottom-aligned, no cropping */}
+          {/* Right: image */}
           <div
             className="relative overflow-hidden hero-right-col"
             style={{ background: "#FFFFFF" }}

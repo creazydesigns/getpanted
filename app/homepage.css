@@ -98,12 +98,12 @@
   }
 }
 
-/* ── Hero image column — 50px top padding on mobile only ─────────────────── */
+/* ── Hero image column — clears fixed navbar (56px) + 50px breathing room ── */
 .hero-img-col {
-  padding-top: 50px;
+  margin-top: 106px; /* 56px navbar height + 50px requested padding */
 }
 @media (min-width: 768px) {
   .hero-img-col {
-    padding-top: 0;
+    margin-top: 0;
   }
 }

@@ -5,245 +5,50 @@ import Image from "next/image";
 import Link from "next/link";
 import { useShop } from "../context/shop-context";
 import { useScrollReveal } from "../hooks/use-scroll-reveal";
+import { PageFooter } from "../components/page-footer";
 
-// ── Types ─────────────────────────────────────────────────────────────────────
 type FilterKey = "all" | "solid" | "new";
 
 interface Product {
   id: number;
   name: string;
   price: string;
-  originalPrice?: string;
   image?: string;
   category: FilterKey[];
   colors: string[];
   badge?: string;
-  isNew?: boolean;
   sizes: string[];
 }
 
-interface Collection {
-  id: string;
-  title: string;
-  subtitle: string;
-  description: string;
-  itemCount: number;
-  accentColor: string;
-  bg: string;
-}
-
-// ── Data ──────────────────────────────────────────────────────────────────────
-const COLLECTIONS: Collection[] = [
-  {
-    id: "solid-luxe",
-    title: "Solid Luxe",
-    subtitle: "The foundation of power dressing",
-    description: "Clean lines, rich fabrics, zero distractions. These are the trousers that do the talking.",
-    itemCount: 12,
-    accentColor: "#c9a96e",
-    bg: "from-[#1a1410] via-[#2a1e12] to-[#1a1410]",
-  },
-];
-
 const FILTERS: { key: FilterKey; label: string }[] = [
-  { key: "all", label: "All Styles" },
-  { key: "new", label: "New In" },
+  { key: "all",   label: "All Styles" },
+  { key: "new",   label: "New In" },
   { key: "solid", label: "Solid Luxe" },
 ];
 
-const SORT_OPTIONS = [
-  "Featured",
-  "Newest First",
-  "Price: Low to High",
-  "Price: High to Low",
-  "Bestsellers",
-];
+const SORT_OPTIONS = ["Featured", "Newest First", "Price: Low to High", "Price: High to Low"];
 
 const PRODUCTS: Product[] = [
-  { id: 1,  name: "Royal Pleat",    price: "₦45,000", image: "/images/gp-royal-pleat.png",     category: ["solid"],          colors: ["#6B2D8B"],            badge: "Bestseller", isNew: false, sizes: ["XS","S","M","L","XL","2XL"] },
-  { id: 2,  name: "Onyx Statement", price: "₦38,000", image: "/images/gp-onyx-statement.png",  category: ["solid","new"],    colors: ["#1a1a1a"],            badge: "New",        isNew: true,  sizes: ["XS","S","M","L","XL","2XL","3XL"] },
-  { id: 3,  name: "Ivory Sovereign",price: "₦42,000", image: "/images/gp-ivory-sovereign.png", category: ["solid","new"],    colors: ["#f5f0e8"],            badge: "New",        isNew: true,  sizes: ["S","M","L","XL"] },
-  { id: 4,  name: "Sahara Wide",    price: "₦36,000", image: "/images/gp-sahara-wide.png",     category: ["solid","new"],    colors: ["#c4a882"],            badge: "New",        isNew: true,  sizes: ["XS","S","M","L","XL","2XL"] },
-  { id: 5,  name: "Petal Pleat",    price: "₦40,000", image: "/images/gp-petal-pleat.png",     category: ["solid","new"],    colors: ["#f4a7b9"],            badge: "New",        isNew: true,  sizes: ["XS","S","M","L","XL","2XL"] },
-  { id: 6,  name: "Eden Wide",      price: "₦40,000", image: "/images/gp-eden-wide.png",       category: ["solid","new"],    colors: ["#4CAF50"],            badge: "New",        isNew: true,  sizes: ["S","M","L","XL","2XL"] },
-  { id: 7,  name: "Solar Statement",price: "₦38,000", image: "/images/gp-solar-statement.png", category: ["solid","new"],    colors: ["#FFC107"],            badge: "New",        isNew: true,  sizes: ["XS","S","M","L","XL"] },
-  { id: 8,  name: "Nude Palazzo",   price: "₦44,000", image: "/images/gp-nude-palazzo.png",    category: ["solid"],          colors: ["#d4b896"],            badge: undefined,    isNew: false, sizes: ["S","M","L","XL","2XL"] },
-  { id: 9,  name: "Cacao Wide",     price: "₦44,000", image: "/images/gp-cacao-wide.png",      category: ["solid"],          colors: ["#3E1C0D"],            badge: undefined,    isNew: false, sizes: ["XS","S","M","L","XL"] },
-  { id: 10, name: "Blush Ultra Wide",  price: "₦41,000", image: "/images/gp-blush-ultra-wide.png", category: ["solid","new"],    colors: ["#f2b8c6"],            badge: "New",        isNew: true,  sizes: ["XS","S","M","L","XL","2XL"] },
-  { id: 11, name: "Lemon Luxe",        price: "₦39,000", image: "/images/gp-lemon-luxe.png",       category: ["solid","new"],    colors: ["#f5e642"],            badge: "New",        isNew: true,  sizes: ["S","M","L","XL","2XL"] },
-  { id: 12, name: "Peach Sovereign",   price: "₦43,000", image: "/images/gp-peach-sovereign.png",  category: ["solid","new"],    colors: ["#f4a07a"],            badge: "New",        isNew: true,  sizes: ["XS","S","M","L","XL"] },
+  { id: 1,  name: "Royal Pleat",       price: "₦45,000", image: "/images/gp-royal-pleat.png",       category: ["solid"],       colors: ["#6B2D8B"],  badge: "Bestseller", sizes: ["XS","S","M","L","XL","2XL"] },
+  { id: 2,  name: "Onyx Statement",    price: "₦38,000", image: "/images/gp-onyx-statement.png",    category: ["solid","new"], colors: ["#1a1a1a"],  badge: "New",        sizes: ["XS","S","M","L","XL","2XL","3XL"] },
+  { id: 3,  name: "Ivory Sovereign",   price: "₦42,000", image: "/images/gp-ivory-sovereign.png",   category: ["solid","new"], colors: ["#E8E8E8"],  badge: "New",        sizes: ["S","M","L","XL"] },
+  { id: 4,  name: "Sahara Wide",       price: "₦36,000", image: "/images/gp-sahara-wide.png",       category: ["solid","new"], colors: ["#c4a882"],  badge: "New",        sizes: ["XS","S","M","L","XL","2XL"] },
+  { id: 5,  name: "Petal Pleat",       price: "₦40,000", image: "/images/gp-petal-pleat.png",       category: ["solid","new"], colors: ["#f4a7b9"],  badge: "New",        sizes: ["XS","S","M","L","XL","2XL"] },
+  { id: 6,  name: "Eden Wide",         price: "₦40,000", image: "/images/gp-eden-wide.png",         category: ["solid","new"], colors: ["#4CAF50"],  badge: "New",        sizes: ["S","M","L","XL","2XL"] },
+  { id: 7,  name: "Solar Statement",   price: "₦38,000", image: "/images/gp-solar-statement.png",   category: ["solid","new"], colors: ["#FFC107"],  badge: "New",        sizes: ["XS","S","M","L","XL"] },
+  { id: 8,  name: "Nude Palazzo",      price: "₦44,000", image: "/images/gp-nude-palazzo.png",      category: ["solid"],       colors: ["#d4b896"],  sizes: ["S","M","L","XL","2XL"] },
+  { id: 9,  name: "Cacao Wide",        price: "₦44,000", image: "/images/gp-cacao-wide.png",        category: ["solid"],       colors: ["#3E1C0D"],  sizes: ["XS","S","M","L","XL"] },
+  { id: 10, name: "Blush Ultra Wide",  price: "₦41,000", image: "/images/gp-blush-ultra-wide.png",  category: ["solid","new"], colors: ["#f2b8c6"],  badge: "New",        sizes: ["XS","S","M","L","XL","2XL"] },
+  { id: 11, name: "Lemon Luxe",        price: "₦39,000", image: "/images/gp-lemon-luxe.png",        category: ["solid","new"], colors: ["#f5e642"],  badge: "New",        sizes: ["S","M","L","XL","2XL"] },
+  { id: 12, name: "Peach Sovereign",   price: "₦43,000", image: "/images/gp-peach-sovereign.png",   category: ["solid","new"], colors: ["#f4a07a"],  badge: "New",        sizes: ["XS","S","M","L","XL"] },
 ];
 
-const FOOTER_LINK_HREFS: Record<string, string> = {
-  "New Arrivals": "/new-arrivals",
-  "Bestsellers": "/collections",
-  "Solid Luxe": "/collections",
-  Printed: "/collections",
-  "Coord Sets": "/collections",
-  "About GetPanted": "/about",
-  Sustainability: "/about",
-  "Size Guide": "/bespoke",
-  "Care Instructions": "/about",
-  FAQs: "/bespoke",
-  "Shipping & Returns": "/checkout",
-  "Track Order": "/checkout",
-  "Contact Us": "/about",
-};
-
-// ── Collection Feature Card ────────────────────────────────────────────────────
-function CollectionCard({ collection, index }: { collection: Collection; index: number }) {
-  const [hovered, setHovered] = useState(false);
-
-  return (
-    <div
-      className={`relative overflow-hidden cursor-pointer group ${
-        index === 0 ? "md:col-span-2 md:row-span-2" : ""
-      }`}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-    >
-      {/* Background */}
-      <div className={`absolute inset-0 bg-gradient-to-br ${collection.bg} transition-transform duration-700 ${hovered ? "scale-[1.04]" : "scale-100"}`} />
-
-      {/* Grid texture */}
-      <div
-        className="absolute inset-0 opacity-[0.04] transition-opacity duration-500"
-        style={{
-          backgroundImage: `repeating-linear-gradient(0deg, ${collection.accentColor} 0px, ${collection.accentColor} 1px, transparent 1px, transparent 48px), repeating-linear-gradient(90deg, ${collection.accentColor} 0px, ${collection.accentColor} 1px, transparent 1px, transparent 48px)`,
-        }}
-      />
-
-      {/* Silhouette illustration */}
-      <div className={`absolute ${index === 0 ? "right-12 bottom-0 w-48 opacity-[0.12]" : "right-6 bottom-0 w-28 opacity-[0.10]"} transition-all duration-500 ${hovered ? "opacity-[0.18] translate-y-[-8px]" : ""}`}>
-        <svg viewBox="0 0 160 320" fill="none">
-          <ellipse cx="80" cy="44" rx="28" ry="28" fill={collection.accentColor}/>
-          <path d="M52 72 C40 96 36 156 28 220 C22 268 20 310 24 320 L136 320 C140 310 138 268 132 220 C124 156 120 96 108 72 Z" fill={collection.accentColor}/>
-          <path d="M52 72 C58 88 62 118 60 148 L100 148 C98 118 102 88 108 72 Z" fill="rgba(0,0,0,0.25)"/>
-        </svg>
-      </div>
-
-      {/* Content */}
-      <div className={`relative z-10 flex flex-col justify-between ${index === 0 ? "min-h-[480px] p-10" : "min-h-[220px] p-7"}`}>
-        <div>
-          <p className="text-[9px] tracking-[0.22em] uppercase mb-2" style={{ color: collection.accentColor }}>
-            {collection.itemCount} styles
-          </p>
-          <h3 className={`font-cormorant font-light leading-tight text-[var(--gp-fg)] ${index === 0 ? "text-[clamp(36px,5vw,56px)]" : "text-2xl"}`}>
-            {collection.title}
-          </h3>
-          {index === 0 && (
-            <p className="text-[13px] text-[rgb(var(--gp-fg-rgb) / 0.4)] font-light leading-relaxed max-w-xs mt-3">
-              {collection.description}
-            </p>
-          )}
-        </div>
-
-        <div className={`flex items-center justify-between ${index !== 0 ? "mt-auto pt-4" : "mt-8"}`}>
-          <p className="text-[11px] italic font-cormorant text-[rgb(var(--gp-fg-rgb) / 0.4)]">
-            {collection.subtitle}
-          </p>
-          <div
-            className="w-9 h-9 border flex items-center justify-center transition-all duration-300"
-            style={{
-              borderColor: hovered ? collection.accentColor : "rgb(var(--gp-fg-rgb) / 0.2)",
-              color: hovered ? collection.accentColor : "rgb(var(--gp-fg-rgb) / 0.4)",
-            }}
-          >
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-              <path d="m5 12 14 0M12 5l7 7-7 7"/>
-            </svg>
-          </div>
-        </div>
-      </div>
-
-      {/* Hover border glow */}
-      <div
-        className="absolute inset-0 border transition-all duration-500 pointer-events-none"
-        style={{ borderColor: hovered ? `${collection.accentColor}40` : "rgb(var(--gp-fg-rgb) / 0.07)" }}
-      />
-    </div>
-  );
-}
-
-// ── Product Card ───────────────────────────────────────────────────────────────
-function ProductCard({ product, viewMode }: { product: Product; viewMode: "grid" | "list" }) {
+// ── Product Card ──────────────────────────────────────────────────────────────
+function ProductCard({ product }: { product: Product }) {
   const [hovered, setHovered] = useState(false);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const { addToCart, isWishlisted, toggleWishlist } = useShop();
   const wishlisted = isWishlisted(product.id);
-
-  if (viewMode === "list") {
-    return (
-      <div data-reveal="up" className="group flex gap-6 border-b border-[rgb(var(--gp-fg-rgb) / 0.07)] py-6 hover:bg-[rgb(var(--gp-fg-rgb) / 0.015)] transition-colors px-2">
-        {/* Thumb */}
-        <div className="w-28 h-36 flex-shrink-0 bg-[var(--gp-card)] relative overflow-hidden">
-          {product.image ? (
-            <Image
-              src={product.image}
-              alt={product.name}
-              fill
-              sizes="112px"
-              className="object-cover"
-            />
-          ) : (
-            <div className="w-full h-full flex items-center justify-center">
-              <svg viewBox="0 0 80 140" fill="none" className="w-10 opacity-20">
-                <ellipse cx="40" cy="22" rx="14" ry="14" fill="var(--gp-accent)"/>
-                <path d="M26 36 C20 48 18 78 14 110 C11 130 10 138 12 140 L68 140 C70 138 69 130 66 110 C62 78 60 48 54 36 Z" fill="var(--gp-accent)"/>
-              </svg>
-            </div>
-          )}
-          {product.badge && (
-            <span className="absolute top-2 left-2 bg-[var(--gp-accent)] text-[var(--gp-accent-ink)] text-[8px] font-medium tracking-[0.12em] uppercase px-1.5 py-0.5">
-              {product.badge}
-            </span>
-          )}
-        </div>
-        {/* Info */}
-        <div className="flex-1 flex flex-col justify-between">
-          <div>
-            <h3 className="font-cormorant text-xl font-light text-[var(--gp-fg)] mb-1">{product.name}</h3>
-            <div className="flex items-center gap-3 mb-3">
-              <span className="text-[var(--gp-accent)] text-sm font-light">{product.price}</span>
-              {product.originalPrice && (
-                <span className="text-[rgb(var(--gp-fg-rgb) / 0.3)] text-sm line-through font-light">{product.originalPrice}</span>
-              )}
-            </div>
-            <div className="flex gap-1.5 mb-3">
-              {product.colors.map((c, i) => (
-                <span key={i} className="w-3 h-3 rounded-full border border-[rgb(var(--gp-fg-rgb) / 0.15)]" style={{ background: c }}/>
-              ))}
-            </div>
-          </div>
-          <div className="flex gap-2 flex-wrap">
-            {product.sizes.map((s) => (
-              <span key={s} className="text-[10px] border border-[rgb(var(--gp-fg-rgb) / 0.12)] px-2 py-1 text-[rgb(var(--gp-fg-rgb) / 0.35)] tracking-wider">
-                {s}
-              </span>
-            ))}
-          </div>
-        </div>
-        <div className="flex flex-col justify-between items-end">
-          <button
-            type="button"
-            onClick={() => toggleWishlist({ id: product.id, name: product.name, price: product.price })}
-            className="text-[rgb(var(--gp-fg-rgb) / 0.3)] hover:text-[var(--gp-accent)] transition-colors"
-          >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill={wishlisted ? "#c9a96e" : "none"} stroke={wishlisted ? "#c9a96e" : "currentColor"} strokeWidth="1.5">
-              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/>
-            </svg>
-          </button>
-          <button
-            type="button"
-            onClick={() => addToCart({ id: product.id, name: product.name, price: product.price })}
-            className="bg-[var(--gp-accent)] text-[var(--gp-accent-ink)] text-[10px] font-medium tracking-[0.12em] uppercase px-5 py-2.5 hover:bg-[var(--gp-accent-hover)] transition-colors whitespace-nowrap"
-          >
-            Add to Bag
-          </button>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div
@@ -252,67 +57,50 @@ function ProductCard({ product, viewMode }: { product: Product; viewMode: "grid"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      {/* Image */}
-      <div className="relative aspect-[3/4] bg-[var(--gp-card)] overflow-hidden mb-4">
-        {product.image ? (
+      <div className="relative overflow-hidden" style={{ aspectRatio: "3/4", background: "#F7F7F7" }}>
+        {product.image && (
           <Image
             src={product.image}
             alt={product.name}
             fill
             sizes="(max-width: 768px) 50vw, 25vw"
-            className="object-cover transition-transform duration-500"
+            className="object-cover object-top transition-transform duration-500"
             style={{ transform: hovered ? "scale(1.04)" : "scale(1)" }}
           />
-        ) : (
-          <div
-            className="w-full h-full flex items-center justify-center transition-transform duration-500"
-            style={{ transform: hovered ? "scale(1.04)" : "scale(1)" }}
-          >
-            <svg viewBox="0 0 160 280" fill="none" className="w-1/2 opacity-[0.15]">
-              <ellipse cx="80" cy="44" rx="28" ry="28" fill="var(--gp-accent)"/>
-              <path d="M52 72 C42 92 38 152 32 208 C26 254 22 278 26 280 L134 280 C138 278 134 254 128 208 C122 152 118 92 108 72 Z" fill="var(--gp-accent)"/>
-              <path d="M52 72 C58 88 62 118 60 148 L100 148 C98 118 102 88 108 72 Z" fill="rgb(var(--gp-ink-rgb) / 0.3)"/>
-            </svg>
-          </div>
         )}
-
-        {/* Badge */}
         {product.badge && (
-          <span className={`absolute top-3 left-3 text-[9px] font-medium tracking-[0.14em] uppercase px-2.5 py-1 ${
-            product.badge === "Sale"
-              ? "bg-[#8b2020] text-[var(--gp-fg)]"
-              : "bg-[var(--gp-accent)] text-[var(--gp-accent-ink)]"
-          }`}>
+          <span className="absolute top-3 left-3 font-barlow-cond font-bold uppercase text-white px-2.5 py-1" style={{ fontSize: "10px", letterSpacing: "0.15em", background: "#1A1A1A" }}>
             {product.badge}
           </span>
         )}
-
-        {/* Wishlist */}
         <button
-          aria-label="Wishlist"
           type="button"
+          aria-label="Toggle wishlist"
           onClick={() => toggleWishlist({ id: product.id, name: product.name, price: product.price })}
-          className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center bg-[rgb(var(--gp-ink-rgb) / 0.65)] transition-all duration-200 opacity-0 group-hover:opacity-100"
+          className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center transition-all duration-200 opacity-0 group-hover:opacity-100"
+          style={{ background: "rgba(0,0,0,0.5)", color: wishlisted ? "#8B52CC" : "white" }}
         >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill={wishlisted ? "#c9a96e" : "none"} stroke={wishlisted ? "#c9a96e" : "rgb(var(--gp-fg-rgb) / 0.6)"} strokeWidth="1.5">
-            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill={wishlisted ? "#8B52CC" : "none"} stroke="currentColor" strokeWidth="1.5">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z" />
           </svg>
         </button>
-
-        {/* Size quick-select + Add to bag */}
+        {/* Size + Add to bag tray */}
         <div
-          className="absolute bottom-0 left-0 right-0 bg-[rgb(var(--gp-ink-rgb) / 0.94)] px-4 py-4 transition-transform duration-300"
-          style={{ transform: hovered ? "translateY(0)" : "translateY(100%)" }}
+          className="absolute bottom-0 left-0 right-0 px-4 py-4 transition-transform duration-300"
+          style={{ background: "rgba(10,10,10,0.94)", transform: hovered ? "translateY(0)" : "translateY(100%)" }}
         >
           <div className="flex gap-1.5 flex-wrap mb-3">
             {product.sizes.slice(0, 5).map((s) => (
               <button
                 key={s}
+                type="button"
                 onClick={() => setSelectedSize(s === selectedSize ? null : s)}
-                className="text-[9px] border px-2 py-1 tracking-wider transition-colors duration-150"
+                className="font-barlow-cond font-bold uppercase px-2 py-1 transition-colors"
                 style={{
-                  borderColor: selectedSize === s ? "#c9a96e" : "rgb(var(--gp-fg-rgb) / 0.15)",
-                  color: selectedSize === s ? "#c9a96e" : "rgb(var(--gp-fg-rgb) / 0.45)",
+                  fontSize: "9px",
+                  letterSpacing: "0.1em",
+                  border: `1px solid ${selectedSize === s ? "#8B52CC" : "rgba(255,255,255,0.2)"}`,
+                  color: selectedSize === s ? "#8B52CC" : "rgba(255,255,255,0.5)",
                 }}
               >
                 {s}
@@ -321,35 +109,22 @@ function ProductCard({ product, viewMode }: { product: Product; viewMode: "grid"
           </div>
           <button
             type="button"
-            onClick={() =>
-              addToCart({
-                id: product.id,
-                name: product.name,
-                price: product.price,
-                ...(selectedSize ? { size: selectedSize } : {}),
-              })
-            }
-            className="w-full bg-[var(--gp-accent)] text-[var(--gp-accent-ink)] text-[10px] font-medium tracking-[0.14em] uppercase py-2.5 hover:bg-[var(--gp-accent-hover)] transition-colors"
+            onClick={() => addToCart({ id: product.id, name: product.name, price: product.price, ...(selectedSize ? { size: selectedSize } : {}) })}
+            className="w-full font-barlow-cond font-bold uppercase text-white transition-opacity hover:opacity-80"
+            style={{ fontSize: "11px", letterSpacing: "0.14em", padding: "10px", background: "#5C2D8F" }}
           >
             {selectedSize ? `Add ${selectedSize} to Bag` : "Add to Bag"}
           </button>
         </div>
       </div>
-
-      {/* Info */}
-      <h3 className="font-cormorant text-lg font-light text-[var(--gp-fg)] mb-1.5">{product.name}</h3>
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <span className="text-sm text-[var(--gp-accent)] font-light">{product.price}</span>
-          {product.originalPrice && (
-            <span className="text-xs text-[rgb(var(--gp-fg-rgb) / 0.28)] line-through font-light">{product.originalPrice}</span>
-          )}
+      <div className="pt-4 pb-2" style={{ background: "#FFFFFF" }}>
+        <div className="flex items-center justify-between gap-2">
+          <h3 className="font-barlow-cond font-bold uppercase" style={{ fontSize: "14px", color: "#1A1A1A" }}>{product.name}</h3>
+          <div className="flex gap-1.5 flex-shrink-0">
+            {product.colors.map((c, i) => <span key={i} className="w-2.5 h-2.5" style={{ background: c, border: "1px solid #E0E0E0" }} />)}
+          </div>
         </div>
-        <div className="flex gap-1.5">
-          {product.colors.map((c, i) => (
-            <span key={i} className="w-2.5 h-2.5 rounded-full border border-[rgb(var(--gp-fg-rgb) / 0.15)]" style={{ background: c }}/>
-          ))}
-        </div>
+        <p className="font-barlow mt-1" style={{ fontSize: "14px", color: "#6B6B6B" }}>{product.price}</p>
       </div>
     </div>
   );
@@ -360,335 +135,180 @@ export default function CollectionsPage() {
   const [activeFilter, setActiveFilter] = useState<FilterKey>("all");
   const [sortBy, setSortBy] = useState("Featured");
   const [sortOpen, setSortOpen] = useState(false);
-  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
-  const [gridCols, setGridCols] = useState<3 | 4>(4);
-  const [filtersOpen, setFiltersOpen] = useState(false);
   const [visibleCount, setVisibleCount] = useState(8);
   const sortRef = useRef<HTMLDivElement>(null);
-
   useScrollReveal();
 
-  // Close sort dropdown on outside click
   useEffect(() => {
     const handler = (e: MouseEvent) => {
-      if (sortRef.current && !sortRef.current.contains(e.target as Node)) {
-        setSortOpen(false);
-      }
+      if (sortRef.current && !sortRef.current.contains(e.target as Node)) setSortOpen(false);
     };
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
   const filteredProducts = useMemo(() => {
-    const base = PRODUCTS.filter((p) =>
-      activeFilter === "all" ? true : p.category.includes(activeFilter)
-    );
-
+    const base = PRODUCTS.filter((p) => activeFilter === "all" || p.category.includes(activeFilter));
     const getPrice = (price: string) => Number(price.replace(/[^\d]/g, ""));
-
     switch (sortBy) {
-      case "Newest First":
-        return [...base].sort((a, b) => b.id - a.id);
-      case "Price: Low to High":
-        return [...base].sort((a, b) => getPrice(a.price) - getPrice(b.price));
-      case "Price: High to Low":
-        return [...base].sort((a, b) => getPrice(b.price) - getPrice(a.price));
-      default:
-        return base;
+      case "Newest First":       return [...base].sort((a, b) => b.id - a.id);
+      case "Price: Low to High": return [...base].sort((a, b) => getPrice(a.price) - getPrice(b.price));
+      case "Price: High to Low": return [...base].sort((a, b) => getPrice(b.price) - getPrice(a.price));
+      default: return base;
     }
   }, [activeFilter, sortBy]);
 
-  useEffect(() => {
-    setVisibleCount(8);
-  }, [activeFilter, sortBy]);
+  useEffect(() => { setVisibleCount(8); }, [activeFilter, sortBy]);
 
   const visibleProducts = filteredProducts.slice(0, visibleCount);
 
   return (
-    <main className="bg-[var(--gp-canvas)] text-[var(--gp-fg)] min-h-screen overflow-x-hidden">
+    <main className="font-barlow overflow-x-hidden" style={{ background: "#FFFFFF" }}>
 
-      {/* ── Page Hero ─────────────────────────────────────────────────────── */}
-      <section className="relative pt-32 pb-16 px-8 overflow-hidden border-b border-[rgb(var(--gp-fg-rgb) / 0.07)]">
-        <div
-          className="absolute inset-0 opacity-[0.025]"
-          style={{
-            backgroundImage:
-              "repeating-linear-gradient(45deg, #c9a96e 0px, #c9a96e 1px, transparent 1px, transparent 56px)",
-          }}
-        />
-        {/* Ghost text */}
-        <p
-          className="absolute left-8 top-1/2 -translate-y-1/2 font-cormorant text-[clamp(80px,14vw,200px)] font-light text-[rgba(201,169,110,0.04)] leading-none select-none pointer-events-none"
-          aria-hidden="true"
-        >
-          Collections
-        </p>
-        <div className="relative z-10 max-w-[1400px] mx-auto">
-          {/* Breadcrumb */}
-          <div className="flex items-center gap-2 text-[10px] tracking-[0.16em] uppercase text-[rgb(var(--gp-fg-rgb) / 0.3)] mb-8">
-            <Link href="/" className="hover:text-[var(--gp-accent)] transition-colors">Home</Link>
-            <span>/</span>
-            <span className="text-[rgb(var(--gp-fg-rgb) / 0.55)]">Collections</span>
-          </div>
-          <p className="flex items-center gap-3 text-[11px] tracking-[0.22em] uppercase text-[var(--gp-accent)] mb-5">
-            <span className="block w-8 h-px bg-[var(--gp-accent)]" />
-            SS 2026
-          </p>
-          <h1 className="font-cormorant text-[clamp(48px,7vw,88px)] font-light leading-[0.95]">
-            All <em className="italic text-[var(--gp-accent)]">Collections</em>
-          </h1>
-          <p className="text-[14px] text-[rgb(var(--gp-fg-rgb) / 0.38)] font-light mt-4 max-w-md leading-relaxed">
-            Every trouser in our range. Filter by style, sort by mood, and find the pair that becomes your signature.
-          </p>
-        </div>
-      </section>
-
-      {/* ── Collection Feature Grid ───────────────────────────────────────── */}
-      <section className="max-w-[1400px] mx-auto px-8 py-16">
-        <div className="flex items-end justify-between mb-8">
-          <h2 className="font-cormorant text-[clamp(28px,3vw,38px)] font-light text-[var(--gp-fg)]">
-            Shop by <em className="italic text-[var(--gp-accent)]">Collection</em>
-          </h2>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 auto-rows-[220px]">
-          {COLLECTIONS.map((col, i) => (
-            <CollectionCard key={col.id} collection={col} index={i} />
-          ))}
-        </div>
-      </section>
-
-      {/* ── Divider ───────────────────────────────────────────────────────── */}
-      <div className="max-w-[1400px] mx-auto px-8">
-        <div className="border-t border-[rgb(var(--gp-fg-rgb) / 0.08)] my-4" />
-      </div>
-
-      {/* ── All Products ──────────────────────────────────────────────────── */}
-      <section className="max-w-[1400px] mx-auto px-8 py-12">
-        {/* Toolbar */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-5 mb-10">
-          {/* Filters */}
-          <div className="flex gap-1 flex-wrap">
-            {FILTERS.map((f) => (
-              <button
-                key={f.key}
-                onClick={() => {
-                  setActiveFilter(f.key);
-                  setFiltersOpen(false);
-                }}
-                className="text-[10px] tracking-[0.14em] uppercase px-4 py-2 border transition-all duration-200"
-                style={{
-                  borderColor: activeFilter === f.key ? "#c9a96e" : "rgb(var(--gp-fg-rgb) / 0.12)",
-                  color: activeFilter === f.key ? "#c9a96e" : "rgb(var(--gp-fg-rgb) / 0.45)",
-                  background: activeFilter === f.key ? "rgba(201,169,110,0.06)" : "transparent",
-                }}
-              >
-                {f.label}
-              </button>
-            ))}
-          </div>
-
-          {/* Right controls */}
-          <div className="flex items-center gap-4">
-            {/* Result count */}
-            <span className="text-[11px] text-[rgb(var(--gp-fg-rgb) / 0.3)] tracking-wider hidden md:block">
-              {visibleProducts.length} of {filteredProducts.length} styles
-            </span>
-
-            {/* Sort */}
-            <div className="relative" ref={sortRef}>
-              <button
-                onClick={() => setSortOpen(!sortOpen)}
-                className="flex items-center gap-2 text-[10px] tracking-[0.14em] uppercase text-[rgb(var(--gp-fg-rgb) / 0.45)] border border-[rgb(var(--gp-fg-rgb) / 0.12)] px-4 py-2 hover:border-[rgb(var(--gp-fg-rgb) / 0.25)] transition-colors"
-              >
-                {sortBy}
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={`transition-transform duration-200 ${sortOpen ? "rotate-180" : ""}`}>
-                  <polyline points="6 9 12 15 18 9"/>
-                </svg>
-              </button>
-              {sortOpen && (
-                <div className="absolute right-0 top-full mt-1 bg-[var(--gp-elevated)] border border-[rgb(var(--gp-fg-rgb) / 0.1)] z-30 min-w-[180px] py-1">
-                  {SORT_OPTIONS.map((opt) => (
-                    <button
-                      key={opt}
-                      onClick={() => { setSortBy(opt); setSortOpen(false); }}
-                      className="w-full text-left px-4 py-2.5 text-[11px] tracking-[0.1em] text-[rgb(var(--gp-fg-rgb) / 0.5)] hover:text-[var(--gp-accent)] hover:bg-[rgba(201,169,110,0.05)] transition-colors"
-                    >
-                      {opt}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            {/* View toggle */}
-            <div className="hidden md:flex items-center gap-1 border border-[rgb(var(--gp-fg-rgb) / 0.1)] p-0.5">
-              {/* Grid 4 */}
-              <button
-                onClick={() => { setViewMode("grid"); setGridCols(4); }}
-                className={`p-1.5 transition-colors ${viewMode === "grid" && gridCols === 4 ? "bg-[rgba(201,169,110,0.12)] text-[var(--gp-accent)]" : "text-[rgb(var(--gp-fg-rgb) / 0.3)] hover:text-[rgb(var(--gp-fg-rgb) / 0.6)]"}`}
-                aria-label="4-column grid"
-              >
-                <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
-                  <rect x="0" y="0" width="3.5" height="3.5"/><rect x="4.5" y="0" width="3.5" height="3.5"/>
-                  <rect x="9" y="0" width="3.5" height="3.5"/><rect x="13.5" y="0" width="2.5" height="3.5"/>
-                  <rect x="0" y="4.5" width="3.5" height="3.5"/><rect x="4.5" y="4.5" width="3.5" height="3.5"/>
-                  <rect x="9" y="4.5" width="3.5" height="3.5"/><rect x="13.5" y="4.5" width="2.5" height="3.5"/>
-                  <rect x="0" y="9" width="3.5" height="3.5"/><rect x="4.5" y="9" width="3.5" height="3.5"/>
-                  <rect x="9" y="9" width="3.5" height="3.5"/><rect x="13.5" y="9" width="2.5" height="3.5"/>
-                </svg>
-              </button>
-              {/* Grid 3 */}
-              <button
-                onClick={() => { setViewMode("grid"); setGridCols(3); }}
-                className={`p-1.5 transition-colors ${viewMode === "grid" && gridCols === 3 ? "bg-[rgba(201,169,110,0.12)] text-[var(--gp-accent)]" : "text-[rgb(var(--gp-fg-rgb) / 0.3)] hover:text-[rgb(var(--gp-fg-rgb) / 0.6)]"}`}
-                aria-label="3-column grid"
-              >
-                <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
-                  <rect x="0" y="0" width="4.5" height="4.5"/><rect x="5.75" y="0" width="4.5" height="4.5"/><rect x="11.5" y="0" width="4.5" height="4.5"/>
-                  <rect x="0" y="5.75" width="4.5" height="4.5"/><rect x="5.75" y="5.75" width="4.5" height="4.5"/><rect x="11.5" y="5.75" width="4.5" height="4.5"/>
-                  <rect x="0" y="11.5" width="4.5" height="4.5"/><rect x="5.75" y="11.5" width="4.5" height="4.5"/><rect x="11.5" y="11.5" width="4.5" height="4.5"/>
-                </svg>
-              </button>
-              {/* List */}
-              <button
-                onClick={() => setViewMode("list")}
-                className={`p-1.5 transition-colors ${viewMode === "list" ? "bg-[rgba(201,169,110,0.12)] text-[var(--gp-accent)]" : "text-[rgb(var(--gp-fg-rgb) / 0.3)] hover:text-[rgb(var(--gp-fg-rgb) / 0.6)]"}`}
-                aria-label="List view"
-              >
-                <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
-                  <rect x="0" y="1" width="16" height="2.5"/><rect x="0" y="6.75" width="16" height="2.5"/><rect x="0" y="12.5" width="16" height="2.5"/>
-                </svg>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* Product Grid / List */}
-        {viewMode === "grid" ? (
-          <div className={`grid gap-6 ${gridCols === 4 ? "grid-cols-2 md:grid-cols-4" : "grid-cols-2 md:grid-cols-3"}`}>
-            {visibleProducts.map((p) => (
-              <ProductCard key={p.id} product={p} viewMode="grid" />
-            ))}
-          </div>
-        ) : (
-          <div className="border-t border-[rgb(var(--gp-fg-rgb) / 0.07)]">
-            {visibleProducts.map((p) => (
-              <ProductCard key={p.id} product={p} viewMode="list" />
-            ))}
-          </div>
-        )}
-
-        {/* Empty state */}
-        {filteredProducts.length === 0 && (
-          <div className="text-center py-24">
-            <p className="font-cormorant text-3xl font-light text-[rgb(var(--gp-fg-rgb) / 0.25)] mb-3">Nothing here yet</p>
-            <p className="text-[12px] text-[rgb(var(--gp-fg-rgb) / 0.2)] tracking-wider">Try a different filter</p>
-          </div>
-        )}
-
-        {/* Load more */}
-        {filteredProducts.length > 0 && (
-          <div className="text-center mt-16">
-            {visibleCount < filteredProducts.length && (
-              <button
-                type="button"
-                onClick={() => setVisibleCount((prev) => prev + 8)}
-                className="border border-[rgb(var(--gp-fg-rgb) / 0.14)] text-[rgb(var(--gp-fg-rgb) / 0.45)] text-[11px] tracking-[0.16em] uppercase px-12 py-4 hover:border-[var(--gp-accent)] hover:text-[var(--gp-accent)] transition-colors duration-200"
-              >
-                Load More
-              </button>
-            )}
-            <p className="text-[10px] text-[rgb(var(--gp-fg-rgb) / 0.2)] tracking-widest mt-4">
-              Showing {visibleProducts.length} of {filteredProducts.length} styles
-            </p>
-          </div>
-        )}
-      </section>
-
-      {/* ── Custom Tailoring CTA ──────────────────────────────────────────── */}
-      <section className="mx-8 mb-20 border border-[rgb(var(--gp-fg-rgb) / 0.07)] grid md:grid-cols-2 overflow-hidden">
-        <div className="bg-gradient-to-br from-[#1a1410] to-[#2d1f14] min-h-[280px] flex items-center justify-center relative">
-          <div
-            className="absolute inset-0 opacity-[0.04]"
-            style={{
-              backgroundImage:
-                "repeating-linear-gradient(45deg, #c9a96e 0px, #c9a96e 1px, transparent 1px, transparent 40px)",
-            }}
-          />
-          <div className="relative z-10 text-center px-8">
-            <svg viewBox="0 0 120 80" fill="none" className="w-24 mx-auto opacity-30 mb-4">
-              <path d="M10 70 C20 40 40 20 60 10 C80 20 100 40 110 70" stroke="var(--gp-accent)" strokeWidth="1.5" fill="none"/>
-              <circle cx="60" cy="10" r="6" fill="var(--gp-accent)"/>
-              <line x1="60" y1="16" x2="60" y2="70" stroke="var(--gp-accent)" strokeWidth="1" strokeDasharray="3 3"/>
-            </svg>
-            <p className="font-cormorant text-xl italic text-[rgba(201,169,110,0.5)]">Measured. Made. Yours.</p>
-          </div>
-        </div>
-        <div className="p-12 flex flex-col justify-center border-t md:border-t-0 md:border-l border-[rgb(var(--gp-fg-rgb) / 0.07)]">
-          <p className="text-[10px] tracking-[0.22em] uppercase text-[var(--gp-accent)] mb-4">Custom Tailoring</p>
-          <h2 className="font-cormorant text-[clamp(28px,3vw,40px)] font-light leading-tight text-[var(--gp-fg)] mb-4">
-            Don't see your size?<br />
-            <em className="italic text-[var(--gp-accent)]">We'll make it.</em>
-          </h2>
-          <p className="text-[13px] text-[rgb(var(--gp-fg-rgb) / 0.38)] font-light leading-[1.9] mb-7 max-w-sm">
-            Every body is different. Our custom tailoring service creates trousers built exactly to your measurements — same premium fabrics, zero compromise.
-          </p>
-          <Link
-            href="/bespoke"
-            className="inline-flex items-center gap-2 bg-[var(--gp-accent)] text-[var(--gp-accent-ink)] px-8 py-3.5 text-[11px] font-medium tracking-[0.16em] uppercase self-start hover:bg-[var(--gp-accent-hover)] transition-colors"
-          >
-            Start Custom Order
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-              <path d="m5 12 14 0M12 5l7 7-7 7"/>
-            </svg>
-          </Link>
-        </div>
-      </section>
-
-      {/* ── Footer ────────────────────────────────────────────────────────── */}
-      <footer className="bg-[var(--gp-deep)] border-t border-[rgb(var(--gp-fg-rgb) / 0.07)] px-8 pt-16 pb-8">
+      {/* ── PAGE HEADER ────────────────────────────────────────────────────── */}
+      <section className="px-5 md:px-12 pt-28 pb-14" style={{ background: "#FFFFFF", borderBottom: "1px solid #F0F0F0" }}>
         <div className="max-w-[1400px] mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-14">
-            <div>
-              <p className="font-cormorant text-xl font-light tracking-[0.18em] uppercase text-[var(--gp-fg)] mb-4">
-                Get<span className="text-[var(--gp-accent)]">Panted</span>
-              </p>
-              <p className="text-[12px] text-[rgb(var(--gp-fg-rgb) / 0.28)] leading-[1.9] font-light max-w-[210px]">
-                High-waisted, wide-leg trousers for the bold, unapologetic woman. Lagos-made. World-ready.
+          <div className="flex items-center gap-2 font-barlow-cond font-bold uppercase mb-6" style={{ fontSize: "10px", letterSpacing: "0.16em", color: "#6B6B6B" }}>
+            <Link href="/" className="hover:text-[#5C2D8F] transition-colors">Home</Link>
+            <span>/</span>
+            <span style={{ color: "#1A1A1A" }}>Collections</span>
+          </div>
+          <p className="font-barlow-cond font-bold uppercase mb-4" style={{ fontSize: "11px", letterSpacing: "0.25em", color: "#5C2D8F" }}>SS 2026</p>
+          <h1 style={{ fontSize: "clamp(48px, 7vw, 88px)", fontWeight: 600, lineHeight: 0.95, color: "#1A1A1A" }}>
+            All Collections
+          </h1>
+          <p className="font-barlow mt-5" style={{ fontSize: "15px", color: "#6B6B6B", maxWidth: "440px", lineHeight: 1.7 }}>
+            Every trouser in our range. Filter by style and find the pair that becomes your signature.
+          </p>
+        </div>
+      </section>
+
+      {/* ── PRODUCT SECTION ────────────────────────────────────────────────── */}
+      <section className="px-5 md:px-12 py-14" style={{ background: "#FFFFFF" }}>
+        <div className="max-w-[1400px] mx-auto">
+          {/* Toolbar */}
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-5 mb-10">
+            {/* Filters */}
+            <div className="flex gap-2 flex-wrap">
+              {FILTERS.map((f) => (
+                <button
+                  key={f.key}
+                  type="button"
+                  onClick={() => setActiveFilter(f.key)}
+                  className="font-barlow-cond font-bold uppercase transition-all duration-200"
+                  style={{
+                    fontSize: "11px",
+                    letterSpacing: "0.14em",
+                    padding: "8px 20px",
+                    border: `1px solid ${activeFilter === f.key ? "#5C2D8F" : "#E0E0E0"}`,
+                    color: activeFilter === f.key ? "#5C2D8F" : "#6B6B6B",
+                    background: activeFilter === f.key ? "rgba(92,45,143,0.05)" : "transparent",
+                  }}
+                >
+                  {f.label}
+                </button>
+              ))}
+            </div>
+            {/* Right controls */}
+            <div className="flex items-center gap-5">
+              <span className="font-barlow-cond" style={{ fontSize: "11px", color: "#6B6B6B" }}>
+                {visibleProducts.length} of {filteredProducts.length} styles
+              </span>
+              <div className="relative" ref={sortRef}>
+                <button
+                  type="button"
+                  onClick={() => setSortOpen(!sortOpen)}
+                  className="flex items-center gap-2 font-barlow-cond font-bold uppercase transition-colors hover:border-[#5C2D8F]"
+                  style={{ fontSize: "11px", letterSpacing: "0.12em", padding: "8px 16px", border: "1px solid #E0E0E0", color: "#6B6B6B" }}
+                >
+                  {sortBy}
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={`transition-transform duration-200 ${sortOpen ? "rotate-180" : ""}`}>
+                    <polyline points="6 9 12 15 18 9" />
+                  </svg>
+                </button>
+                {sortOpen && (
+                  <div className="absolute right-0 top-full mt-1 z-30 py-1" style={{ background: "#FFFFFF", border: "1px solid #E0E0E0", minWidth: "200px" }}>
+                    {SORT_OPTIONS.map((opt) => (
+                      <button
+                        key={opt}
+                        type="button"
+                        onClick={() => { setSortBy(opt); setSortOpen(false); }}
+                        className="w-full text-left font-barlow-cond font-bold uppercase transition-colors hover:text-[#5C2D8F]"
+                        style={{ fontSize: "11px", letterSpacing: "0.1em", padding: "10px 16px", color: "#6B6B6B" }}
+                      >
+                        {opt}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Grid */}
+          <div className="grid grid-cols-2 md:grid-cols-4" style={{ gap: "2px" }}>
+            {visibleProducts.map((p) => <ProductCard key={p.id} product={p} />)}
+          </div>
+
+          {filteredProducts.length === 0 && (
+            <div className="text-center py-24">
+              <p className="font-barlow-cond font-bold uppercase" style={{ fontSize: "20px", color: "#6B6B6B" }}>Nothing here yet</p>
+              <p className="font-barlow mt-2" style={{ fontSize: "13px", color: "#6B6B6B" }}>Try a different filter</p>
+            </div>
+          )}
+
+          {filteredProducts.length > 0 && (
+            <div className="text-center mt-16">
+              {visibleCount < filteredProducts.length && (
+                <button
+                  type="button"
+                  onClick={() => setVisibleCount((prev) => prev + 8)}
+                  className="font-barlow-cond font-bold uppercase transition-all duration-200 hover:bg-[#1A1A1A] hover:text-white"
+                  style={{ fontSize: "11px", letterSpacing: "0.16em", padding: "14px 48px", border: "1px solid #1A1A1A", color: "#1A1A1A" }}
+                >
+                  Load More
+                </button>
+              )}
+              <p className="font-barlow mt-4" style={{ fontSize: "12px", color: "#6B6B6B" }}>
+                Showing {visibleProducts.length} of {filteredProducts.length} styles
               </p>
             </div>
-            {[
-              { title: "Shop", links: ["New Arrivals", "Bestsellers", "Solid Luxe", "Printed", "Coord Sets"] },
-              { title: "Info",  links: ["About GetPanted", "Sustainability", "Size Guide", "Care Instructions"] },
-              { title: "Help",  links: ["FAQs", "Shipping & Returns", "Track Order", "Contact Us"] },
-            ].map((col) => (
-              <div key={col.title}>
-                <p className="text-[11px] tracking-[0.16em] uppercase text-[rgb(var(--gp-fg-rgb) / 0.35)] mb-5">{col.title}</p>
-                <ul className="space-y-3">
-                  {col.links.map((link) => (
-                    <li key={link}>
-                      <Link href={FOOTER_LINK_HREFS[link] ?? "/about"} className="text-[13px] text-[rgb(var(--gp-fg-rgb) / 0.42)] hover:text-[var(--gp-accent)] transition-colors font-light">
-                        {link}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
+          )}
+        </div>
+      </section>
+
+      {/* ── BESPOKE CTA ────────────────────────────────────────────────────── */}
+      <section className="px-5 md:px-12 py-20" style={{ background: "#F7F7F7", borderTop: "1px solid #F0F0F0" }}>
+        <div className="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+          <div>
+            <p className="font-barlow-cond font-bold uppercase mb-4" style={{ fontSize: "11px", letterSpacing: "0.25em", color: "#5C2D8F" }}>Custom Tailoring</p>
+            <h2 style={{ fontSize: "clamp(28px, 3vw, 44px)", color: "#1A1A1A", marginBottom: "16px" }}>
+              Don't See Your Size? We'll Make It.
+            </h2>
+            <p className="font-barlow mb-8" style={{ fontSize: "15px", color: "#6B6B6B", lineHeight: 1.8, maxWidth: "420px" }}>
+              Every body is different. Our custom tailoring creates trousers built exactly to your measurements — same premium fabrics, zero compromise.
+            </p>
+            <Link
+              href="/bespoke"
+              className="font-barlow-cond font-bold uppercase text-white inline-block transition-opacity hover:opacity-80"
+              style={{ fontSize: "13px", letterSpacing: "0.15em", padding: "16px 48px", background: "#5C2D8F" }}
+            >
+              Start Custom Order
+            </Link>
           </div>
-          <div className="border-t border-[rgb(var(--gp-fg-rgb) / 0.06)] pt-6 flex flex-col md:flex-row justify-between items-center gap-3">
-            <p className="text-[11px] text-[rgb(var(--gp-fg-rgb) / 0.18)] font-light">© 2026 GetPanted. All rights reserved.</p>
-            <p className="text-[11px] text-[rgb(var(--gp-fg-rgb) / 0.18)] font-light">Lagos, Nigeria · NGN (₦) · Privacy · Terms</p>
+          <div className="flex items-center justify-center" style={{ aspectRatio: "4/3", background: "#FFFFFF", borderTop: "4px solid #5C2D8F" }}>
+            <div className="text-center">
+              <svg viewBox="0 0 120 80" fill="none" className="w-20 mx-auto mb-4" style={{ opacity: 0.15 }}>
+                <path d="M10 70 C20 40 40 20 60 10 C80 20 100 40 110 70" stroke="#5C2D8F" strokeWidth="2" fill="none"/>
+                <circle cx="60" cy="10" r="6" fill="#5C2D8F"/>
+              </svg>
+              <p className="font-barlow-cond font-bold uppercase" style={{ fontSize: "12px", letterSpacing: "0.2em", color: "#6B6B6B" }}>Measured. Made. Yours.</p>
+            </div>
           </div>
         </div>
-      </footer>
+      </section>
 
-      {/* ── Global styles ─────────────────────────────────────────────────── */}
-      <style jsx global>{`
-        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap');
-        .font-cormorant { font-family: 'Cormorant Garamond', serif; }
-        body { font-family: 'DM Sans', sans-serif; }
-      `}</style>
+      <PageFooter />
     </main>
   );
 }

@@ -24,10 +24,10 @@ interface Category {
 
 // ── Data ─────────────────────────────────────────────────────────────────────
 const PRODUCTS: Product[] = [
-  { id: 1, name: "Royal Pleat",     price: "₦45,000", badge: "Bestseller", colors: ["#6B2D8B"], image: "/images/gp-royal-pleat.png" },
-  { id: 2, name: "Onyx Statement",  price: "₦38,000", badge: "New",        colors: ["#1a1a1a"], image: "/images/gp-onyx-statement.png" },
-  { id: 3, name: "Ivory Sovereign", price: "₦42,000", badge: "New",        colors: ["#f5f0e8"], image: "/images/gp-ivory-sovereign.png" },
-  { id: 4, name: "Sahara Wide",     price: "₦36,000", badge: "New",        colors: ["#c4a882"], image: "/images/gp-sahara-wide.png" },
+  { id: 1, name: "Royal Pleat",     price: "₦45,000", badge: "Bestseller", colors: ["#5C2D8F"], image: "/images/gp-royal-pleat.png" },
+  { id: 2, name: "Onyx Statement",  price: "₦38,000", badge: "New",        colors: ["#1A1A1A"], image: "/images/gp-onyx-statement.png" },
+  { id: 3, name: "Ivory Sovereign", price: "₦42,000", badge: "New",        colors: ["#E8E8E8"], image: "/images/gp-ivory-sovereign.png" },
+  { id: 4, name: "Sahara Wide",     price: "₦36,000", badge: "New",        colors: ["#8A8680"], image: "/images/gp-sahara-wide.png" },
 ];
 
 const CATEGORIES: Category[] = [
@@ -48,21 +48,21 @@ const MARQUEE_TEXT =
   "WIDE-LEG PERFECTION · LAGOS-MADE LUXURY · DRESS THE POWER · OWN THE ROOM · HIGH-WAISTED SILHOUETTES · ";
 
 const FOOTER_LINKS: Record<string, string> = {
-  "New Arrivals":      "/new-arrivals",
-  Bestsellers:         "/collections",
-  "Solid Luxe":        "/collections",
-  Printed:             "/collections",
-  "Coord Sets":        "/collections",
-  Sale:                "/collections",
-  "About GetPanted":   "/about",
-  Sustainability:      "/about",
-  "Size Guide":        "/bespoke",
-  "Care Instructions": "/about",
-  FAQs:                "/bespoke",
-  "Shipping & Returns":"/checkout",
-  "Track Order":       "/checkout",
-  "Contact Us":        "/about",
-  Wholesale:           "/about",
+  "New Arrivals":       "/new-arrivals",
+  Bestsellers:          "/collections",
+  "Solid Luxe":         "/collections",
+  Printed:              "/collections",
+  "Coord Sets":         "/collections",
+  Sale:                 "/collections",
+  "About GetPanted":    "/about",
+  Sustainability:       "/about",
+  "Size Guide":         "/bespoke",
+  "Care Instructions":  "/about",
+  FAQs:                 "/bespoke",
+  "Shipping & Returns": "/checkout",
+  "Track Order":        "/checkout",
+  "Contact Us":         "/about",
+  Wholesale:            "/about",
 };
 
 // ── Product Card ──────────────────────────────────────────────────────────────
@@ -90,23 +90,23 @@ function ProductCard({ product, delay = 0 }: { product: Product; delay?: number 
         ) : (
           <div
             className="w-full h-full flex items-center justify-center"
-            style={{ background: "var(--deep-onyx)" }}
+            style={{ background: "#F7F7F7" }}
           >
             <svg viewBox="0 0 160 320" fill="none" className="w-1/2 opacity-10">
-              <ellipse cx="80" cy="48" rx="28" ry="28" fill="var(--reign-purple)" />
+              <ellipse cx="80" cy="48" rx="28" ry="28" fill="#5C2D8F" />
               <path
                 d="M52 76 C40 96 36 160 28 224 C22 272 20 312 26 320 L134 320 C140 312 138 272 132 224 C124 160 120 96 108 76 Z"
-                fill="var(--reign-purple)"
+                fill="#5C2D8F"
               />
             </svg>
           </div>
         )}
 
-        {/* Badge */}
+        {/* Badge — black only, never purple */}
         {product.badge && (
           <span
             className="absolute top-4 left-4 font-barlow-cond font-bold text-[10px] tracking-[0.2em] uppercase text-white px-[10px] py-1"
-            style={{ background: "var(--midnight)" }}
+            style={{ background: "#1A1A1A" }}
           >
             {product.badge}
           </span>
@@ -124,14 +124,17 @@ function ProductCard({ product, delay = 0 }: { product: Product; delay?: number 
               image: product.image,
             })
           }
-          className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center bg-black/50 transition-all duration-300 opacity-0 group-hover:opacity-100"
-          style={{ color: wishlisted ? "var(--reign-purple)" : "white" }}
+          className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center transition-all duration-300 opacity-0 group-hover:opacity-100"
+          style={{
+            background: "rgba(0,0,0,0.5)",
+            color: wishlisted ? "#5C2D8F" : "white",
+          }}
         >
           <svg
             width="14"
             height="14"
             viewBox="0 0 24 24"
-            fill={wishlisted ? "var(--reign-purple)" : "none"}
+            fill={wishlisted ? "#5C2D8F" : "none"}
             stroke="currentColor"
             strokeWidth="1.5"
           >
@@ -141,11 +144,11 @@ function ProductCard({ product, delay = 0 }: { product: Product; delay?: number 
       </div>
 
       {/* Info */}
-      <div className="pt-4 pb-2">
+      <div className="pt-4 pb-2" style={{ background: "#FFFFFF" }}>
         <div className="flex items-start justify-between gap-3">
           <h3
-            className="font-barlow-cond font-bold text-base tracking-[0.05em] uppercase leading-tight"
-            style={{ color: "var(--hp-fg)" }}
+            className="font-barlow-cond font-bold text-[14px] tracking-[0.05em] uppercase leading-tight"
+            style={{ color: "#1A1A1A" }}
           >
             {product.name}
           </h3>
@@ -160,12 +163,12 @@ function ProductCard({ product, delay = 0 }: { product: Product; delay?: number 
               })
             }
             className="font-barlow-cond font-bold text-[12px] tracking-[0.15em] uppercase whitespace-nowrap flex-shrink-0 transition-opacity duration-300 opacity-0 group-hover:opacity-100"
-            style={{ color: "var(--reign-purple)" }}
+            style={{ color: "#5C2D8F" }}
           >
             Add to Bag
           </button>
         </div>
-        <p className="font-barlow text-[15px] mt-1" style={{ color: "var(--stone-grey)" }}>
+        <p className="font-barlow text-[14px] mt-1" style={{ color: "#6B6B6B" }}>
           {product.price}
         </p>
       </div>
@@ -188,27 +191,19 @@ function CategoryTile({ cat }: { cat: Category }) {
         sizes="(max-width: 768px) 100vw, 33vw"
         className="object-cover object-top transition-transform duration-[600ms] ease-out group-hover:scale-[1.04]"
       />
-      {/* Base overlay */}
-      <div
-        className="absolute inset-0"
-        style={{ background: "rgba(0,0,0,0.30)" }}
-      />
-      {/* Hover overlay increment */}
+      {/* Dark overlay only — no purple */}
+      <div className="absolute inset-0" style={{ background: "rgba(0,0,0,0.35)" }} />
       <div
         className="absolute inset-0 transition-opacity duration-300 opacity-0 group-hover:opacity-100"
-        style={{ background: "rgba(0,0,0,0.20)" }}
+        style={{ background: "rgba(0,0,0,0.15)" }}
       />
-      {/* Content */}
       <div className="absolute bottom-0 left-0 right-0 p-8">
-        <h3
-          className="font-playfair font-bold text-white leading-tight"
-          style={{ fontSize: "28px" }}
-        >
+        <h3 className="font-barlow-cond font-bold text-white leading-tight" style={{ fontSize: "28px" }}>
           {cat.name}
         </h3>
         <p
           className="font-barlow-cond font-bold tracking-[0.2em] uppercase mt-1"
-          style={{ fontSize: "11px", color: "rgba(255,255,255,0.6)" }}
+          style={{ fontSize: "11px", color: "rgba(255,255,255,0.65)" }}
         >
           {cat.count}
         </p>
@@ -225,96 +220,103 @@ export default function HomePage() {
   useScrollReveal();
 
   return (
-    <main className="font-barlow overflow-x-hidden">
+    <main className="font-barlow overflow-x-hidden" style={{ background: "#FFFFFF" }}>
 
-      {/* ── SECTION 2: HERO ─────────────────────────────────────────────── */}
-      <section
-        className="relative w-full overflow-hidden"
-        style={{ height: "100vh", background: "var(--cloud-white)" }}
-      >
-        {/* Full-bleed image */}
-        <Image
-          src="/images/gp-lady-white.png"
-          alt="Model in wide-leg trousers"
-          fill
-          className="object-cover object-top hero-img"
-          priority
-        />
-        {/* Subtle light gradient so content text stays readable */}
+      {/* ── HERO ────────────────────────────────────────────────────────── */}
+      <section style={{ background: "#FFFFFF" }}>
         <div
-          className="absolute inset-0"
-          style={{
-            background:
-              "linear-gradient(to right, rgba(250,250,247,0.72) 0%, rgba(250,250,247,0.10) 60%, rgba(250,250,247,0) 100%)",
-          }}
-        />
-
-        {/* Hero content — bottom left */}
-        <div className="absolute bottom-10 md:bottom-20 left-5 md:left-12 right-5 md:right-auto md:max-w-[600px]">
-          <p
-            className="font-barlow-cond font-bold text-[11px] tracking-[0.25em] uppercase mb-5 animate-fade-up"
-            style={{ color: "var(--reign-purple)" }}
-          >
-            NEW COLLECTION — SS 2026
-          </p>
-          <h1
-            className="font-playfair font-black leading-[1.0] mb-8 animate-fade-up animation-delay-100"
+          className="flex flex-col md:grid md:h-screen"
+          style={{ gridTemplateColumns: "60% 40%" }}
+        >
+          {/* Left: text — vertically centered, 80px left padding */}
+          <div
+            className="flex flex-col justify-center pt-20 pb-12 md:pt-0 md:pb-0"
             style={{
-              fontSize: "clamp(52px, 7vw, 96px)",
-              letterSpacing: "-1.5px",
-              color: "var(--midnight)",
+              paddingLeft: "clamp(24px, 5.5vw, 80px)",
+              paddingRight: "clamp(16px, 2vw, 40px)",
             }}
           >
-            Dress the Power.<br />
-            Own the Room.
-          </h1>
-          <div className="flex flex-wrap items-center gap-4 animate-fade-up animation-delay-200">
-            <Link
-              href="/collections"
-              className="btn-hp-primary font-barlow-cond font-bold text-[13px] tracking-[0.15em] uppercase text-white inline-block"
-              style={{ padding: "14px 36px" }}
-            >
-              Shop Now
-            </Link>
-            <Link
-              href="/about"
-              className="font-barlow-cond font-bold text-[13px] tracking-[0.15em] uppercase inline-block transition-colors duration-300"
+            <h1
+              className="font-barlow-cond uppercase animate-fade-up"
               style={{
-                padding: "14px 36px",
-                border: "1px solid var(--midnight)",
-                color: "var(--midnight)",
+                fontSize: "clamp(80px, 7.2vw, 106px)",
+                fontWeight: 600,
+                letterSpacing: "-0.01em",
+                lineHeight: 0.95,
+                color: "#1A1A1A",
+                whiteSpace: "nowrap",
               }}
             >
-              View Lookbook
-            </Link>
-          </div>
-        </div>
+              <span style={{ display: "block" }}>DRESS THE POWER</span>
+              <span style={{ display: "block" }}>OWN THE ROOM.</span>
+            </h1>
 
-        {/* Scroll indicator */}
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 hidden sm:flex flex-col items-center gap-2">
-          <p
-            className="font-barlow-cond font-bold text-[10px] tracking-[0.3em] uppercase"
-            style={{ color: "rgba(10,10,10,0.35)" }}
-          >
-            SCROLL
-          </p>
+            <div
+              className="flex flex-wrap items-center animate-fade-up animation-delay-100"
+              style={{ gap: "16px", marginTop: "40px" }}
+            >
+              {/* Button 1: filled #8B52CC */}
+              <Link
+                href="/collections"
+                className="btn-hero-primary font-barlow-cond uppercase inline-block text-white"
+                style={{
+                  fontSize: "15px",
+                  fontWeight: 600,
+                  letterSpacing: "0.12em",
+                  padding: "18px 48px",
+                  background: "#8B52CC",
+                }}
+              >
+                SHOP NOW
+              </Link>
+              {/* Button 2: outlined #8B52CC */}
+              <Link
+                href="/collections"
+                className="btn-hero-secondary font-barlow-cond uppercase inline-block"
+                style={{
+                  fontSize: "15px",
+                  fontWeight: 600,
+                  letterSpacing: "0.12em",
+                  padding: "16px 46px",
+                  border: "2px solid #8B52CC",
+                  color: "#8B52CC",
+                  background: "transparent",
+                }}
+              >
+                VIEW COLLECTIONS
+              </Link>
+            </div>
+          </div>
+
+          {/* Right: image — full figure, bottom-aligned, no cropping */}
           <div
-            className="w-px"
-            style={{ height: "40px", background: "rgba(10,10,10,0.2)" }}
-          />
+            className="relative overflow-hidden hero-right-col"
+            style={{ background: "#FFFFFF" }}
+          >
+            <Image
+              src="/images/gp-lady-white.png"
+              alt="Model in wide-leg trousers"
+              fill
+              className="object-contain"
+              style={{ objectPosition: "center bottom" }}
+              priority
+              unoptimized
+            />
+          </div>
         </div>
       </section>
 
-      {/* ── SECTION 3: MARQUEE TICKER ────────────────────────────────────── */}
+      {/* ── MARQUEE STRIP ────────────────────────────────────────────────── */}
       <div
         className="overflow-hidden"
-        style={{ background: "var(--reign-purple)", height: "44px" }}
+        style={{ background: "#5C2D8F", height: "40px" }}
       >
         <div className="animate-marquee-ticker">
           {[0, 1].map((i) => (
             <span
               key={i}
-              className="font-barlow-cond font-bold text-[13px] tracking-[0.2em] uppercase text-white"
+              className="font-barlow-cond font-bold uppercase text-white"
+              style={{ fontSize: "12px", letterSpacing: "0.2em" }}
               aria-hidden={i > 0 ? "true" : undefined}
             >
               {MARQUEE_TEXT.repeat(5)}
@@ -323,24 +325,26 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* ── SECTION 4: NEW ARRIVALS ──────────────────────────────────────── */}
-      <section style={{ background: "var(--hp-paper)" }}>
-        {/* Section header */}
-        <div
-          className="flex items-end justify-between px-5 md:px-12 pt-16 md:pt-20 pb-8 md:pb-12"
-        >
+      {/* ── NEW ARRIVALS ──────────────────────────────────────────────────── */}
+      <section style={{ background: "#FFFFFF" }}>
+        <div className="flex items-end justify-between px-5 md:px-12 pt-16 md:pt-20 pb-8 md:pb-12">
           <div>
             <p
-              className="font-barlow-cond font-bold text-[11px] tracking-[0.25em] uppercase mb-3"
-              style={{ color: "var(--stone-grey)" }}
+              className="font-barlow-cond font-bold uppercase"
+              style={{
+                fontSize: "11px",
+                letterSpacing: "0.25em",
+                color: "#5C2D8F",
+                marginBottom: "12px",
+              }}
             >
               NEW ARRIVALS
             </p>
             <h2
-              className="font-playfair font-bold"
+              className="font-barlow-cond font-bold"
               style={{
-                color: "var(--hp-fg)",
-                fontSize: "clamp(28px, 3vw, 42px)",
+                fontSize: "clamp(28px, 3vw, 40px)",
+                color: "#1A1A1A",
               }}
             >
               The Latest
@@ -348,13 +352,16 @@ export default function HomePage() {
           </div>
           <Link
             href="/collections"
-            className="font-barlow-cond font-bold text-[13px] tracking-[0.15em] uppercase transition-opacity duration-200 hover:opacity-60"
-            style={{ color: "var(--reign-purple)" }}
+            className="font-barlow-cond font-bold uppercase transition-opacity duration-200 hover:opacity-60"
+            style={{
+              fontSize: "13px",
+              letterSpacing: "0.15em",
+              color: "#5C2D8F",
+            }}
           >
             View all →
           </Link>
         </div>
-        {/* Product grid */}
         <div
           className="grid grid-cols-2 md:grid-cols-4 px-5 md:px-12 pb-16 md:pb-20"
           style={{ gap: "2px" }}
@@ -365,32 +372,44 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── SECTION 5: BRAND STORY ───────────────────────────────────────── */}
+      {/* ── BRAND STORY ──────────────────────────────────────────────────── */}
       <section
         className="px-5 md:px-12 py-16 md:py-24"
-        style={{ background: "var(--hp-paper-alt)" }}
+        style={{
+          background: "#FFFFFF",
+          borderTop: "1px solid #F0F0F0",
+        }}
       >
         <div className="grid grid-cols-1 md:grid-cols-[55%_45%] gap-12 md:gap-20 items-center max-w-[1400px] mx-auto">
-          {/* Left — copy */}
+          {/* Copy */}
           <div data-reveal="left">
             <p
-              className="font-barlow-cond font-bold text-[11px] tracking-[0.25em] uppercase mb-6"
-              style={{ color: "var(--stone-grey)" }}
+              className="font-barlow-cond font-bold uppercase"
+              style={{
+                fontSize: "11px",
+                letterSpacing: "0.25em",
+                color: "#5C2D8F",
+                marginBottom: "24px",
+              }}
             >
               THE GETPANTED STORY
             </p>
             <h2
-              className="font-playfair font-bold leading-[1.15]"
+              className="font-barlow-cond font-bold leading-[1.15]"
               style={{
-                color: "var(--hp-fg)",
                 fontSize: "clamp(32px, 4vw, 56px)",
+                color: "#1A1A1A",
               }}
             >
               Trousers that tell<br />your story.
             </h2>
             <p
-              className="font-barlow leading-[1.8] mt-6 max-w-[420px]"
-              style={{ color: "var(--stone-grey)", fontSize: "16px" }}
+              className="font-barlow leading-[1.8] max-w-[420px]"
+              style={{
+                fontSize: "16px",
+                color: "#6B6B6B",
+                marginTop: "24px",
+              }}
             >
               Born in Lagos, GetPanted is a celebration of the bold African woman.
               Each trouser is designed with generous proportions, impeccable tailoring,
@@ -398,13 +417,18 @@ export default function HomePage() {
             </p>
             <Link
               href="/about"
-              className="font-barlow-cond font-bold text-[13px] tracking-[0.15em] uppercase mt-8 inline-block transition-opacity duration-200 hover:opacity-60"
-              style={{ color: "var(--reign-purple)" }}
+              className="font-barlow-cond font-bold uppercase inline-block transition-opacity duration-200 hover:opacity-60"
+              style={{
+                fontSize: "13px",
+                letterSpacing: "0.15em",
+                color: "#5C2D8F",
+                marginTop: "32px",
+              }}
             >
               Our Story →
             </Link>
           </div>
-          {/* Right — editorial image */}
+          {/* Image */}
           <div
             data-reveal="right"
             className="relative w-full overflow-hidden"
@@ -420,14 +444,15 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── SECTION 6: SHOP BY STYLE ─────────────────────────────────────── */}
-      <section
-        className="px-5 md:px-12 pb-16 md:pb-24"
-        style={{ background: "var(--hp-paper)" }}
-      >
+      {/* ── SHOP BY STYLE ─────────────────────────────────────────────────── */}
+      <section className="px-5 md:px-12 pb-16 md:pb-24" style={{ background: "#FFFFFF" }}>
         <p
-          className="font-barlow-cond font-bold text-[11px] tracking-[0.25em] uppercase pt-14 md:pt-16 mb-8"
-          style={{ color: "var(--stone-grey)" }}
+          className="font-barlow-cond font-bold uppercase pt-14 md:pt-16 mb-8"
+          style={{
+            fontSize: "11px",
+            letterSpacing: "0.25em",
+            color: "#5C2D8F",
+          }}
         >
           SHOP BY STYLE
         </p>
@@ -438,11 +463,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── SECTION 7: VALUE PROPS ───────────────────────────────────────── */}
-      <div
-        className="px-5 md:px-12 py-12"
-        style={{ background: "var(--midnight)" }}
-      >
+      {/* ── VALUE PROPS STRIP ─────────────────────────────────────────────── */}
+      <div className="px-5 md:px-12 py-12" style={{ background: "#F7F7F7" }}>
         <div className="grid grid-cols-2 md:grid-cols-4" style={{ gap: "2px" }}>
           {[
             { title: "Free Shipping",    body: "On all orders above ₦30,000" },
@@ -457,13 +479,14 @@ export default function HomePage() {
               className="text-center px-4 py-10"
             >
               <p
-                className="font-barlow-cond font-bold text-[14px] tracking-[0.15em] uppercase text-white mb-2"
+                className="font-barlow-cond font-bold uppercase mb-2"
+                style={{ fontSize: "14px", letterSpacing: "0.15em", color: "#1A1A1A" }}
               >
                 {item.title}
               </p>
               <p
-                className="font-barlow text-[13px] leading-[1.6]"
-                style={{ color: "var(--stone-grey)" }}
+                className="font-barlow leading-[1.6]"
+                style={{ fontSize: "13px", color: "#6B6B6B" }}
               >
                 {item.body}
               </p>
@@ -472,29 +495,26 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* ── SECTION 8: NEWSLETTER ────────────────────────────────────────── */}
-      <section
-        className="text-center px-5 md:px-12 py-16 md:py-24"
-        style={{ background: "var(--hp-paper)" }}
-      >
+      {/* ── NEWSLETTER ────────────────────────────────────────────────────── */}
+      <section className="text-center px-5 md:px-12 py-16 md:py-24" style={{ background: "#FFFFFF" }}>
         <p
-          className="font-barlow-cond font-bold text-[11px] tracking-[0.25em] uppercase"
-          style={{ color: "var(--stone-grey)" }}
+          className="font-barlow-cond font-bold uppercase"
+          style={{ fontSize: "11px", letterSpacing: "0.25em", color: "#5C2D8F" }}
         >
           JOIN THE CLAN
         </p>
         <h2
-          className="font-playfair font-bold mt-4 mb-3"
+          className="font-barlow-cond font-bold mt-4 mb-3"
           style={{
-            color: "var(--hp-fg)",
             fontSize: "clamp(28px, 3vw, 42px)",
+            color: "#1A1A1A",
           }}
         >
           Style drops, first.
         </h2>
         <p
-          className="font-barlow text-base leading-relaxed mt-3 mb-8 max-w-lg mx-auto"
-          style={{ color: "var(--stone-grey)" }}
+          className="font-barlow leading-relaxed mt-3 mb-8 max-w-lg mx-auto"
+          style={{ fontSize: "16px", color: "#6B6B6B" }}
         >
           Be the first to know about new collections, exclusive launches, and styling
           tips from the GetPanted team.
@@ -503,30 +523,35 @@ export default function HomePage() {
           <input
             type="email"
             placeholder="your@email.com"
-            className="font-barlow outline-none flex-1 placeholder:text-[var(--stone-grey)]"
+            className="font-barlow outline-none flex-1"
             style={{
-              border: "1px solid #D8D4CC",
+              border: "1px solid #E0E0E0",
+              borderRight: "none",
               padding: "14px 20px",
               fontSize: "15px",
-              background: "white",
-              color: "var(--midnight)",
+              background: "#FFFFFF",
+              color: "#1A1A1A",
             }}
           />
           <a
             href="mailto:hello@getpanted.com?subject=Newsletter%20Signup"
-            className="btn-subscribe font-barlow-cond font-bold text-[13px] tracking-[0.15em] uppercase text-white inline-flex items-center justify-center whitespace-nowrap"
-            style={{ padding: "14px 32px" }}
+            className="btn-subscribe font-barlow-cond font-bold uppercase text-white inline-flex items-center justify-center whitespace-nowrap"
+            style={{
+              padding: "14px 32px",
+              fontSize: "13px",
+              letterSpacing: "0.15em",
+            }}
           >
             Subscribe
           </a>
         </div>
       </section>
 
-      {/* ── SECTION 9: FOOTER ────────────────────────────────────────────── */}
+      {/* ── FOOTER ────────────────────────────────────────────────────────── */}
       <footer
         className="px-5 md:px-12"
         style={{
-          background: "var(--midnight)",
+          background: "#1A1A1A",
           paddingTop: "64px",
           paddingBottom: "32px",
         }}
@@ -537,10 +562,11 @@ export default function HomePage() {
           <div className="flex items-center justify-between mb-12">
             <Link
               href="/"
-              className="font-playfair font-bold text-xl tracking-[0.18em] uppercase"
+              className="font-barlow-cond font-bold tracking-[0.18em] uppercase"
+              style={{ fontSize: "20px" }}
             >
-              <span className="text-white">Get</span>
-              <span style={{ color: "var(--reign-purple)" }}>Panted</span>
+              <span style={{ color: "#FFFFFF" }}>Get</span>
+              <span style={{ color: "#8B52CC" }}>Panted</span>
             </Link>
             <div className="flex gap-5">
               {[
@@ -555,7 +581,7 @@ export default function HomePage() {
                   rel="noreferrer"
                   aria-label={s.name}
                   className="transition-colors duration-200 hover:text-white"
-                  style={{ color: "var(--stone-grey)" }}
+                  style={{ color: "#6B6B6B" }}
                 >
                   {s.name === "instagram" && (
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -579,7 +605,7 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Middle: link columns */}
+          {/* Link columns */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-12">
             {[
               {
@@ -597,8 +623,8 @@ export default function HomePage() {
             ].map((col) => (
               <div key={col.title}>
                 <p
-                  className="font-barlow-cond font-bold text-[11px] tracking-[0.2em] uppercase mb-5"
-                  style={{ color: "var(--stone-grey)" }}
+                  className="font-barlow-cond font-bold uppercase mb-5"
+                  style={{ fontSize: "11px", letterSpacing: "0.2em", color: "#6B6B6B" }}
                 >
                   {col.title}
                 </p>
@@ -607,8 +633,8 @@ export default function HomePage() {
                     <li key={link}>
                       <Link
                         href={FOOTER_LINKS[link] ?? "/about"}
-                        className="font-barlow text-[14px] transition-colors duration-200 hover:text-white"
-                        style={{ color: "rgba(255,255,255,0.5)" }}
+                        className="font-barlow transition-colors duration-200 hover:text-white"
+                        style={{ fontSize: "14px", color: "#6B6B6B" }}
                       >
                         {link}
                       </Link>
@@ -620,13 +646,10 @@ export default function HomePage() {
           </div>
 
           {/* Bottom bar */}
-          <div
-            className="pt-6"
-            style={{ borderTop: "1px solid rgba(255,255,255,0.1)" }}
-          >
+          <div className="pt-6" style={{ borderTop: "1px solid rgba(255,255,255,0.08)" }}>
             <p
-              className="font-barlow text-[13px]"
-              style={{ color: "var(--stone-grey)" }}
+              className="font-barlow"
+              style={{ fontSize: "13px", color: "#6B6B6B" }}
             >
               © 2026 GetPanted. All rights reserved. Lagos, Nigeria.
             </p>
@@ -638,3 +661,4 @@ export default function HomePage() {
     </main>
   );
 }
+

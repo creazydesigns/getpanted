@@ -1,74 +1,87 @@
 import Link from "next/link";
+import { PageFooter } from "../components/page-footer";
 
 const ENTRIES = [
-  {
-    title: "New Arrivals",
-    subtitle: "Fresh drops every week",
-    href: "/new-arrivals",
-    bg: "from-[#1a1410] to-[#2d1f14]",
-  },
-  {
-    title: "Collections",
-    subtitle: "Shop every line and filter",
-    href: "/collections",
-    bg: "from-[#140f1a] to-[#1e1428]",
-  },
-  {
-    title: "Bespoke",
-    subtitle: "Made-to-measure in Lagos",
-    href: "/bespoke",
-    bg: "from-[#0f1a16] to-[#14241e]",
-  },
+  { title: "New Arrivals",  subtitle: "Fresh drops every week",       href: "/new-arrivals", icon: "→" },
+  { title: "Collections",  subtitle: "Shop every line and filter",    href: "/collections",  icon: "→" },
+  { title: "Bespoke",      subtitle: "Made-to-measure in Lagos",      href: "/bespoke",      icon: "→" },
 ];
 
 export default function ShopPage() {
   return (
-    <main className="min-h-screen bg-[var(--gp-canvas)] text-[var(--gp-fg)]">
+    <main className="font-barlow overflow-x-hidden" style={{ background: "#FFFFFF" }}>
 
-      <section className="mx-auto max-w-[1400px] px-8 pb-16 pt-24">
-        <p className="mb-4 text-[11px] uppercase tracking-[0.2em] text-[var(--gp-accent)]">Shop</p>
-        <h1 className="mb-4 text-[clamp(36px,6vw,64px)] font-light leading-tight">
-          Find your <em className="text-[var(--gp-accent)] not-italic">signature</em> pair
-        </h1>
-        <p className="mb-12 max-w-xl text-sm leading-8 text-[rgb(var(--gp-fg-rgb) / 0.52)]">
-          Browse new drops, full collections, or go bespoke. Everything ships from Lagos with the same wide-leg confidence.
-        </p>
+      {/* ── PAGE HEADER ────────────────────────────────────────────────────── */}
+      <section className="px-5 md:px-12 pt-28 pb-14" style={{ background: "#FFFFFF", borderBottom: "1px solid #F0F0F0" }}>
+        <div className="max-w-[1400px] mx-auto">
+          <p className="font-barlow-cond font-bold uppercase mb-4" style={{ fontSize: "11px", letterSpacing: "0.25em", color: "#5C2D8F" }}>Shop</p>
+          <h1 style={{ fontSize: "clamp(48px, 7vw, 88px)", fontWeight: 600, lineHeight: 0.95, color: "#1A1A1A" }}>
+            Find Your Signature Pair
+          </h1>
+          <p className="font-barlow mt-5" style={{ fontSize: "15px", color: "#6B6B6B", maxWidth: "480px", lineHeight: 1.7 }}>
+            Browse new drops, full collections, or go bespoke. Everything ships from Lagos with the same wide-leg confidence.
+          </p>
+        </div>
+      </section>
 
-        <div className="grid gap-5 md:grid-cols-3">
+      {/* ── SHOP ENTRIES ───────────────────────────────────────────────────── */}
+      <section className="px-5 md:px-12 py-16" style={{ background: "#FFFFFF" }}>
+        <div className="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-3" style={{ gap: "2px", background: "#F0F0F0" }}>
           {ENTRIES.map((entry) => (
             <Link
               key={entry.href}
               href={entry.href}
-              className={`group relative flex min-h-[220px] flex-col justify-end overflow-hidden border border-[rgb(var(--gp-fg-rgb) / 0.08)] bg-gradient-to-br p-8 ${entry.bg}`}
+              className="group flex flex-col justify-between"
+              style={{ background: "#FFFFFF", padding: "56px 48px", minHeight: "260px", transition: "background 0.2s" }}
+              onMouseEnter={(e) => (e.currentTarget.style.background = "#FAFAFA")}
+              onMouseLeave={(e) => (e.currentTarget.style.background = "#FFFFFF")}
             >
-              <div className="absolute inset-0 opacity-[0.06]" style={{ backgroundImage: "repeating-linear-gradient(45deg, #c9a96e 0px, #c9a96e 1px, transparent 1px, transparent 36px)" }} />
-              <p className="relative z-10 text-[10px] uppercase tracking-[0.18em] text-[var(--gp-accent)]">{entry.subtitle}</p>
-              <h2 className="relative z-10 mt-2 font-cormorant text-2xl font-light text-[var(--gp-fg)]">{entry.title}</h2>
-              <span className="relative z-10 mt-4 inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.14em] text-[rgb(var(--gp-fg-rgb) / 0.55)] group-hover:text-[var(--gp-accent)]">
-                Enter
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                  <path d="m5 12 14 0M12 5l7 7-7 7" />
-                </svg>
-              </span>
+              <div>
+                <p className="font-barlow-cond font-bold uppercase mb-4" style={{ fontSize: "10px", letterSpacing: "0.22em", color: "#5C2D8F" }}>{entry.subtitle}</p>
+                <h2 style={{ fontSize: "clamp(24px, 3vw, 36px)", color: "#1A1A1A" }}>{entry.title}</h2>
+              </div>
+              <div className="flex items-center justify-between mt-8">
+                <span className="font-barlow-cond font-bold uppercase transition-colors group-hover:text-[#5C2D8F]" style={{ fontSize: "11px", letterSpacing: "0.16em", color: "#6B6B6B" }}>
+                  Enter
+                </span>
+                <div
+                  className="w-10 h-10 flex items-center justify-center transition-all duration-300 group-hover:bg-[#5C2D8F] group-hover:text-white"
+                  style={{ border: "1px solid #E0E0E0", color: "#6B6B6B" }}
+                >
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                    <path d="m5 12 14 0M12 5l7 7-7 7"/>
+                  </svg>
+                </div>
+              </div>
             </Link>
           ))}
         </div>
+      </section>
 
-        <div className="mt-12 flex flex-wrap gap-4 border-t border-[rgb(var(--gp-fg-rgb) / 0.08)] pt-10">
-          <Link
-            href="/about"
-            className="border border-[rgb(var(--gp-fg-rgb) / 0.2)] px-6 py-3 text-[11px] uppercase tracking-[0.14em] text-[rgb(var(--gp-fg-rgb) / 0.75)] hover:border-[var(--gp-accent)] hover:text-[var(--gp-accent)]"
-          >
-            View lookbook
-          </Link>
-          <Link
-            href="/"
-            className="text-[11px] uppercase tracking-[0.14em] text-[var(--gp-accent)] underline-offset-4 hover:underline"
-          >
-            Back to home
-          </Link>
+      {/* ── QUICK LINKS ────────────────────────────────────────────────────── */}
+      <section className="px-5 md:px-12 pb-20" style={{ background: "#FFFFFF" }}>
+        <div className="max-w-[1400px] mx-auto">
+          <div className="flex flex-wrap gap-3 pt-8" style={{ borderTop: "1px solid #F0F0F0" }}>
+            {[
+              { label: "About GetPanted", href: "/about" },
+              { label: "Size Guide",      href: "/bespoke" },
+              { label: "Care Guide",      href: "/about" },
+              { label: "Contact Us",      href: "/about" },
+            ].map((link) => (
+              <Link
+                key={link.href + link.label}
+                href={link.href}
+                className="font-barlow-cond font-bold uppercase transition-all duration-200 hover:border-[#5C2D8F] hover:text-[#5C2D8F]"
+                style={{ fontSize: "11px", letterSpacing: "0.14em", padding: "10px 20px", border: "1px solid #E0E0E0", color: "#6B6B6B" }}
+              >
+                {link.label}
+              </Link>
+            ))}
+          </div>
         </div>
       </section>
+
+      <PageFooter />
     </main>
   );
 }

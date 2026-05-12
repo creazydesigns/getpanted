@@ -97,3 +97,13 @@
     height: 100%;
   }
 }
+
+/* ── Hero image column — 50px top padding on mobile only ─────────────────── */
+.hero-img-col {
+  padding-top: 50px;
+}
+@media (min-width: 768px) {
+  .hero-img-col {
+    padding-top: 0;
+  }
+}

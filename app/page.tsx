@@ -270,7 +270,7 @@ export default function HomePage() {
 
           {/* Right: image — order-1 on mobile (shows first), order-2 on desktop */}
           <div
-            className="relative overflow-hidden hero-right-col order-1 md:order-2 pt-14 md:pt-0"
+            className="relative overflow-hidden hero-right-col order-1 md:order-2 hero-img-col"
             style={{ background: "#FFFFFF" }}
           >
             <Image
@@ -285,25 +285,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
-      {/* ── MARQUEE STRIP ────────────────────────────────────────────────── */}
-      <div
-        className="overflow-hidden"
-        style={{ background: "#5C2D8F", height: "40px" }}
-      >
-        <div className="animate-marquee-ticker">
-          {[0, 1].map((i) => (
-            <span
-              key={i}
-              className="font-barlow-cond font-bold uppercase text-white"
-              style={{ fontSize: "12px", letterSpacing: "0.2em" }}
-              aria-hidden={i > 0 ? "true" : undefined}
-            >
-              {MARQUEE_TEXT.repeat(5)}
-            </span>
-          ))}
-        </div>
-      </div>
 
       {/* ── NEW ARRIVALS ──────────────────────────────────────────────────── */}
       <section style={{ background: "#FFFFFF" }}>

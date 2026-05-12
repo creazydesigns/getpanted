@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import "./homepage.css";
@@ -218,6 +219,25 @@ function CategoryTile({ cat }: { cat: Category }) {
 // ── Main Page ─────────────────────────────────────────────────────────────────
 export default function HomePage() {
   useScrollReveal();
+
+  // Newsletter state
+  const [nlEmail,   setNlEmail]   = useState("");
+  const [nlLoading, setNlLoading] = useState(false);
+  const [nlStatus,  setNlStatus]  = useState<"idle" | "success" | "error" | "duplicate">("idle");
+
+  const handleSubscribe = async () => {
+    if (!nlEmail.trim()) return;
+    setNlLoading(true);
+    setNlStatus("idle");
+    try {
+      const res  = await fetch("/api/subscribe", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email: nlEmail }) });
+      const json = await res.json() as { error?: string };
+      if (res.status === 409 || json.error === "already_subscribed") { setNlStatus("duplicate"); }
+      else if (!res.ok) { setNlStatus("error"); }
+      else { setNlStatus("success"); setNlEmail(""); }
+    } catch { setNlStatus("error"); }
+    finally { setNlLoading(false); }
+  };
 
   return (
     <main className="font-barlow overflow-x-hidden" style={{ background: "#FFFFFF" }}>
@@ -480,32 +500,47 @@ export default function HomePage() {
           Be the first to know about new collections, exclusive launches, and styling
           tips from the GetPanted team.
         </p>
-        <div className="flex flex-col sm:flex-row max-w-md mx-auto">
-          <input
-            type="email"
-            placeholder="your@email.com"
-            className="font-barlow outline-none flex-1"
-            style={{
-              border: "1px solid #E0E0E0",
-              borderRight: "none",
-              padding: "14px 20px",
-              fontSize: "15px",
-              background: "#FFFFFF",
-              color: "#1A1A1A",
-            }}
-          />
-          <a
-            href="mailto:hello@getpanted.com?subject=Newsletter%20Signup"
-            className="btn-subscribe font-barlow-cond font-bold uppercase text-white inline-flex items-center justify-center whitespace-nowrap"
-            style={{
-              padding: "14px 32px",
-              fontSize: "13px",
-              letterSpacing: "0.15em",
-            }}
-          >
-            Subscribe
-          </a>
-        </div>
+        {nlStatus === "success" ? (
+          <p className="font-barlow-cond font-bold uppercase" style={{ fontSize: "14px", letterSpacing: "0.1em", color: "#5C2D8F" }}>
+            You&apos;re in. Check your inbox. ✓
+          </p>
+        ) : (
+          <>
+            <div className="flex flex-col sm:flex-row max-w-md mx-auto">
+              <input
+                type="email"
+                value={nlEmail}
+                onChange={(e) => setNlEmail(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && handleSubscribe()}
+                placeholder="your@email.com"
+                className="font-barlow outline-none flex-1"
+                style={{
+                  border: "1px solid #E0E0E0",
+                  borderRight: "none",
+                  padding: "14px 20px",
+                  fontSize: "15px",
+                  background: "#FFFFFF",
+                  color: "#1A1A1A",
+                }}
+              />
+              <button
+                type="button"
+                onClick={handleSubscribe}
+                disabled={nlLoading}
+                className="btn-subscribe font-barlow-cond font-bold uppercase text-white inline-flex items-center justify-center whitespace-nowrap disabled:opacity-60"
+                style={{ padding: "14px 32px", fontSize: "13px", letterSpacing: "0.15em" }}
+              >
+                {nlLoading ? "..." : "Subscribe"}
+              </button>
+            </div>
+            {nlStatus === "duplicate" && (
+              <p className="font-barlow mt-3" style={{ fontSize: "13px", color: "#6B6B6B" }}>You&apos;re already subscribed.</p>
+            )}
+            {nlStatus === "error" && (
+              <p className="font-barlow mt-3" style={{ fontSize: "13px", color: "#E53935" }}>Something went wrong. Please try again.</p>
+            )}
+          </>
+        )}
       </section>
 
       {/* ── FOOTER ────────────────────────────────────────────────────────── */}

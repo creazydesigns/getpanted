@@ -57,6 +57,7 @@ function ProductCard({ product }: { product: Product }) {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
+      <Link href={`/products/${product.id}`} className="block">
       <div className="relative overflow-hidden" style={{ aspectRatio: "3/4", background: "#F7F7F7" }}>
         {product.image && (
           <Image
@@ -126,6 +127,7 @@ function ProductCard({ product }: { product: Product }) {
         </div>
         <p className="font-barlow mt-1" style={{ fontSize: "14px", color: "#6B6B6B" }}>{product.price}</p>
       </div>
+      </Link>
     </div>
   );
 }

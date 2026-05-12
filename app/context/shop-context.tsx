@@ -1,11 +1,14 @@
 "use client";
 
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useContext, useMemo, useState } from "react";
+import { useCartStore, selectCartCount, selectCartSubtotal } from "../../store/cartStore";
+import type { CartItem as ZustandCartItem } from "../../store/cartStore";
 
+// ── Legacy types (kept for backward-compat with existing components) ───────────
 export interface ShopProduct {
   id: number;
   name: string;
-  price: string;
+  price: string;  // formatted e.g. "₦45,000"
   image?: string;
   size?: string;
 }
@@ -37,6 +40,35 @@ export interface ToastMessage {
   text: string;
 }
 
+// ── Helpers ────────────────────────────────────────────────────────────────────
+function parsePriceToNumber(price: string): number {
+  return Number(price.replace(/[^\d]/g, "") || 0);
+}
+
+function legacyToZustand(product: ShopProduct, quantity: number): ZustandCartItem {
+  return {
+    id: String(product.id),
+    name: product.name,
+    price: product.price,
+    priceRaw: parsePriceToNumber(product.price),
+    size: product.size ?? "",
+    quantity,
+    image: product.image,
+  };
+}
+
+function zustandToLegacy(item: ZustandCartItem): CartItem {
+  return {
+    id: Number(item.id) || 0,
+    name: item.name,
+    price: item.price,
+    image: item.image,
+    size: item.size || undefined,
+    quantity: item.quantity,
+  };
+}
+
+// ── Context ────────────────────────────────────────────────────────────────────
 interface ShopContextValue {
   cartItems: CartItem[];
   wishlistItems: ShopProduct[];
@@ -60,137 +92,89 @@ interface ShopContextValue {
 
 const ShopContext = createContext<ShopContextValue | null>(null);
 
-const CART_STORAGE_KEY = "getpanted_cart_v1";
 const WISHLIST_STORAGE_KEY = "getpanted_wishlist_v1";
-const ORDERS_STORAGE_KEY = "getpanted_orders_v1";
-
-function parsePriceToNumber(price: string): number {
-  const digits = price.replace(/[^\d]/g, "");
-  return Number(digits || 0);
-}
+const ORDERS_STORAGE_KEY   = "getpanted_orders_v1";
 
 export function ShopProvider({ children }: { children: React.ReactNode }) {
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
-  const [wishlistItems, setWishlistItems] = useState<ShopProduct[]>([]);
-  const [orders, setOrders] = useState<OrderRecord[]>([]);
+  // ── Zustand cart (source of truth for cart) ────────────────────────────────
+  const zustandItems   = useCartStore((s) => s.items);
+  const cartCount      = useCartStore(selectCartCount);
+  const cartSubtotal   = useCartStore(selectCartSubtotal);
+  const zustandAdd     = useCartStore((s) => s.addItem);
+  const zustandRemove  = useCartStore((s) => s.removeItem);
+  const zustandUpdate  = useCartStore((s) => s.updateQuantity);
+  const zustandClear   = useCartStore((s) => s.clearCart);
+  const miniCartOpen   = useCartStore((s) => s.isOpen);
+  const openMiniCart   = useCartStore((s) => s.openCart);
+  const closeMiniCart  = useCartStore((s) => s.closeCart);
+
+  // ── Local state (wishlist, toasts, orders) ─────────────────────────────────
+  const [wishlistItems, setWishlistItems] = useState<ShopProduct[]>(() => {
+    if (typeof window === "undefined") return [];
+    try { return JSON.parse(window.localStorage.getItem(WISHLIST_STORAGE_KEY) ?? "[]"); }
+    catch { return []; }
+  });
+
+  const [orders, setOrders] = useState<OrderRecord[]>(() => {
+    if (typeof window === "undefined") return [];
+    try { return JSON.parse(window.localStorage.getItem(ORDERS_STORAGE_KEY) ?? "[]"); }
+    catch { return []; }
+  });
+
   const [toasts, setToasts] = useState<ToastMessage[]>([]);
-  const [miniCartOpen, setMiniCartOpen] = useState(false);
 
   const showToast = (text: string) => {
-    const toastId = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
-    setToasts((prev) => [...prev, { id: toastId, text }]);
-    window.setTimeout(() => {
-      setToasts((prev) => prev.filter((toast) => toast.id !== toastId));
-    }, 2600);
+    const id = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+    setToasts((prev) => [...prev, { id, text }]);
+    setTimeout(() => setToasts((prev) => prev.filter((t) => t.id !== id)), 2600);
   };
 
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-
-    try {
-      const rawCart = window.localStorage.getItem(CART_STORAGE_KEY);
-      const rawWishlist = window.localStorage.getItem(WISHLIST_STORAGE_KEY);
-      const rawOrders = window.localStorage.getItem(ORDERS_STORAGE_KEY);
-
-      if (rawCart) {
-        setCartItems(JSON.parse(rawCart) as CartItem[]);
-      }
-
-      if (rawWishlist) {
-        setWishlistItems(JSON.parse(rawWishlist) as ShopProduct[]);
-      }
-
-      if (rawOrders) {
-        setOrders(JSON.parse(rawOrders) as OrderRecord[]);
-      }
-    } catch {
-      // Ignore corrupted localStorage payloads and keep defaults.
-    }
-  }, []);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    window.localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cartItems));
-  }, [cartItems]);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    window.localStorage.setItem(WISHLIST_STORAGE_KEY, JSON.stringify(wishlistItems));
-  }, [wishlistItems]);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    window.localStorage.setItem(ORDERS_STORAGE_KEY, JSON.stringify(orders));
-  }, [orders]);
+  // ── Cart adapters ──────────────────────────────────────────────────────────
+  const cartItems: CartItem[] = useMemo(() => zustandItems.map(zustandToLegacy), [zustandItems]);
 
   const addToCart = (product: ShopProduct, quantity = 1) => {
+    zustandAdd(legacyToZustand(product, quantity));
     showToast(`${product.name} added to cart`);
-    setCartItems((prev) => {
-      const existing = prev.find((item) => item.id === product.id && item.size === product.size);
-      if (existing) {
-        return prev.map((item) =>
-          item.id === product.id && item.size === product.size
-            ? { ...item, quantity: item.quantity + quantity }
-            : item
-        );
-      }
-
-      return [...prev, { ...product, quantity }];
-    });
   };
 
   const removeFromCart = (id: number, size?: string) => {
-    setCartItems((prev) => {
-      const removed = prev.find((item) => item.id === id && item.size === size);
-      if (removed) {
-        showToast(`${removed.name} removed from cart`);
-      }
-      return prev.filter((item) => !(item.id === id && item.size === size));
-    });
+    const found = zustandItems.find((i) => i.id === String(id) && i.size === (size ?? ""));
+    if (found) showToast(`${found.name} removed from cart`);
+    zustandRemove(String(id), size ?? "");
   };
 
   const updateCartQuantity = (id: number, quantity: number, size?: string) => {
-    if (quantity <= 0) {
-      removeFromCart(id, size);
-      return;
-    }
-
-    setCartItems((prev) =>
-      prev.map((item) =>
-        item.id === id && item.size === size ? { ...item, quantity } : item
-      )
-    );
+    zustandUpdate(String(id), size ?? "", quantity);
   };
 
-  const clearCart = () => setCartItems([]);
+  const clearCart = () => zustandClear();
 
-  const isWishlisted = (id: number) => wishlistItems.some((item) => item.id === id);
+  // ── Wishlist ───────────────────────────────────────────────────────────────
+  const isWishlisted = (id: number) => wishlistItems.some((i) => i.id === id);
 
   const toggleWishlist = (product: ShopProduct) => {
     setWishlistItems((prev) => {
-      if (prev.some((item) => item.id === product.id)) {
+      if (prev.some((i) => i.id === product.id)) {
         showToast(`${product.name} removed from wishlist`);
-        return prev.filter((item) => item.id !== product.id);
+        const next = prev.filter((i) => i.id !== product.id);
+        localStorage.setItem(WISHLIST_STORAGE_KEY, JSON.stringify(next));
+        return next;
       }
       showToast(`${product.name} added to wishlist`);
-      return [...prev, product];
+      const next = [...prev, product];
+      localStorage.setItem(WISHLIST_STORAGE_KEY, JSON.stringify(next));
+      return next;
     });
   };
 
-  const dismissToast = (id: string) => {
-    setToasts((prev) => prev.filter((toast) => toast.id !== id));
-  };
+  // ── Toasts ─────────────────────────────────────────────────────────────────
+  const dismissToast = (id: string) => setToasts((prev) => prev.filter((t) => t.id !== id));
 
-  const openMiniCart = () => setMiniCartOpen(true);
-  const closeMiniCart = () => setMiniCartOpen(false);
-
+  // ── Place order (local, legacy) ────────────────────────────────────────────
   const placeOrder = (customer: CheckoutDetails): OrderRecord => {
-    const subtotal = cartItems.reduce(
-      (sum, item) => sum + parsePriceToNumber(item.price) * item.quantity,
-      0
-    );
-    const shipping = subtotal > 0 ? 3500 : 0;
-    const total = subtotal + shipping;
+    const subtotal = cartSubtotal;
+    const shipping = subtotal > 50000 ? 0 : 3500;
+    const total    = subtotal + shipping;
     const order: OrderRecord = {
       id: `GP-${Date.now().toString().slice(-8)}`,
       items: cartItems,
@@ -200,30 +184,26 @@ export function ShopProvider({ children }: { children: React.ReactNode }) {
       customer,
       createdAt: new Date().toISOString(),
     };
-
-    setOrders((prev) => [order, ...prev]);
-    setCartItems([]);
-    setMiniCartOpen(false);
-    showToast(`Order ${order.id} placed successfully`);
+    setOrders((prev) => {
+      const next = [order, ...prev];
+      localStorage.setItem(ORDERS_STORAGE_KEY, JSON.stringify(next));
+      return next;
+    });
+    clearCart();
+    closeMiniCart();
+    showToast(`Order ${order.id} placed!`);
     return order;
   };
 
-  const value = useMemo<ShopContextValue>(() => {
-    const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
-    const wishlistCount = wishlistItems.length;
-    const cartSubtotal = cartItems.reduce(
-      (sum, item) => sum + parsePriceToNumber(item.price) * item.quantity,
-      0
-    );
-
-    return {
+  const value = useMemo<ShopContextValue>(
+    () => ({
       cartItems,
       wishlistItems,
       orders,
       toasts,
       miniCartOpen,
       cartCount,
-      wishlistCount,
+      wishlistCount: wishlistItems.length,
       cartSubtotal,
       addToCart,
       removeFromCart,
@@ -235,16 +215,16 @@ export function ShopProvider({ children }: { children: React.ReactNode }) {
       openMiniCart,
       closeMiniCart,
       placeOrder,
-    };
-  }, [cartItems, wishlistItems, orders, toasts, miniCartOpen]);
+    }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [cartItems, wishlistItems, orders, toasts, miniCartOpen, cartCount, cartSubtotal]
+  );
 
   return <ShopContext.Provider value={value}>{children}</ShopContext.Provider>;
 }
 
 export function useShop() {
   const ctx = useContext(ShopContext);
-  if (!ctx) {
-    throw new Error("useShop must be used within ShopProvider");
-  }
+  if (!ctx) throw new Error("useShop must be used within ShopProvider");
   return ctx;
 }

@@ -259,7 +259,29 @@ export default function BespokePage() {
   const scrollToForm = () => setTimeout(() => formTopRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 50);
   const nextStep = () => { if (step < 4) { setStep((s) => (s + 1) as Step); scrollToForm(); } };
   const prevStep = () => { if (step > 1) { setStep((s) => (s - 1) as Step); scrollToForm(); } };
-  const handleSubmit = () => { setSubmitted(true); window.scrollTo({ top: 0, behavior: "smooth" }); };
+  const handleSubmit = async () => {
+    try {
+      await fetch("/api/bespoke-order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          customerName:  `${form.firstName} ${form.lastName}`.trim(),
+          customerEmail: form.email,
+          customerPhone: form.phone,
+          silhouette:    form.silhouette,
+          waistStyle:    form.waistStyle,
+          pleatStyle:    form.pleatStyle,
+          fabric:        form.fabric,
+          color:         form.color,
+          measurements: { waist: form.waist, hips: form.hips, rise: form.rise, inseam: form.inseam, thigh: form.thigh },
+          timeline:      form.timeline,
+          notes:         form.notes || undefined,
+        }),
+      });
+    } catch { /* show confirmation regardless */ }
+    setSubmitted(true);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   const inputStyle = { border: "1px solid #E0E0E0", padding: "12px 16px", fontSize: "14px", color: "#1A1A1A", background: "#FFFFFF", width: "100%", outline: "none", fontFamily: "'Barlow', sans-serif" };
 

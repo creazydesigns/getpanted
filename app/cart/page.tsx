@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useShop } from "../context/shop-context";
 import { PageFooter } from "../components/page-footer";
@@ -57,9 +58,24 @@ export default function CartPage() {
                 {cartItems.map((item) => (
                   <div
                     key={`${item.id}-${item.size ?? "default"}`}
-                    className="flex items-center justify-between"
+                    className="flex items-center justify-between gap-4"
                     style={{ padding: "20px 24px", borderBottom: "1px solid #F0F0F0" }}
                   >
+                    {/* Product image */}
+                    <div className="shrink-0" style={{ background: "#F7F7F7" }}>
+                      {item.image ? (
+                        <Image
+                          src={item.image}
+                          alt={item.name}
+                          width={80}
+                          height={100}
+                          className="object-cover object-top"
+                        />
+                      ) : (
+                        <div style={{ width: 80, height: 100, background: "#F0F0F0" }} />
+                      )}
+                    </div>
+
                     <div className="flex-1">
                       <p className="font-barlow-cond font-bold uppercase" style={{ fontSize: "14px", color: "#1A1A1A" }}>{item.name}</p>
                       <p className="font-barlow mt-1" style={{ fontSize: "13px", color: "#6B6B6B" }}>

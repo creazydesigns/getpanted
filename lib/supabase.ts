@@ -1,15 +1,25 @@
 import { createClient } from "@supabase/supabase-js";
 
-const supabaseUrl  = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseAnon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+const supabaseUrl  = process.env.NEXT_PUBLIC_SUPABASE_URL  ?? "";
+const supabaseAnon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? "";
 const supabaseServiceRole = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
+if (!supabaseUrl || !supabaseAnon) {
+  // Warn at runtime; build will still succeed without env vars set.
+  if (typeof window !== "undefined") {
+    console.warn("[supabase] NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY is not set.");
+  }
+}
+
 // Public client — safe to use in browser / Server Components
-export const supabase = createClient(supabaseUrl, supabaseAnon);
+export const supabase = createClient(
+  supabaseUrl  || "https://placeholder.supabase.co",
+  supabaseAnon || "placeholder-anon-key"
+);
 
 // Admin client — server-side only (API routes, Server Actions)
 export const supabaseAdmin = supabaseServiceRole
-  ? createClient(supabaseUrl, supabaseServiceRole, {
+  ? createClient(supabaseUrl || "https://placeholder.supabase.co", supabaseServiceRole, {
       auth: { autoRefreshToken: false, persistSession: false },
     })
   : supabase;

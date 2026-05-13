@@ -87,19 +87,17 @@ create policy "bespoke_service_insert"        on bespoke_orders      for insert 
 create policy "newsletter_service_all"        on newsletter_subscribers for all using (true);
 create policy "cart_items_session_all"        on cart_items          for all using (true);
 
--- ── Seed: sample products ─────────────────────────────────────────────────────
-insert into products (name, price, category, badge, sizes, colors, image, in_stock)
-values
-  ('Royal Pleat',      45000, 'solid', 'Bestseller', array['XS','S','M','L','XL','2XL'],      array['#6B2D8B'],           '/images/gp-royal-pleat.png',      true),
-  ('Onyx Statement',   38000, 'solid', 'New',        array['XS','S','M','L','XL','2XL','3XL'],array['#1a1a1a'],           '/images/gp-onyx-statement.png',   true),
-  ('Ivory Sovereign',  42000, 'solid', 'New',        array['S','M','L','XL'],                  array['#E8E8E8'],           '/images/gp-ivory-sovereign.png',  true),
-  ('Sahara Wide',      36000, 'solid', 'New',        array['XS','S','M','L','XL','2XL'],      array['#c4a882'],           '/images/gp-sahara-wide.png',      true),
-  ('Petal Pleat',      40000, 'solid', 'New',        array['XS','S','M','L','XL','2XL'],      array['#f4a7b9'],           '/images/gp-petal-pleat.png',      true),
-  ('Eden Wide',        40000, 'solid', 'New',        array['S','M','L','XL','2XL'],            array['#4CAF50'],           '/images/gp-eden-wide.png',        true),
-  ('Solar Statement',  38000, 'solid', 'New',        array['XS','S','M','L','XL'],             array['#FFC107'],           '/images/gp-solar-statement.png',  true),
-  ('Nude Palazzo',     44000, 'solid', null,         array['S','M','L','XL','2XL'],            array['#d4b896'],           '/images/gp-nude-palazzo.png',     true),
-  ('Cacao Wide',       44000, 'solid', null,         array['XS','S','M','L','XL'],             array['#3E1C0D'],           '/images/gp-cacao-wide.png',       true),
-  ('Blush Ultra Wide', 41000, 'solid', 'New',        array['XS','S','M','L','XL','2XL'],      array['#f2b8c6'],           '/images/gp-blush-ultra-wide.png', true),
-  ('Lemon Luxe',       39000, 'solid', 'New',        array['S','M','L','XL','2XL'],            array['#f5e642'],           '/images/gp-lemon-luxe.png',       true),
-  ('Peach Sovereign',  43000, 'solid', 'New',        array['XS','S','M','L','XL'],             array['#f4a07a'],           '/images/gp-peach-sovereign.png',  true)
-on conflict do nothing;
+-- ── Seed: products ───────────────────────────────────────────────────────────
+INSERT INTO products (id, name, price, category, badge, sizes, colors, image, in_stock) VALUES
+(gen_random_uuid(), 'The Royal Pleat',   45000, 'solid', 'Bestseller', ARRAY['XS','S','M','L','XL','2XL'],       ARRAY['#6B2D8B'], '/images/gp-royal-pleat.png',      true),
+(gen_random_uuid(), 'Onyx Statement',    38000, 'solid', 'New',        ARRAY['XS','S','M','L','XL','2XL','3XL'], ARRAY['#1a1a1a'], '/images/gp-onyx-statement.png',   true),
+(gen_random_uuid(), 'Ivory Sovereign',   42000, 'solid', 'New',        ARRAY['S','M','L','XL'],                  ARRAY['#f5f0e8'], '/images/gp-ivory-sovereign.png',  true),
+(gen_random_uuid(), 'Sahara Wide',       36000, 'solid', 'New',        ARRAY['XS','S','M','L','XL','2XL'],       ARRAY['#c4a882'], '/images/gp-sahara-wide.png',      true),
+(gen_random_uuid(), 'Petal Pleat',       40000, 'solid', 'New',        ARRAY['XS','S','M','L','XL','2XL'],       ARRAY['#f4a7b9'], '/images/gp-petal-pleat.png',      true),
+(gen_random_uuid(), 'Eden Wide',         40000, 'solid', 'New',        ARRAY['S','M','L','XL','2XL'],            ARRAY['#4CAF50'], '/images/gp-eden-wide.png',        true),
+(gen_random_uuid(), 'Solar Statement',   38000, 'solid', 'New',        ARRAY['XS','S','M','L','XL'],             ARRAY['#FFC107'], '/images/gp-solar-statement.png',  true),
+(gen_random_uuid(), 'Nude Palazzo',      44000, 'solid', NULL,         ARRAY['S','M','L','XL','2XL'],            ARRAY['#d4b896'], '/images/gp-nude-palazzo.png',     true),
+(gen_random_uuid(), 'Cacao Wide',        44000, 'solid', NULL,         ARRAY['XS','S','M','L','XL'],             ARRAY['#3E1C0D'], '/images/gp-cacao-wide.png',       true),
+(gen_random_uuid(), 'Blush Ultra Wide',  46000, 'solid', 'New',        ARRAY['S','M','L','XL','2XL','3XL'],      ARRAY['#E8A0A0'], '/images/gp-blush-ultra-wide.png', true),
+(gen_random_uuid(), 'Peach Sovereign',   42000, 'solid', NULL,         ARRAY['XS','S','M','L','XL'],             ARRAY['#FFAB76'], '/images/gp-peach-sovereign.png',  true),
+(gen_random_uuid(), 'Lemon Luxe',        40000, 'solid', 'New',        ARRAY['S','M','L','XL','2XL'],            ARRAY['#F9F06B'], '/images/gp-lemon-luxe.png',       true);

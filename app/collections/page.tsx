@@ -29,18 +29,18 @@ const FILTERS: { key: FilterKey; label: string }[] = [
 const SORT_OPTIONS = ["Featured", "Newest First", "Price: Low to High", "Price: High to Low"];
 
 const PRODUCTS: Product[] = [
-  { id: 1,  name: "Royal Pleat",       price: "₦45,000", image: "/images/gp-royal-pleat.png",       category: ["solid"],       colors: ["#6B2D8B"],  badge: "Bestseller", sizes: ["XS","S","M","L","XL","2XL"] },
-  { id: 2,  name: "Onyx Statement",    price: "₦38,000", image: "/images/gp-onyx-statement.png",    category: ["solid","new"], colors: ["#1a1a1a"],  badge: "New",        sizes: ["XS","S","M","L","XL","2XL","3XL"] },
-  { id: 3,  name: "Ivory Sovereign",   price: "₦42,000", image: "/images/gp-ivory-sovereign.png",   category: ["solid","new"], colors: ["#E8E8E8"],  badge: "New",        sizes: ["S","M","L","XL"] },
-  { id: 4,  name: "Sahara Wide",       price: "₦36,000", image: "/images/gp-sahara-wide.png",       category: ["solid","new"], colors: ["#c4a882"],  badge: "New",        sizes: ["XS","S","M","L","XL","2XL"] },
-  { id: 5,  name: "Petal Pleat",       price: "₦40,000", image: "/images/gp-petal-pleat.png",       category: ["solid","new"], colors: ["#f4a7b9"],  badge: "New",        sizes: ["XS","S","M","L","XL","2XL"] },
-  { id: 6,  name: "Eden Wide",         price: "₦40,000", image: "/images/gp-eden-wide.png",         category: ["solid","new"], colors: ["#4CAF50"],  badge: "New",        sizes: ["S","M","L","XL","2XL"] },
-  { id: 7,  name: "Solar Statement",   price: "₦38,000", image: "/images/gp-solar-statement.png",   category: ["solid","new"], colors: ["#FFC107"],  badge: "New",        sizes: ["XS","S","M","L","XL"] },
-  { id: 8,  name: "Nude Palazzo",      price: "₦44,000", image: "/images/gp-nude-palazzo.png",      category: ["solid"],       colors: ["#d4b896"],  sizes: ["S","M","L","XL","2XL"] },
-  { id: 9,  name: "Cacao Wide",        price: "₦44,000", image: "/images/gp-cacao-wide.png",        category: ["solid"],       colors: ["#3E1C0D"],  sizes: ["XS","S","M","L","XL"] },
-  { id: 10, name: "Blush Ultra Wide",  price: "₦41,000", image: "/images/gp-blush-ultra-wide.png",  category: ["solid","new"], colors: ["#f2b8c6"],  badge: "New",        sizes: ["XS","S","M","L","XL","2XL"] },
-  { id: 11, name: "Lemon Luxe",        price: "₦39,000", image: "/images/gp-lemon-luxe.png",        category: ["solid","new"], colors: ["#f5e642"],  badge: "New",        sizes: ["S","M","L","XL","2XL"] },
-  { id: 12, name: "Peach Sovereign",   price: "₦43,000", image: "/images/gp-peach-sovereign.png",   category: ["solid","new"], colors: ["#f4a07a"],  badge: "New",        sizes: ["XS","S","M","L","XL"] },
+  { id: 1,  name: "The Royal Pleat",  price: "₦45,000", image: "/images/gp-royal-pleat.png",       category: ["solid"],       colors: ["#6B2D8B"], badge: "Bestseller", sizes: ["XS","S","M","L","XL","2XL"] },
+  { id: 2,  name: "Onyx Statement",   price: "₦38,000", image: "/images/gp-onyx-statement.png",    category: ["solid","new"], colors: ["#1a1a1a"], badge: "New",        sizes: ["XS","S","M","L","XL","2XL","3XL"] },
+  { id: 3,  name: "Ivory Sovereign",  price: "₦42,000", image: "/images/gp-ivory-sovereign.png",   category: ["solid","new"], colors: ["#f5f0e8"], badge: "New",        sizes: ["S","M","L","XL"] },
+  { id: 4,  name: "Sahara Wide",      price: "₦36,000", image: "/images/gp-sahara-wide.png",       category: ["solid","new"], colors: ["#c4a882"], badge: "New",        sizes: ["XS","S","M","L","XL","2XL"] },
+  { id: 5,  name: "Petal Pleat",      price: "₦40,000", image: "/images/gp-petal-pleat.png",       category: ["solid","new"], colors: ["#f4a7b9"], badge: "New",        sizes: ["XS","S","M","L","XL","2XL"] },
+  { id: 6,  name: "Eden Wide",        price: "₦40,000", image: "/images/gp-eden-wide.png",         category: ["solid","new"], colors: ["#4CAF50"], badge: "New",        sizes: ["S","M","L","XL","2XL"] },
+  { id: 7,  name: "Solar Statement",  price: "₦38,000", image: "/images/gp-solar-statement.png",   category: ["solid","new"], colors: ["#FFC107"], badge: "New",        sizes: ["XS","S","M","L","XL"] },
+  { id: 8,  name: "Nude Palazzo",     price: "₦44,000", image: "/images/gp-nude-palazzo.png",      category: ["solid"],       colors: ["#d4b896"],                      sizes: ["S","M","L","XL","2XL"] },
+  { id: 9,  name: "Cacao Wide",       price: "₦44,000", image: "/images/gp-cacao-wide.png",        category: ["solid"],       colors: ["#3E1C0D"],                      sizes: ["XS","S","M","L","XL"] },
+  { id: 10, name: "Blush Ultra Wide", price: "₦46,000", image: "/images/gp-blush-ultra-wide.png",  category: ["solid","new"], colors: ["#E8A0A0"], badge: "New",        sizes: ["S","M","L","XL","2XL","3XL"] },
+  { id: 11, name: "Peach Sovereign",  price: "₦42,000", image: "/images/gp-peach-sovereign.png",   category: ["solid","new"], colors: ["#FFAB76"],                      sizes: ["XS","S","M","L","XL"] },
+  { id: 12, name: "Lemon Luxe",       price: "₦40,000", image: "/images/gp-lemon-luxe.png",        category: ["solid","new"], colors: ["#F9F06B"], badge: "New",        sizes: ["S","M","L","XL","2XL"] },
 ];
 
 // ── Product Card ──────────────────────────────────────────────────────────────

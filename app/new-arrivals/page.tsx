@@ -46,12 +46,12 @@ export default function NewArrivalsPage() {
       <section className="px-5 md:px-12 pt-28 pb-14" style={{ background: "#FFFFFF", borderBottom: "1px solid #F0F0F0" }}>
         <div className="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-[1.1fr_0.9fr] gap-10 items-end">
           <div>
-            <p className="font-barlow-cond font-bold uppercase mb-4" style={{ fontSize: "11px", letterSpacing: "0.25em", color: "#5C2D8F" }}>Fresh Drop</p>
+            <p className="font-barlow-cond font-bold uppercase mb-4" style={{ fontSize: "11px", letterSpacing: "0.25em", color: "#5C2D8F" }}>New Arrivals</p>
             <h1 style={{ fontSize: "clamp(48px, 7vw, 88px)", fontWeight: 600, lineHeight: 0.95, color: "#1A1A1A" }}>
-              New Arrivals
+              The Latest from GetPanted
             </h1>
-            <p className="font-barlow mt-5" style={{ fontSize: "15px", color: "#6B6B6B", maxWidth: "440px", lineHeight: 1.7 }}>
-              This week's latest silhouettes — tailored for movement and statement. Built in Lagos with premium fabrics and signature wide-leg confidence.
+            <p className="font-barlow mt-5" style={{ fontSize: "15px", color: "#6B6B6B", maxWidth: "480px", lineHeight: 1.7 }}>
+              Fresh silhouettes, limited pieces, and elevated trousers designed to move with you.
             </p>
           </div>
           {/* Filter chips */}
@@ -154,14 +154,14 @@ export default function NewArrivalsPage() {
 
       {/* ── CTA ────────────────────────────────────────────────────────────── */}
       <section className="px-5 md:px-12 py-20 text-center" style={{ background: "#F7F7F7", borderTop: "1px solid #F0F0F0" }}>
-        <p className="font-barlow-cond font-bold uppercase mb-4" style={{ fontSize: "11px", letterSpacing: "0.25em", color: "#5C2D8F" }}>Don't See Your Size?</p>
-        <h2 className="mx-auto mb-6" style={{ fontSize: "clamp(28px, 3vw, 44px)", color: "#1A1A1A", maxWidth: "420px" }}>We Make It to Measure.</h2>
+        <p className="font-barlow-cond font-bold uppercase mb-4" style={{ fontSize: "11px", letterSpacing: "0.25em", color: "#5C2D8F" }}>Sold Out in Your Size?</p>
+        <h2 className="mx-auto mb-6" style={{ fontSize: "clamp(28px, 3vw, 44px)", color: "#1A1A1A", maxWidth: "480px" }}>Request made to order.</h2>
         <Link
-          href="/bespoke"
+          href="/made-to-order"
           className="font-barlow-cond font-bold uppercase text-white inline-block transition-opacity hover:opacity-80"
           style={{ fontSize: "13px", letterSpacing: "0.15em", padding: "16px 48px", background: "#5C2D8F" }}
         >
-          Book Bespoke
+          Made to Order
         </Link>
       </section>
 

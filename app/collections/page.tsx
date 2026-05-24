@@ -175,13 +175,42 @@ export default function CollectionsPage() {
             <span>/</span>
             <span style={{ color: "#1A1A1A" }}>Collections</span>
           </div>
-          <p className="font-barlow-cond font-bold uppercase mb-4" style={{ fontSize: "11px", letterSpacing: "0.25em", color: "#5C2D8F" }}>SS 2026</p>
+          <p className="font-barlow-cond font-bold uppercase mb-4" style={{ fontSize: "11px", letterSpacing: "0.25em", color: "#5C2D8F" }}>Collections</p>
           <h1 style={{ fontSize: "clamp(48px, 7vw, 88px)", fontWeight: 600, lineHeight: 0.95, color: "#1A1A1A" }}>
             All Collections
           </h1>
-          <p className="font-barlow mt-5" style={{ fontSize: "15px", color: "#6B6B6B", maxWidth: "440px", lineHeight: 1.7 }}>
-            Every trouser in our range. Filter by style and find the pair that becomes your signature.
+          <p className="font-barlow mt-5" style={{ fontSize: "15px", color: "#6B6B6B", maxWidth: "480px", lineHeight: 1.7 }}>
+            Every drop and every silhouette. PRESENCE is our debut collection — explore elevated trousers designed for intentional dressing.
           </p>
+        </div>
+      </section>
+
+      {/* ── PRESENCE COLLECTION INTRO ──────────────────────────────────────── */}
+      <section className="px-5 md:px-12 py-16 md:py-20" style={{ background: "#F7F7F7", borderBottom: "1px solid #F0F0F0" }}>
+        <div className="max-w-[1400px] mx-auto">
+          <p className="font-barlow-cond font-bold uppercase mb-4" style={{ fontSize: "11px", letterSpacing: "0.25em", color: "#5C2D8F" }}>
+            Introducing Our First Drop
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-[1fr_1.2fr] gap-10 md:gap-16 items-end">
+            <div>
+              <h2 className="font-barlow-cond font-bold mb-6" style={{ fontSize: "clamp(48px, 6vw, 88px)", lineHeight: 0.95, color: "#1A1A1A" }}>
+                PRESENCE
+              </h2>
+              <p className="font-barlow mb-8" style={{ fontSize: "16px", color: "#6B6B6B", lineHeight: 1.8, maxWidth: "480px" }}>
+                PRESENCE is our debut collection — the first expression of the GetPanted woman. Designed with clean silhouettes, intentional fit, and a refined balance of minimal and bold details, PRESENCE introduces what we believe pants can be: flattering, confident, expressive, and easy to style.
+              </p>
+              <Link
+                href="/collections"
+                className="font-barlow-cond font-bold uppercase text-white inline-block transition-opacity hover:opacity-80"
+                style={{ fontSize: "13px", letterSpacing: "0.15em", padding: "16px 48px", background: "#5C2D8F" }}
+              >
+                Shop PRESENCE
+              </Link>
+            </div>
+            <p className="font-barlow md:text-right" style={{ fontSize: "14px", color: "#6B6B6B", lineHeight: 1.7 }}>
+              The debut drop. Not the whole brand — the first chapter.
+            </p>
+          </div>
         </div>
       </section>
 
@@ -283,19 +312,19 @@ export default function CollectionsPage() {
       <section className="px-5 md:px-12 py-20" style={{ background: "#F7F7F7", borderTop: "1px solid #F0F0F0" }}>
         <div className="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <div>
-            <p className="font-barlow-cond font-bold uppercase mb-4" style={{ fontSize: "11px", letterSpacing: "0.25em", color: "#5C2D8F" }}>Custom Tailoring</p>
+            <p className="font-barlow-cond font-bold uppercase mb-4" style={{ fontSize: "11px", letterSpacing: "0.25em", color: "#5C2D8F" }}>Made to Order</p>
             <h2 style={{ fontSize: "clamp(28px, 3vw, 44px)", color: "#1A1A1A", marginBottom: "16px" }}>
-              Don't See Your Size? We'll Make It.
+              Missed your size? We can make it again.
             </h2>
             <p className="font-barlow mb-8" style={{ fontSize: "15px", color: "#6B6B6B", lineHeight: 1.8, maxWidth: "420px" }}>
-              Every body is different. Our custom tailoring creates trousers built exactly to your measurements — same premium fabrics, zero compromise.
+              Selected sold-out pieces may be available through made-to-order. We confirm availability, price, and production timeline before your piece goes into production.
             </p>
             <Link
-              href="/bespoke"
+              href="/made-to-order"
               className="font-barlow-cond font-bold uppercase text-white inline-block transition-opacity hover:opacity-80"
               style={{ fontSize: "13px", letterSpacing: "0.15em", padding: "16px 48px", background: "#5C2D8F" }}
             >
-              Start Custom Order
+              Request Made to Order
             </Link>
           </div>
           <div className="flex items-center justify-center" style={{ aspectRatio: "4/3", background: "#FFFFFF", borderTop: "4px solid #5C2D8F" }}>

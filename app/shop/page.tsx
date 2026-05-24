@@ -4,9 +4,9 @@ import Link from "next/link";
 import { PageFooter } from "../components/page-footer";
 
 const ENTRIES = [
-  { title: "New Arrivals",  subtitle: "Fresh drops every week",       href: "/new-arrivals", icon: "→" },
-  { title: "Collections",  subtitle: "Shop every line and filter",    href: "/collections",  icon: "→" },
-  { title: "Bespoke",      subtitle: "Made-to-measure in Lagos",      href: "/bespoke",      icon: "→" },
+  { title: "New Arrivals",  subtitle: "The latest from GetPanted",     href: "/new-arrivals", icon: "→" },
+  { title: "Collections",  subtitle: "All drops including PRESENCE",  href: "/collections",  icon: "→" },
+  { title: "Made to Order", subtitle: "Request sold-out pieces again", href: "/made-to-order", icon: "→" },
 ];
 
 export default function ShopPage() {
@@ -21,7 +21,7 @@ export default function ShopPage() {
             Find Your Signature Pair
           </h1>
           <p className="font-barlow mt-5" style={{ fontSize: "15px", color: "#6B6B6B", maxWidth: "480px", lineHeight: 1.7 }}>
-            Browse new drops, full collections, or go bespoke. Everything ships from Lagos with the same wide-leg confidence.
+            Browse new arrivals, explore collections, or request a sold-out piece through made to order.
           </p>
         </div>
       </section>
@@ -66,9 +66,9 @@ export default function ShopPage() {
           <div className="flex flex-wrap gap-3 pt-8" style={{ borderTop: "1px solid #F0F0F0" }}>
             {[
               { label: "About GetPanted", href: "/about" },
-              { label: "Size Guide",      href: "/bespoke" },
-              { label: "Care Guide",      href: "/about" },
-              { label: "Contact Us",      href: "/about" },
+              { label: "Size Guide",      href: "/size-guide" },
+              { label: "Contact Us",      href: "/contact" },
+              { label: "Made to Order",   href: "/made-to-order" },
             ].map((link) => (
               <Link
                 key={link.href + link.label}

@@ -9,7 +9,8 @@ const NAV_LINKS = [
   { label: "About",        href: "/about" },
   { label: "New Arrivals", href: "/new-arrivals" },
   { label: "Collections",  href: "/collections" },
-  { label: "Bespoke",      href: "/bespoke" },
+  { label: "Made to Order", href: "/made-to-order" },
+  { label: "Contact",      href: "/contact" },
 ];
 
 export function Navbar() {

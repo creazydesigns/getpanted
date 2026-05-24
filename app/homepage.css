@@ -56,17 +56,17 @@
 
 /* ── Hero headline — responsive font size & wrapping ─────────────────────── */
 .hero-headline {
-  font-size: clamp(40px, 13vw, 106px);
+  font-size: clamp(36px, 10vw, 88px);
   font-weight: 600;
   letter-spacing: -0.01em;
-  line-height: 0.95;
+  line-height: 0.98;
   color: #1A1A1A;
   white-space: normal;
 }
 @media (min-width: 768px) {
   .hero-headline {
-    font-size: clamp(64px, 7.2vw, 106px);
-    white-space: nowrap;
+    font-size: clamp(48px, 5.5vw, 88px);
+    white-space: normal;
   }
 }
 

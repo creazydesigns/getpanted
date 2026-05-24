@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "GetPanted — High-waisted, wide-leg pants for female professionals, entrepreneurs, leaders and all the power women in Nigeria",
-  description: "High-waisted, wide-leg pants for female professionals, entrepreneurs, leaders and all the power women in Nigeria",
+  title: "GetPanted — Elevated trousers for women who dress with intention",
+  description: "A Lagos-born women's pants lifestyle brand creating elevated trousers for modern women who want comfort, confidence, and style in one piece.",
 };
 
 export default function RootLayout({

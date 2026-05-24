@@ -6,6 +6,7 @@ import Link from "next/link";
 import "./homepage.css";
 import { useShop } from "./context/shop-context";
 import { useScrollReveal } from "./hooks/use-scroll-reveal";
+import { PageFooter } from "./components/page-footer";
 
 // ── Types ────────────────────────────────────────────────────────────────────
 interface Product {
@@ -32,39 +33,11 @@ const PRODUCTS: Product[] = [
 ];
 
 const CATEGORIES: Category[] = [
-  { name: "Solid Luxe", count: "24 styles", image: "/images/solid-luxe.png" },
-  {
-    name: "Printed",
-    count: "18 styles",
-    image: "https://images.unsplash.com/photo-1760031033670-e062ac87aac9?w=700&auto=format&fit=crop&q=80",
-  },
-  {
-    name: "Coord Sets",
-    count: "12 styles",
-    image: "https://images.unsplash.com/photo-1600713392444-db5a5bc85ef5?w=700&auto=format&fit=crop&q=80",
-  },
+  { name: "Minimal Essentials", count: "Clean everyday trousers", image: "/images/solid-luxe.png" },
+  { name: "Statement Pants",    count: "Bold silhouettes",        image: "/images/gp-onyx-statement.png" },
+  { name: "Workwear Trousers",  count: "Polished & professional", image: "/images/gp-ivory-sovereign.png" },
+  { name: "Two-Tone Edits",     count: "Intentional colour pairings", image: "/images/gp-sahara-wide.png" },
 ];
-
-const MARQUEE_TEXT =
-  "WIDE-LEG PERFECTION · LAGOS-MADE LUXURY · DRESS THE POWER · OWN THE ROOM · HIGH-WAISTED SILHOUETTES · ";
-
-const FOOTER_LINKS: Record<string, string> = {
-  "New Arrivals":       "/new-arrivals",
-  Bestsellers:          "/collections",
-  "Solid Luxe":         "/collections",
-  Printed:              "/collections",
-  "Coord Sets":         "/collections",
-  Sale:                 "/collections",
-  "About GetPanted":    "/about",
-  Sustainability:       "/about",
-  "Size Guide":         "/bespoke",
-  "Care Instructions":  "/about",
-  FAQs:                 "/bespoke",
-  "Shipping & Returns": "/checkout",
-  "Track Order":        "/checkout",
-  "Contact Us":         "/about",
-  Wholesale:            "/about",
-};
 
 // ── Product Card ──────────────────────────────────────────────────────────────
 function ProductCard({ product, delay = 0 }: { product: Product; delay?: number }) {
@@ -256,21 +229,34 @@ export default function HomePage() {
               paddingRight: "clamp(16px, 2vw, 40px)",
             }}
           >
+            <p
+              className="font-barlow-cond font-bold uppercase animate-fade-up mb-4"
+              style={{ fontSize: "11px", letterSpacing: "0.25em", color: "#5C2D8F" }}
+            >
+              GetPanted
+            </p>
             <h1 className="hero-headline font-barlow-cond uppercase animate-fade-up">
-              <span style={{ display: "block" }}>DRESS THE POWER</span>
-              <span style={{ display: "block" }}>OWN THE ROOM.</span>
+              <span style={{ display: "block" }}>PANTS FOR WOMEN</span>
+              <span style={{ display: "block" }}>WHO SHOW UP</span>
+              <span style={{ display: "block" }}>INTENTIONALLY.</span>
             </h1>
+            <p
+              className="font-barlow animate-fade-up animation-delay-100"
+              style={{ fontSize: "16px", color: "#6B6B6B", lineHeight: 1.75, maxWidth: "480px", marginTop: "24px" }}
+            >
+              Elevated trousers made for confidence, comfort, and style — from clean everyday silhouettes to bold statement pieces.
+            </p>
 
             <div
-              className="flex flex-wrap items-center animate-fade-up animation-delay-100"
+              className="flex flex-wrap items-center animate-fade-up animation-delay-200"
               style={{ gap: "12px", marginTop: "32px" }}
             >
               <Link
-                href="/collections"
+                href="/new-arrivals"
                 className="btn-hero-primary font-barlow-cond uppercase inline-block text-white"
                 style={{ fontWeight: 600, letterSpacing: "0.12em", background: "#8B52CC" }}
               >
-                SHOP NOW
+                Shop New Arrivals
               </Link>
               <Link
                 href="/collections"
@@ -283,7 +269,7 @@ export default function HomePage() {
                   background: "transparent",
                 }}
               >
-                VIEW COLLECTIONS
+                View Collections
               </Link>
             </div>
           </div>
@@ -328,11 +314,14 @@ export default function HomePage() {
                 color: "#1A1A1A",
               }}
             >
-              The Latest
+              The Latest from GetPanted
             </h2>
+            <p className="font-barlow mt-3" style={{ fontSize: "15px", color: "#6B6B6B", maxWidth: "420px", lineHeight: 1.7 }}>
+              Fresh silhouettes, limited pieces, and elevated trousers designed to move with you.
+            </p>
           </div>
           <Link
-            href="/collections"
+            href="/new-arrivals"
             className="font-barlow-cond font-bold uppercase transition-opacity duration-200 hover:opacity-60"
             style={{
               fontSize: "13px",
@@ -382,7 +371,7 @@ export default function HomePage() {
                 color: "#1A1A1A",
               }}
             >
-              Trousers that tell<br />your story.
+              Designed for the way<br />you enter a room.
             </h2>
             <p
               className="font-barlow leading-[1.8] max-w-[420px]"
@@ -392,9 +381,17 @@ export default function HomePage() {
                 marginTop: "24px",
               }}
             >
-              Born in Lagos, GetPanted is a celebration of the bold African woman.
-              Each trouser is designed with generous proportions, impeccable tailoring,
-              and the unapologetic confidence you deserve.
+              Born in Lagos, GetPanted is a women&apos;s pants lifestyle brand built around confidence, fit, and intentional style.
+            </p>
+            <p
+              className="font-barlow leading-[1.8] max-w-[420px]"
+              style={{
+                fontSize: "16px",
+                color: "#6B6B6B",
+                marginTop: "16px",
+              }}
+            >
+              We create elevated trousers that move with real women — from clean everyday silhouettes to bold statement pieces, each pair is made to feel flattering, refined, and never ordinary.
             </p>
             <Link
               href="/about"
@@ -425,6 +422,51 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ── PRESENCE COLLECTION ───────────────────────────────────────────── */}
+      <section
+        className="px-5 md:px-12 py-16 md:py-24"
+        style={{ background: "#F7F7F7", borderTop: "1px solid #F0F0F0" }}
+      >
+        <div className="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-[45%_55%] gap-12 md:gap-20 items-center">
+          <div data-reveal="left">
+            <p
+              className="font-barlow-cond font-bold uppercase"
+              style={{ fontSize: "11px", letterSpacing: "0.25em", color: "#5C2D8F", marginBottom: "24px" }}
+            >
+              Introducing Our First Drop
+            </p>
+            <h2
+              className="font-barlow-cond font-bold leading-[1]"
+              style={{ fontSize: "clamp(48px, 6vw, 80px)", color: "#1A1A1A", marginBottom: "24px" }}
+            >
+              PRESENCE
+            </h2>
+            <p className="font-barlow leading-[1.8]" style={{ fontSize: "16px", color: "#6B6B6B", maxWidth: "440px" }}>
+              PRESENCE is our debut collection — the first expression of the GetPanted woman. Designed with clean silhouettes, intentional fit, and a refined balance of minimal and bold details, PRESENCE introduces what we believe pants can be: flattering, confident, expressive, and easy to style.
+            </p>
+            <Link
+              href="/collections"
+              className="font-barlow-cond font-bold uppercase inline-block transition-opacity duration-200 hover:opacity-60"
+              style={{ fontSize: "13px", letterSpacing: "0.15em", color: "#5C2D8F", marginTop: "32px" }}
+            >
+              Shop PRESENCE →
+            </Link>
+          </div>
+          <div
+            data-reveal="right"
+            className="relative w-full overflow-hidden"
+            style={{ aspectRatio: "4/5" }}
+          >
+            <Image
+              src="/images/gp-lady-white.png"
+              alt="PRESENCE collection"
+              fill
+              className="object-contain object-bottom"
+            />
+          </div>
+        </div>
+      </section>
+
       {/* ── SHOP BY STYLE ─────────────────────────────────────────────────── */}
       <section className="px-5 md:px-12 pb-16 md:pb-24" style={{ background: "#FFFFFF" }}>
         <p
@@ -437,7 +479,7 @@ export default function HomePage() {
         >
           SHOP BY STYLE
         </p>
-        <div className="grid grid-cols-1 md:grid-cols-3" style={{ gap: "2px" }}>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4" style={{ gap: "2px" }}>
           {CATEGORIES.map((cat) => (
             <CategoryTile key={cat.name} cat={cat} />
           ))}
@@ -448,10 +490,10 @@ export default function HomePage() {
       <div className="px-5 md:px-12 py-12" style={{ background: "#F7F7F7" }}>
         <div className="grid grid-cols-2 md:grid-cols-4" style={{ gap: "2px" }}>
           {[
-            { title: "Free Shipping",    body: "On all orders above ₦30,000" },
-            { title: "Custom Tailoring", body: "Made to your exact measurements" },
-            { title: "Easy Returns",     body: "14-day no-hassle return policy" },
-            { title: "Quality Assured",  body: "Premium fabrics, lasting wear" },
+            { title: "Intentional Fit", body: "Designed with attention to waist, hip, length, and movement." },
+            { title: "Limited Pieces", body: "Produced in thoughtful quantities to protect quality and reduce waste." },
+            { title: "Made to Order Option", body: "Sold-out pieces may be requested again and produced within the stated timeline." },
+            { title: "Quality Checked", body: "Every piece is reviewed before it is packaged and dispatched." },
           ].map((item, i) => (
             <div
               key={i}
@@ -482,7 +524,7 @@ export default function HomePage() {
           className="font-barlow-cond font-bold uppercase"
           style={{ fontSize: "11px", letterSpacing: "0.25em", color: "#5C2D8F" }}
         >
-          JOIN THE CLAN
+          JOIN THE LIST
         </p>
         <h2
           className="font-barlow-cond font-bold mt-4 mb-3"
@@ -497,8 +539,7 @@ export default function HomePage() {
           className="font-barlow leading-relaxed mt-3 mb-8 max-w-lg mx-auto"
           style={{ fontSize: "16px", color: "#6B6B6B" }}
         >
-          Be the first to know about new collections, exclusive launches, and styling
-          tips from the GetPanted team.
+          Be the first to know when new GetPanted pieces, limited drops, size restocks, and styling notes go live.
         </p>
         {nlStatus === "success" ? (
           <p className="font-barlow-cond font-bold uppercase" style={{ fontSize: "14px", letterSpacing: "0.1em", color: "#5C2D8F" }}>
@@ -543,116 +584,7 @@ export default function HomePage() {
         )}
       </section>
 
-      {/* ── FOOTER ────────────────────────────────────────────────────────── */}
-      <footer
-        className="px-5 md:px-12"
-        style={{
-          background: "#1A1A1A",
-          paddingTop: "64px",
-          paddingBottom: "32px",
-        }}
-      >
-        <div className="max-w-[1400px] mx-auto">
-
-          {/* Top row: logo + socials */}
-          <div className="flex items-center justify-between mb-12">
-            <Link
-              href="/"
-              className="font-barlow-cond font-bold tracking-[0.18em] uppercase"
-              style={{ fontSize: "20px" }}
-            >
-              <span style={{ color: "#FFFFFF" }}>Get</span>
-              <span style={{ color: "#8B52CC" }}>Panted</span>
-            </Link>
-            <div className="flex gap-5">
-              {[
-                { name: "instagram", href: "https://instagram.com" },
-                { name: "tiktok",    href: "https://tiktok.com" },
-                { name: "twitter",   href: "https://x.com" },
-              ].map((s) => (
-                <a
-                  key={s.name}
-                  href={s.href}
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-label={s.name}
-                  className="transition-colors duration-200 hover:text-white"
-                  style={{ color: "#6B6B6B" }}
-                >
-                  {s.name === "instagram" && (
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                      <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
-                      <circle cx="12" cy="12" r="4" />
-                      <circle cx="17.5" cy="6.5" r="0.75" fill="currentColor" stroke="none" />
-                    </svg>
-                  )}
-                  {s.name === "tiktok" && (
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                      <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5" />
-                    </svg>
-                  )}
-                  {s.name === "twitter" && (
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                      <path d="M4 4l16 16M4 20L20 4" />
-                    </svg>
-                  )}
-                </a>
-              ))}
-            </div>
-          </div>
-
-          {/* Link columns */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-12">
-            {[
-              {
-                title: "Shop",
-                links: ["New Arrivals", "Bestsellers", "Solid Luxe", "Printed", "Coord Sets", "Sale"],
-              },
-              {
-                title: "Info",
-                links: ["About GetPanted", "Sustainability", "Size Guide", "Care Instructions"],
-              },
-              {
-                title: "Help",
-                links: ["FAQs", "Shipping & Returns", "Track Order", "Contact Us", "Wholesale"],
-              },
-            ].map((col) => (
-              <div key={col.title}>
-                <p
-                  className="font-barlow-cond font-bold uppercase mb-5"
-                  style={{ fontSize: "11px", letterSpacing: "0.2em", color: "#6B6B6B" }}
-                >
-                  {col.title}
-                </p>
-                <ul className="space-y-3">
-                  {col.links.map((link) => (
-                    <li key={link}>
-                      <Link
-                        href={FOOTER_LINKS[link] ?? "/about"}
-                        className="font-barlow transition-colors duration-200 hover:text-white"
-                        style={{ fontSize: "14px", color: "#6B6B6B" }}
-                      >
-                        {link}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-
-          {/* Bottom bar */}
-          <div className="pt-6" style={{ borderTop: "1px solid rgba(255,255,255,0.08)" }}>
-            <p
-              className="font-barlow"
-              style={{ fontSize: "13px", color: "#6B6B6B" }}
-            >
-              © 2026 GetPanted. All rights reserved. Lagos, Nigeria.
-            </p>
-          </div>
-
-        </div>
-      </footer>
+      <PageFooter />
 
     </main>
   );

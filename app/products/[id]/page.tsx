@@ -130,9 +130,25 @@ export default function ProductDetailPage() {
               {product.price}
             </p>
 
-            <p className="font-barlow mb-8" style={{ fontSize: "14px", color: "#6B6B6B", lineHeight: 1.7 }}>
+            <p className="font-barlow mb-6" style={{ fontSize: "14px", color: "#6B6B6B", lineHeight: 1.7 }}>
               {product.description}
             </p>
+
+            <div className="mb-8 p-5" style={{ background: "#F7F7F7", border: "1px solid #F0F0F0" }}>
+              <p className="font-barlow-cond font-bold uppercase mb-3" style={{ fontSize: "10px", letterSpacing: "0.16em", color: "#6B6B6B" }}>
+                Fit Note
+              </p>
+              <p className="font-barlow mb-4" style={{ fontSize: "13px", color: "#6B6B6B", lineHeight: 1.7 }}>
+                This piece is designed to sit comfortably at the waist and fall cleanly through the leg. Please check the{" "}
+                <Link href="/size-guide" className="underline hover:text-[#5C2D8F]">GetPanted size guide</Link> before ordering.
+              </p>
+              <ul className="font-barlow space-y-1" style={{ fontSize: "13px", color: "#6B6B6B", lineHeight: 1.7 }}>
+                <li>• Comfortable waist and hip allowance</li>
+                <li>• Designed for movement</li>
+                <li>• Limited ready-to-wear pieces</li>
+                <li>• Made-to-order option may be available when sold out</li>
+              </ul>
+            </div>
 
             {/* Color swatches */}
             {product.colors.length > 0 && (
@@ -168,9 +184,9 @@ export default function ProductDetailPage() {
                 <p className="font-barlow-cond font-bold uppercase" style={{ fontSize: "11px", letterSpacing: "0.14em", color: "#6B6B6B" }}>
                   Size
                 </p>
-                <button type="button" className="font-barlow text-[11px] underline transition-colors hover:text-[#5C2D8F]" style={{ color: "#6B6B6B" }}>
+                <Link href="/size-guide" className="font-barlow text-[11px] underline transition-colors hover:text-[#5C2D8F]" style={{ color: "#6B6B6B" }}>
                   Size Guide
-                </button>
+                </Link>
               </div>
               <div className="flex flex-wrap gap-2">
                 {product.sizes.map((size) => (
@@ -256,13 +272,16 @@ export default function ProductDetailPage() {
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5C2D8F" strokeWidth="1.5">
                   <rect x="1" y="3" width="15" height="13" /><path d="M16 8h4l3 5v3h-7V8z" /><circle cx="5.5" cy="18.5" r="2.5" /><circle cx="18.5" cy="18.5" r="2.5" />
                 </svg>
-                <span className="font-barlow text-[13px]" style={{ color: "#6B6B6B" }}>Free delivery on orders above ₦50,000</span>
+                <span className="font-barlow text-[13px]" style={{ color: "#6B6B6B" }}>Delivery timeline confirmed at checkout</span>
               </div>
               <div className="flex items-center gap-3">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5C2D8F" strokeWidth="1.5">
                   <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" />
                 </svg>
-                <span className="font-barlow text-[13px]" style={{ color: "#6B6B6B" }}>Delivery in 5–7 business days</span>
+                <span className="font-barlow text-[13px]" style={{ color: "#6B6B6B" }}>
+                  Sold out in your size?{" "}
+                  <Link href="/made-to-order" className="underline hover:text-[#5C2D8F]">Request made to order</Link>
+                </span>
               </div>
             </div>
           </div>

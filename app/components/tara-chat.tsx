@@ -69,7 +69,19 @@ export function TaraChatWidget() {
   }, [messages, open, loading]);
 
   useEffect(() => {
-    if (open) inputRef.current?.focus();
+    if (!open) return;
+    // Avoid iOS Safari page zoom — only auto-focus on larger screens
+    const canAutoFocus = window.matchMedia("(min-width: 769px)").matches;
+    if (canAutoFocus) inputRef.current?.focus();
+  }, [open]);
+
+  useEffect(() => {
+    if (!open) return;
+    const prevOverflowX = document.body.style.overflowX;
+    document.body.style.overflowX = "hidden";
+    return () => {
+      document.body.style.overflowX = prevOverflowX;
+    };
   }, [open]);
 
   const sendMessage = useCallback(async (text: string) => {
@@ -180,7 +192,8 @@ export function TaraChatWidget() {
       )}
 
       {open && (
-        <div className="tara-panel" role="dialog" aria-label="Chat with Tara">
+        <div className="tara-panel-shell" aria-hidden={false}>
+          <div className="tara-panel" role="dialog" aria-label="Chat with Tara">
           <header className="tara-header">
             <div className="tara-header-info">
               <div className="tara-avatar">T</div>
@@ -293,6 +306,7 @@ export function TaraChatWidget() {
               </div>
             </footer>
           )}
+          </div>
         </div>
       )}
     </>

@@ -35,13 +35,22 @@
   display: inline;
 }
 
+/* Shell lets the page stay interactive — only the panel captures taps */
+.tara-panel-shell {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  pointer-events: none;
+}
+
 .tara-panel {
   position: fixed;
   bottom: 24px;
   right: 24px;
-  z-index: 90;
-  width: min(420px, calc(100vw - 32px));
-  height: min(640px, calc(100vh - 48px));
+  z-index: 91;
+  pointer-events: auto;
+  width: min(420px, calc(100% - 48px));
+  height: min(640px, calc(100dvh - 48px));
   display: flex;
   flex-direction: column;
   background: #fff;
@@ -50,6 +59,8 @@
   box-shadow: 0 24px 64px rgba(0, 0, 0, 0.12);
   overflow: hidden;
   font-family: 'Barlow', sans-serif;
+  touch-action: manipulation;
+  -webkit-text-size-adjust: 100%;
 }
 
 .tara-header {
@@ -105,11 +116,14 @@
 .tara-messages {
   flex: 1;
   overflow-y: auto;
+  overflow-x: hidden;
   padding: 16px;
   display: flex;
   flex-direction: column;
   gap: 12px;
   background: #FAFAF7;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
 }
 
 .tara-bubble-wrap {
@@ -254,6 +268,7 @@
   flex-shrink: 0;
   border-top: 1px solid #F0F0F0;
   background: #fff;
+  -webkit-overflow-scrolling: touch;
 }
 .tara-quick-btn {
   flex-shrink: 0;
@@ -347,22 +362,68 @@
   line-height: 1.6;
 }
 
-@media (max-width: 480px) {
+@media (max-width: 768px) {
   .tara-launcher {
-    right: 16px;
-    bottom: 16px;
+    right: 12px;
+    bottom: 12px;
     padding: 12px 16px;
     font-size: 11px;
     gap: 8px;
   }
+
   .tara-panel {
-    right: 16px;
-    bottom: 16px;
-    left: auto;
-    width: calc(100vw - 32px);
-    max-width: 400px;
-    height: min(520px, 68vh);
-    max-height: calc(100vh - 96px);
+    right: 12px;
+    bottom: 12px;
+    width: min(320px, calc(100% - 24px));
+    height: min(420px, 48dvh);
+    max-height: 48dvh;
     border-radius: 14px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.16);
+  }
+
+  .tara-header {
+    padding: 12px 14px;
+  }
+
+  .tara-avatar {
+    width: 34px;
+    height: 34px;
+    font-size: 15px;
+  }
+
+  .tara-name {
+    font-size: 13px;
+  }
+
+  .tara-status {
+    font-size: 11px;
+  }
+
+  .tara-messages {
+    padding: 12px;
+  }
+
+  .tara-bubble {
+    font-size: 14px;
+    padding: 10px 12px;
+  }
+
+  .tara-quick {
+    padding: 6px 10px;
+  }
+
+  .tara-quick-btn {
+    font-size: 11px;
+    padding: 5px 10px;
+  }
+
+  .tara-footer,
+  .tara-handoff-form {
+    padding: 10px;
+  }
+
+  /* 16px prevents iOS Safari from zooming the page when typing */
+  .tara-input {
+    font-size: 16px;
   }
 }

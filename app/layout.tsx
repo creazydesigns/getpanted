@@ -16,11 +16,6 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "GetPanted — Elevated trousers for women who dress with intention",
   description: "A Lagos-born women's pants lifestyle brand creating elevated trousers for modern women who want comfort, confidence, and style in one piece.",
-  icons: {
-    icon: [{ url: "/images/gp_favicon.svg", type: "image/svg+xml" }],
-    shortcut: "/images/gp_favicon.svg",
-    apple: "/images/gp_favicon.svg",
-  },
 };
 
 export default function RootLayout({

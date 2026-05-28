@@ -230,7 +230,7 @@ export default function HomePage() {
             }}
           >
             <h1 className="hero-headline font-barlow-cond uppercase animate-fade-up">
-              <span style={{ display: "block" }}>DRESS THE POWER</span>
+              <span style={{ display: "block" }}>DRESS THE POWER.</span>
               <span style={{ display: "block" }}>OWN THE ROOM.</span>
             </h1>
             <p

@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { renderToStaticMarkup } from "react-dom/server";
-import { createElement } from "react";
+import { render } from "@react-email/render";
 import { supabaseAdmin } from "@/lib/supabase";
 import { resend, FROM_EMAIL } from "@/lib/resend";
 import NewsletterWelcomeEmail from "@/emails/NewsletterWelcome";
@@ -43,9 +42,7 @@ export async function POST(req: NextRequest) {
 
     // Send welcome email (fire-and-forget — don't fail on email error)
     try {
-      const html = renderToStaticMarkup(
-        createElement(NewsletterWelcomeEmail, { firstName })
-      );
+      const html = await render(NewsletterWelcomeEmail({ firstName }));
       await resend.emails.send({
         from: FROM_EMAIL,
         to: email,

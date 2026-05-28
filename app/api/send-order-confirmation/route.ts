@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { renderToStaticMarkup } from "react-dom/server";
-import { createElement } from "react";
+import { render } from "@react-email/render";
 import { resend, FROM_EMAIL } from "@/lib/resend";
 import OrderConfirmationEmail from "@/emails/OrderConfirmation";
 
@@ -15,8 +14,8 @@ export async function POST(req: NextRequest) {
 
     const firstName = customerName?.split(" ")[0] ?? "there";
 
-    const html = renderToStaticMarkup(
-      createElement(OrderConfirmationEmail, {
+    const html = await render(
+      OrderConfirmationEmail({
         firstName,
         orderId,
         items: items ?? [],

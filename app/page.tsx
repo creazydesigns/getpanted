@@ -142,7 +142,7 @@ function ProductCard({ product, delay = 0 }: { product: Product; delay?: number 
             Add to Bag
           </button>
         </div>
-        <p className="font-barlow text-[14px] mt-1" style={{ color: "#6B6B6B" }}>
+        <p className="font-barlow hp-body-sm mt-1">
           {product.price}
         </p>
       </div>
@@ -229,20 +229,13 @@ export default function HomePage() {
               paddingRight: "clamp(16px, 2vw, 40px)",
             }}
           >
-            <p
-              className="font-barlow-cond font-bold uppercase animate-fade-up mb-4"
-              style={{ fontSize: "11px", letterSpacing: "0.25em", color: "#5C2D8F" }}
-            >
-              GetPanted
-            </p>
             <h1 className="hero-headline font-barlow-cond uppercase animate-fade-up">
-              <span style={{ display: "block" }}>PANTS FOR WOMEN</span>
-              <span style={{ display: "block" }}>WHO SHOW UP</span>
-              <span style={{ display: "block" }}>INTENTIONALLY.</span>
+              <span style={{ display: "block" }}>DRESS THE POWER</span>
+              <span style={{ display: "block" }}>OWN THE ROOM.</span>
             </h1>
             <p
-              className="font-barlow animate-fade-up animation-delay-100"
-              style={{ fontSize: "16px", color: "#6B6B6B", lineHeight: 1.75, maxWidth: "480px", marginTop: "24px" }}
+              className="font-barlow hp-body animate-fade-up animation-delay-100"
+              style={{ maxWidth: "480px", marginTop: "24px" }}
             >
               Elevated trousers made for confidence, comfort, and style — from clean everyday silhouettes to bold statement pieces.
             </p>
@@ -252,11 +245,11 @@ export default function HomePage() {
               style={{ gap: "12px", marginTop: "32px" }}
             >
               <Link
-                href="/new-arrivals"
+                href="/collections"
                 className="btn-hero-primary font-barlow-cond uppercase inline-block text-white"
                 style={{ fontWeight: 600, letterSpacing: "0.12em", background: "#8B52CC" }}
               >
-                Shop New Arrivals
+                SHOP NOW
               </Link>
               <Link
                 href="/collections"
@@ -269,7 +262,7 @@ export default function HomePage() {
                   background: "transparent",
                 }}
               >
-                View Collections
+                VIEW COLLECTIONS
               </Link>
             </div>
           </div>
@@ -316,7 +309,7 @@ export default function HomePage() {
             >
               The Latest from GetPanted
             </h2>
-            <p className="font-barlow mt-3" style={{ fontSize: "15px", color: "#6B6B6B", maxWidth: "420px", lineHeight: 1.7 }}>
+            <p className="font-barlow hp-body-md mt-3" style={{ maxWidth: "420px" }}>
               Fresh silhouettes, limited pieces, and elevated trousers designed to move with you.
             </p>
           </div>
@@ -374,22 +367,14 @@ export default function HomePage() {
               Designed for the way<br />you enter a room.
             </h2>
             <p
-              className="font-barlow leading-[1.8] max-w-[420px]"
-              style={{
-                fontSize: "16px",
-                color: "#6B6B6B",
-                marginTop: "24px",
-              }}
+              className="font-barlow hp-body max-w-[420px]"
+              style={{ marginTop: "24px" }}
             >
               Born in Lagos, GetPanted is a women&apos;s pants lifestyle brand built around confidence, fit, and intentional style.
             </p>
             <p
-              className="font-barlow leading-[1.8] max-w-[420px]"
-              style={{
-                fontSize: "16px",
-                color: "#6B6B6B",
-                marginTop: "16px",
-              }}
+              className="font-barlow hp-body max-w-[420px]"
+              style={{ marginTop: "16px" }}
             >
               We create elevated trousers that move with real women — from clean everyday silhouettes to bold statement pieces, each pair is made to feel flattering, refined, and never ordinary.
             </p>
@@ -441,7 +426,7 @@ export default function HomePage() {
             >
               PRESENCE
             </h2>
-            <p className="font-barlow leading-[1.8]" style={{ fontSize: "16px", color: "#6B6B6B", maxWidth: "440px" }}>
+            <p className="font-barlow hp-body" style={{ maxWidth: "440px" }}>
               PRESENCE is our debut collection — the first expression of the GetPanted woman. Designed with clean silhouettes, intentional fit, and a refined balance of minimal and bold details, PRESENCE introduces what we believe pants can be: flattering, confident, expressive, and easy to style.
             </p>
             <Link
@@ -507,10 +492,7 @@ export default function HomePage() {
               >
                 {item.title}
               </p>
-              <p
-                className="font-barlow leading-[1.6]"
-                style={{ fontSize: "13px", color: "#6B6B6B" }}
-              >
+              <p className="font-barlow hp-body-sm">
                 {item.body}
               </p>
             </div>
@@ -535,10 +517,7 @@ export default function HomePage() {
         >
           Style drops, first.
         </h2>
-        <p
-          className="font-barlow leading-relaxed mt-3 mb-8 max-w-lg mx-auto"
-          style={{ fontSize: "16px", color: "#6B6B6B" }}
-        >
+        <p className="font-barlow hp-body mt-3 mb-8 max-w-lg mx-auto">
           Be the first to know when new GetPanted pieces, limited drops, size restocks, and styling notes go live.
         </p>
         {nlStatus === "success" ? (
@@ -559,7 +538,7 @@ export default function HomePage() {
                   border: "1px solid #E0E0E0",
                   borderRight: "none",
                   padding: "14px 20px",
-                  fontSize: "15px",
+                  fontSize: "17px",
                   background: "#FFFFFF",
                   color: "#1A1A1A",
                 }}
@@ -575,10 +554,10 @@ export default function HomePage() {
               </button>
             </div>
             {nlStatus === "duplicate" && (
-              <p className="font-barlow mt-3" style={{ fontSize: "13px", color: "#6B6B6B" }}>You&apos;re already subscribed.</p>
+              <p className="font-barlow hp-body-sm mt-3">You&apos;re already subscribed.</p>
             )}
             {nlStatus === "error" && (
-              <p className="font-barlow mt-3" style={{ fontSize: "13px", color: "#E53935" }}>Something went wrong. Please try again.</p>
+              <p className="font-barlow hp-body-sm mt-3" style={{ color: "#E53935" }}>Something went wrong. Please try again.</p>
             )}
           </>
         )}

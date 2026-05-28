@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { renderToStaticMarkup } from "react-dom/server";
-import { createElement } from "react";
+import { render } from "@react-email/render";
 import { supabaseAdmin } from "@/lib/supabase";
 import { resend, FROM_EMAIL, ADMIN_EMAIL } from "@/lib/resend";
 import BespokeConfirmationEmail from "@/emails/BespokeConfirmation";
@@ -47,8 +46,8 @@ export async function POST(req: NextRequest) {
 
     // Send customer confirmation
     try {
-      const customerHtml = renderToStaticMarkup(
-        createElement(BespokeConfirmationEmail, {
+      const customerHtml = await render(
+        BespokeConfirmationEmail({
           customerName,
           customerEmail,
           orderId,

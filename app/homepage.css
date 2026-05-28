@@ -56,16 +56,32 @@
 
 /* ── Hero headline — responsive font size & wrapping ─────────────────────── */
 .hero-headline {
-  font-size: clamp(36px, 10vw, 88px);
-  font-weight: 600;
+  font-size: clamp(42px, 11vw, 96px);
   letter-spacing: -0.01em;
   line-height: 0.98;
   color: #1A1A1A;
   white-space: normal;
 }
+
+/* ── Homepage body copy — slightly larger for readability ─────────────────── */
+.hp-body {
+  font-size: 18px;
+  color: #6B6B6B;
+  line-height: 1.75;
+}
+.hp-body-md {
+  font-size: 17px;
+  color: #6B6B6B;
+  line-height: 1.7;
+}
+.hp-body-sm {
+  font-size: 15px;
+  color: #6B6B6B;
+  line-height: 1.6;
+}
 @media (min-width: 768px) {
   .hero-headline {
-    font-size: clamp(48px, 5.5vw, 88px);
+    font-size: clamp(56px, 6.5vw, 104px);
     white-space: normal;
   }
 }

@@ -1,0 +1,362 @@
+/* ── Tara AI chat widget ─────────────────────────────────────────────────── */
+
+.tara-launcher {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 20px;
+  border: none;
+  border-radius: 999px;
+  background: #5C2D8F;
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 8px 32px rgba(92, 45, 143, 0.35);
+  transition: transform 0.2s ease, background 0.2s ease;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.tara-launcher:hover {
+  background: #8B52CC;
+  transform: translateY(-2px);
+}
+.tara-launcher-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.tara-launcher-label {
+  display: none;
+}
+@media (min-width: 480px) {
+  .tara-launcher-label { display: inline; }
+}
+
+.tara-panel {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 90;
+  width: min(420px, calc(100vw - 32px));
+  height: min(640px, calc(100vh - 48px));
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border: 1px solid #F0F0F0;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.12);
+  overflow: hidden;
+  font-family: 'Barlow', sans-serif;
+}
+
+.tara-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 18px;
+  background: #1A1A1A;
+  color: #fff;
+  flex-shrink: 0;
+}
+.tara-header-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.tara-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #5C2D8F;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+}
+.tara-name {
+  margin: 0;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.tara-status {
+  margin: 2px 0 0;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.6);
+}
+.tara-close {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 4px;
+}
+.tara-close:hover { color: #fff; }
+
+.tara-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: #FAFAF7;
+}
+
+.tara-bubble-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 92%;
+}
+.tara-bubble-wrap.user {
+  align-self: flex-end;
+  align-items: flex-end;
+}
+.tara-bubble-wrap.assistant {
+  align-self: flex-start;
+  align-items: flex-start;
+}
+
+.tara-bubble {
+  padding: 12px 14px;
+  border-radius: 16px;
+  font-size: 15px;
+  line-height: 1.55;
+}
+.tara-bubble p { margin: 0; }
+.tara-bubble.user {
+  background: #5C2D8F;
+  color: #fff;
+  border-bottom-right-radius: 4px;
+}
+.tara-bubble.assistant {
+  background: #fff;
+  color: #1A1A1A;
+  border: 1px solid #E8E8E8;
+  border-bottom-left-radius: 4px;
+}
+
+.tara-typing {
+  display: flex;
+  gap: 4px;
+  padding: 14px 18px;
+}
+.tara-typing span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #6B6B6B;
+  animation: tara-dot 1.2s infinite ease-in-out;
+}
+.tara-typing span:nth-child(2) { animation-delay: 0.15s; }
+.tara-typing span:nth-child(3) { animation-delay: 0.3s; }
+@keyframes tara-dot {
+  0%, 80%, 100% { opacity: 0.3; transform: scale(0.85); }
+  40% { opacity: 1; transform: scale(1); }
+}
+
+.tara-products {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+.tara-product-card {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 8px;
+  background: #fff;
+  border: 1px solid #E8E8E8;
+  text-decoration: none;
+  transition: border-color 0.2s ease;
+}
+.tara-product-card:hover { border-color: #5C2D8F; }
+.tara-product-img {
+  position: relative;
+  width: 52px;
+  height: 64px;
+  flex-shrink: 0;
+  background: #F7F7F7;
+}
+.tara-product-name {
+  margin: 0;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #1A1A1A;
+}
+.tara-product-price {
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: #6B6B6B;
+}
+
+.tara-handoff {
+  padding: 10px 12px;
+  background: #EDE6F5;
+  border-left: 3px solid #5C2D8F;
+  font-size: 13px;
+  color: #1A1A1A;
+  width: 100%;
+}
+.tara-handoff p { margin: 0 0 10px; }
+.tara-handoff-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.tara-handoff-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 14px;
+  border: 1px solid #5C2D8F;
+  background: transparent;
+  color: #5C2D8F;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+.tara-handoff-btn.primary,
+.tara-handoff-btn.primary:hover {
+  background: #5C2D8F;
+  color: #fff;
+}
+.tara-handoff-btn:hover:not(.primary) {
+  background: #5C2D8F;
+  color: #fff;
+}
+
+.tara-quick {
+  display: flex;
+  gap: 6px;
+  padding: 8px 12px;
+  overflow-x: auto;
+  flex-shrink: 0;
+  border-top: 1px solid #F0F0F0;
+  background: #fff;
+}
+.tara-quick-btn {
+  flex-shrink: 0;
+  padding: 6px 12px;
+  border: 1px solid #E0E0E0;
+  background: #fff;
+  font-family: 'Barlow', sans-serif;
+  font-size: 12px;
+  color: #6B6B6B;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+.tara-quick-btn:hover:not(:disabled) {
+  border-color: #5C2D8F;
+  color: #5C2D8F;
+}
+.tara-quick-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.tara-footer,
+.tara-handoff-form {
+  padding: 12px;
+  border-top: 1px solid #F0F0F0;
+  background: #fff;
+  flex-shrink: 0;
+}
+.tara-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 12px;
+  border: 1px solid #E0E0E0;
+  font-family: 'Barlow', sans-serif;
+  font-size: 14px;
+  color: #1A1A1A;
+  outline: none;
+  margin-bottom: 8px;
+}
+.tara-input:focus { border-color: #5C2D8F; }
+.tara-textarea {
+  resize: none;
+  min-height: 44px;
+  margin-bottom: 8px;
+}
+.tara-footer-actions,
+.tara-handoff-form-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+.tara-human-btn {
+  background: none;
+  border: none;
+  font-family: 'Barlow', sans-serif;
+  font-size: 12px;
+  color: #6B6B6B;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+}
+.tara-human-btn:hover { color: #5C2D8F; }
+.tara-send-btn {
+  padding: 10px 20px;
+  border: none;
+  background: #5C2D8F;
+  color: #fff;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+.tara-send-btn:hover:not(:disabled) { background: #8B52CC; }
+.tara-send-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.tara-handoff-form-title {
+  margin: 0 0 10px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #1A1A1A;
+}
+.tara-handoff-success {
+  margin: 0;
+  font-size: 14px;
+  color: #5C2D8F;
+  line-height: 1.6;
+}
+
+@media (max-width: 480px) {
+  .tara-panel,
+  .tara-launcher {
+    right: 16px;
+    bottom: 16px;
+  }
+  .tara-panel {
+    width: calc(100vw - 32px);
+    height: calc(100vh - 32px);
+  }
+}

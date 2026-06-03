@@ -1,0 +1,207 @@
+.waitlist-page {
+  min-height: 100vh;
+  background: #ffffff;
+}
+
+/* ── Top bar: COMING SOON / hashtags ─────────────────────────────────────── */
+.waitlist-topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 48px;
+  padding: 0 20px;
+  background: #ffffff;
+  pointer-events: none;
+}
+
+@media (min-width: 768px) {
+  .waitlist-topbar {
+    padding: 0 clamp(24px, 5vw, 64px);
+    height: 52px;
+  }
+}
+
+.waitlist-topbar-label,
+.waitlist-topbar-tags {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: #9a9a9a;
+}
+
+@media (min-width: 768px) {
+  .waitlist-topbar-label,
+  .waitlist-topbar-tags {
+    font-size: 11px;
+    letter-spacing: 0.22em;
+  }
+}
+
+.waitlist-topbar-tags {
+  text-align: right;
+  color: #8a8a8a;
+}
+
+.waitlist-topbar-tag-sep {
+  margin-left: 0.35em;
+  color: #b0b0b0;
+}
+
+/* ── Main content ────────────────────────────────────────────────────────── */
+.waitlist-main {
+  padding: 72px 24px 48px;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+@media (min-width: 768px) {
+  .waitlist-main {
+    padding: 88px clamp(32px, 6vw, 80px) 64px;
+    max-width: 820px;
+  }
+}
+
+/* ── Offer copy — very bold, big ─────────────────────────────────────────── */
+.waitlist-offer {
+  color: #1a1a1a;
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.waitlist-offer-line {
+  display: block;
+  font-size: clamp(36px, 9.5vw, 72px);
+}
+
+@media (min-width: 768px) {
+  .waitlist-offer-line {
+    font-size: clamp(48px, 6.5vw, 88px);
+  }
+}
+
+.waitlist-offer-emphasis {
+  margin-top: 0.08em;
+  color: #1a1a1a;
+}
+
+/* ── Form ──────────────────────────────────────────────────────────────────── */
+.waitlist-form-wrap {
+  margin-top: 40px;
+}
+
+@media (min-width: 768px) {
+  .waitlist-form-wrap {
+    margin-top: 48px;
+  }
+}
+
+.waitlist-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.waitlist-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.waitlist-field-label {
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  color: #1a1a1a;
+}
+
+@media (min-width: 768px) {
+  .waitlist-field-label {
+    font-size: 14px;
+    letter-spacing: 0.14em;
+  }
+}
+
+.waitlist-input {
+  width: 100%;
+  outline: none;
+  border: 1px solid #e0e0e0;
+  padding: 16px 20px;
+  font-size: 17px;
+  background: #ffffff;
+  color: #1a1a1a;
+  transition: border-color 0.2s ease;
+}
+
+.waitlist-input:focus {
+  border-color: #5c2d8f;
+}
+
+.waitlist-submit {
+  margin-top: 8px;
+  padding: 18px 32px;
+  font-size: 14px;
+  letter-spacing: 0.15em;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .waitlist-submit {
+    font-size: 15px;
+    padding: 20px 40px;
+  }
+}
+
+.waitlist-form-note {
+  font-size: 15px;
+  color: #6b6b6b;
+  line-height: 1.6;
+  margin-top: 4px;
+}
+
+.waitlist-form-note--error {
+  color: #e53935;
+}
+
+.waitlist-success {
+  padding: 28px 24px;
+  border: 1px solid #f0f0f0;
+  background: #fafafa;
+}
+
+.waitlist-success-title {
+  font-size: clamp(18px, 4vw, 24px);
+  letter-spacing: 0.08em;
+  color: #5c2d8f;
+  line-height: 1.2;
+}
+
+.waitlist-success-body {
+  margin-top: 12px;
+  font-size: 16px;
+  color: #6b6b6b;
+  line-height: 1.7;
+}
+
+/* ── Hero image — below form only ────────────────────────────────────────── */
+.waitlist-hero-image {
+  position: relative;
+  width: 100%;
+  height: 70vw;
+  max-height: 560px;
+  margin-top: 48px;
+  background: #ffffff;
+}
+
+@media (min-width: 768px) {
+  .waitlist-hero-image {
+    height: 520px;
+    max-height: 600px;
+    margin-top: 56px;
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "www.getpanted.vercel.app" }],
+      "destination": "https://getpanted.vercel.app/:path*",
+      "permanent": true
+    }
+  ]
+}

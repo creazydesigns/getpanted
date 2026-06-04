@@ -88,6 +88,8 @@ export interface DBSubscriber {
   id: string;
   email: string;
   first_name?: string;
+  source?: string;
+  whatsapp?: string;
   subscribed_at: string;
   active: boolean;
 }

@@ -1,8 +1,24 @@
 import { NextRequest, NextResponse } from "next/server";
 import { render } from "@react-email/render";
+import type { PostgrestError } from "@supabase/supabase-js";
 import { supabaseAdmin } from "@/lib/supabase";
 import { resend, FROM_EMAIL } from "@/lib/resend";
 import NewsletterWelcomeEmail from "@/emails/NewsletterWelcome";
+
+/** Retries without optional columns when migrations 002/003 have not been applied yet. */
+function stripOptionalSubscriberColumns(
+  payload: Record<string, unknown>
+): Record<string, unknown> {
+  const { source: _s, whatsapp: _w, ...rest } = payload;
+  return rest;
+}
+
+function isMissingColumnError(error: PostgrestError): boolean {
+  return (
+    error.code === "PGRST204" &&
+    (error.message.includes("source") || error.message.includes("whatsapp"))
+  );
+}
 
 export async function POST(req: NextRequest) {
   try {
@@ -22,11 +38,16 @@ export async function POST(req: NextRequest) {
     }
 
     // Check for existing subscriber
-    const { data: existing } = await supabaseAdmin
+    const { data: existing, error: lookupError } = await supabaseAdmin
       .from("newsletter_subscribers")
       .select("id, active")
       .eq("email", email.toLowerCase())
       .maybeSingle();
+
+    if (lookupError) {
+      console.error("[subscribe] Supabase lookup error:", lookupError);
+      return NextResponse.json({ error: "Could not save subscription" }, { status: 500 });
+    }
 
     if (existing) {
       if (existing.active) {
@@ -40,10 +61,25 @@ export async function POST(req: NextRequest) {
       if (source) reactivatePayload.source = source;
       if (whatsapp) reactivatePayload.whatsapp = whatsapp;
 
-      await supabaseAdmin
+      let { error: updateError } = await supabaseAdmin
         .from("newsletter_subscribers")
         .update(reactivatePayload)
         .eq("id", existing.id);
+
+      if (updateError && isMissingColumnError(updateError)) {
+        ({ error: updateError } = await supabaseAdmin
+          .from("newsletter_subscribers")
+          .update(stripOptionalSubscriberColumns(reactivatePayload))
+          .eq("id", existing.id));
+        console.warn(
+          "[subscribe] Ran without source/whatsapp columns — apply supabase/migrations/002 and 003"
+        );
+      }
+
+      if (updateError) {
+        console.error("[subscribe] Supabase update error:", updateError);
+        return NextResponse.json({ error: "Could not save subscription" }, { status: 500 });
+      }
     } else {
       const insertPayload: Record<string, unknown> = {
         email: email.toLowerCase(),
@@ -52,9 +88,18 @@ export async function POST(req: NextRequest) {
       if (source) insertPayload.source = source;
       if (whatsapp) insertPayload.whatsapp = whatsapp;
 
-      const { error: insertError } = await supabaseAdmin
+      let { error: insertError } = await supabaseAdmin
         .from("newsletter_subscribers")
         .insert(insertPayload);
+
+      if (insertError && isMissingColumnError(insertError)) {
+        ({ error: insertError } = await supabaseAdmin
+          .from("newsletter_subscribers")
+          .insert(stripOptionalSubscriberColumns(insertPayload)));
+        console.warn(
+          "[subscribe] Ran without source/whatsapp columns — apply supabase/migrations/002 and 003"
+        );
+      }
 
       if (insertError) {
         console.error("[subscribe] Supabase insert error:", insertError);
@@ -64,7 +109,7 @@ export async function POST(req: NextRequest) {
 
     // Send welcome email (fire-and-forget — don't fail on email error)
     try {
-      const html = await render(NewsletterWelcomeEmail({ firstName }));
+      const html = await render(NewsletterWelcomeEmail({ firstName: name ?? undefined }));
       await resend.emails.send({
         from: FROM_EMAIL,
         to: email,

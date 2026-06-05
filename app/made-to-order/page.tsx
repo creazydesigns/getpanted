@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { PageFooter } from "../components/page-footer";
+import { useSiteContent } from "@/hooks/use-site-content";
 
 const STYLES = [
   "Royal Pleat Wide-Leg",
@@ -23,6 +24,7 @@ const PROCESS_STEPS = [
 ];
 
 export default function MadeToOrderPage() {
+  const { get } = useSiteContent();
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
@@ -120,8 +122,11 @@ export default function MadeToOrderPage() {
           <h1 className="font-barlow-cond font-bold" style={{ fontSize: "clamp(40px, 6vw, 72px)", lineHeight: 1, color: "#1A1A1A" }}>
             Missed your size? We can make it again.
           </h1>
-          <p className="font-barlow mt-6" style={{ fontSize: "16px", color: "#6B6B6B", lineHeight: 1.75 }}>
-            Some GetPanted pieces are produced in limited quantities. When a style sells out, selected pieces may be available through made-to-order.
+          <p className="font-barlow mt-6" style={{ fontSize: "16px", color: "#6B6B6B", lineHeight: 1.75, whiteSpace: "pre-line" }}>
+            {get("bespoke.intro")}
+          </p>
+          <p className="font-barlow mt-4" style={{ fontSize: "14px", color: "#5C2D8F", fontWeight: 600 }}>
+            {get("bespoke.turnaround")} · {get("bespoke.starting_price")}
           </p>
           <p className="font-barlow mt-4" style={{ fontSize: "16px", color: "#6B6B6B", lineHeight: 1.75 }}>
             Made-to-order means your selected style is produced after your order is confirmed. This helps us maintain quality, reduce unnecessary waste, and keep our drops intentional.

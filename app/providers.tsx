@@ -7,18 +7,21 @@ import { Navbar } from "./components/navbar";
 import { TaraChatWidget } from "./components/tara-chat";
 
 const LANDING_ROUTES = ["/waitlist"];
+const HIDE_STOREFRONT_ROUTES = ["/admin"];
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const isLandingPage = LANDING_ROUTES.some((route) => pathname?.startsWith(route));
+  const isAdmin = HIDE_STOREFRONT_ROUTES.some((route) => pathname?.startsWith(route));
+  const showStore = !isLandingPage && !isAdmin;
 
   return (
     <ShopProvider>
-      {!isLandingPage && <Navbar />}
+      {showStore && <Navbar />}
       {children}
-      {!isLandingPage && <MiniCartDrawer />}
+      {showStore && <MiniCartDrawer />}
       <ToastStack />
-      {!isLandingPage && <TaraChatWidget />}
+      {showStore && <TaraChatWidget />}
     </ShopProvider>
   );
 }

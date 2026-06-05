@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useShop } from "../context/shop-context";
+import { AnnouncementBar } from "./announcement-bar";
 
 const NAV_LINKS = [
   { label: "About",        href: "/about" },
@@ -29,6 +30,7 @@ export function Navbar() {
 
   return (
     <>
+      <AnnouncementBar />
       <nav
         className="fixed top-0 left-0 right-0 z-50"
         style={{

@@ -1,7 +1,9 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { PageFooter } from "../components/page-footer";
+import { useSiteContent } from "@/hooks/use-site-content";
 
 const BRAND_PILLARS = [
   {
@@ -73,6 +75,8 @@ const BUILDING = [
 ];
 
 export default function AboutPage() {
+  const { get } = useSiteContent();
+
   return (
     <main className="font-barlow overflow-x-hidden" style={{ background: "#FFFFFF" }}>
 
@@ -84,9 +88,14 @@ export default function AboutPage() {
           <h1 className="font-barlow-cond" style={{ fontSize: "clamp(40px, 6vw, 80px)", fontWeight: 600, lineHeight: 1, letterSpacing: "-0.01em", color: "#1A1A1A", maxWidth: "820px" }}>
             Pants for women who show up intentionally.
           </h1>
-          <p className="font-barlow mt-6" style={{ fontSize: "16px", color: "#6B6B6B", maxWidth: "560px", lineHeight: 1.75 }}>
-            GetPanted is a women&apos;s pants lifestyle brand creating elevated trousers for modern women who want comfort, confidence, and style in one piece.
+          <p className="font-barlow mt-6" style={{ fontSize: "16px", color: "#6B6B6B", maxWidth: "560px", lineHeight: 1.75, whiteSpace: "pre-line" }}>
+            {get("about.brand_story")}
           </p>
+          {get("about.image") && (
+            <div className="relative mt-8" style={{ width: "100%", maxWidth: 400, aspectRatio: "4/5" }}>
+              <Image src={get("about.image")} alt="GetPanted" fill className="object-cover" unoptimized />
+            </div>
+          )}
           <p className="font-barlow mt-4" style={{ fontSize: "16px", color: "#6B6B6B", maxWidth: "560px", lineHeight: 1.75 }}>
             Born in Lagos, we design pants that move with real women, fit beautifully, and make everyday dressing feel more expressive.
           </p>

@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useShop } from "../context/shop-context";
 import { useScrollReveal } from "../hooks/use-scroll-reveal";
 import { PageFooter } from "../components/page-footer";
+import { useSiteContent } from "@/hooks/use-site-content";
 
 type FilterKey = "all" | "solid" | "new";
 
@@ -134,6 +135,7 @@ function ProductCard({ product }: { product: Product }) {
 
 // ── Main Page ─────────────────────────────────────────────────────────────────
 export default function CollectionsPage() {
+  const { get } = useSiteContent();
   const [activeFilter, setActiveFilter] = useState<FilterKey>("all");
   const [sortBy, setSortBy] = useState("Featured");
   const [sortOpen, setSortOpen] = useState(false);
@@ -177,7 +179,7 @@ export default function CollectionsPage() {
           </div>
           <p className="font-barlow-cond font-bold uppercase mb-4" style={{ fontSize: "11px", letterSpacing: "0.25em", color: "#5C2D8F" }}>Collections</p>
           <h1 style={{ fontSize: "clamp(48px, 7vw, 88px)", fontWeight: 600, lineHeight: 0.95, color: "#1A1A1A" }}>
-            All Collections
+            {get("collections.banner_headline")}
           </h1>
           <p className="font-barlow mt-5" style={{ fontSize: "15px", color: "#6B6B6B", maxWidth: "480px", lineHeight: 1.7 }}>
             Every drop and every silhouette. PRESENCE is our debut collection — explore elevated trousers designed for intentional dressing.

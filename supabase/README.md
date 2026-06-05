@@ -59,6 +59,14 @@ Useful columns: `email`, `first_name` (full name from the form), `whatsapp`, `su
 | `migrations/003_add_subscriber_whatsapp.sql` | `whatsapp` column |
 | `waitlist_setup.sql` | Subscribers table only (includes source + whatsapp) |
 
+## Admin dashboard (`/admin`)
+
+1. Run all migrations through `004_admin_dashboard.sql` in the SQL Editor (in order).
+2. In Supabase **Authentication** → **Users** → **Add user**, create `admin@getpanted.com` with a strong password (email provider enabled).
+3. Sign in at `/admin/login`. Only `ADMIN_EMAIL` (default `admin@getpanted.com`) can access the panel.
+
+The admin CMS uses Supabase Auth cookies, the service role for data mutations, and the `product-images` storage bucket for uploads.
+
 ## Production (Vercel etc.)
 
 Add the same three Supabase variables (and `RESEND_API_KEY` if you want emails) in your host’s environment settings, then redeploy.

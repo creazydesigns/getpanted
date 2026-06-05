@@ -32,6 +32,7 @@ export async function POST(req: NextRequest) {
         measurements: measurements ?? {},
         timeline:     timeline ?? "",
         notes:        notes ?? null,
+        status:       "new",
       })
       .select("id")
       .single();

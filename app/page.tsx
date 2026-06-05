@@ -7,6 +7,7 @@ import "./homepage.css";
 import { useShop } from "./context/shop-context";
 import { useScrollReveal } from "./hooks/use-scroll-reveal";
 import { PageFooter } from "./components/page-footer";
+import { useSiteContent } from "@/hooks/use-site-content";
 
 // ── Types ────────────────────────────────────────────────────────────────────
 interface Product {
@@ -192,6 +193,7 @@ function CategoryTile({ cat }: { cat: Category }) {
 // ── Main Page ─────────────────────────────────────────────────────────────────
 export default function HomePage() {
   useScrollReveal();
+  const { get } = useSiteContent();
 
   // Newsletter state
   const [nlEmail,   setNlEmail]   = useState("");
@@ -230,14 +232,14 @@ export default function HomePage() {
             }}
           >
             <h1 className="hero-headline font-barlow-cond uppercase animate-fade-up">
-              <span style={{ display: "block" }}>DRESS THE POWER.</span>
-              <span style={{ display: "block" }}>OWN THE ROOM.</span>
+              <span style={{ display: "block" }}>{get("homepage.hero_line_1")}</span>
+              <span style={{ display: "block" }}>{get("homepage.hero_line_2")}</span>
             </h1>
             <p
               className="font-barlow hp-body animate-fade-up animation-delay-100"
               style={{ maxWidth: "480px", marginTop: "24px" }}
             >
-              Elevated trousers made for confidence, comfort, and style — from clean everyday silhouettes to bold statement pieces.
+              {get("homepage.hero_tagline")}
             </p>
 
             <div
@@ -245,11 +247,11 @@ export default function HomePage() {
               style={{ gap: "12px", marginTop: "32px" }}
             >
               <Link
-                href="/collections"
+                href={get("homepage.hero_button_link") || "/collections"}
                 className="btn-hero-primary font-barlow-cond uppercase inline-block text-white"
                 style={{ fontWeight: 600, letterSpacing: "0.12em", background: "#8B52CC" }}
               >
-                SHOP NOW
+                {get("homepage.hero_button_label")}
               </Link>
               <Link
                 href="/collections"

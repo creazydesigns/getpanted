@@ -1,11 +1,8 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { updateSession } from "@/lib/supabase/middleware";
 
-/**
- * Redirect www → apex. Required for custom domains; on *.vercel.app only
- * getpanted.vercel.app has a valid cert (www.getpanted.vercel.app will SSL-fail).
- */
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const host = request.headers.get("host") ?? "";
 
   if (host.startsWith("www.")) {
@@ -14,7 +11,7 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(url, 308);
   }
 
-  return NextResponse.next();
+  return updateSession(request);
 }
 
 export const config = {

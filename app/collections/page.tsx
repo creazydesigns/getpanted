@@ -27,6 +27,7 @@ function ProductCard({ product }: { product: StoreProduct }) {
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const { addToCart, isWishlisted, toggleWishlist } = useShop();
   const wishlisted = isWishlisted(product.id);
+  const productHref = `/products/${product.id}`;
 
   return (
     <div
@@ -34,28 +35,36 @@ function ProductCard({ product }: { product: StoreProduct }) {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      <Link href={`/products/${product.id}`} className="block">
       <div className="relative overflow-hidden" style={{ aspectRatio: "3/4", background: "#F7F7F7" }}>
+        <Link
+          href={productHref}
+          className="absolute inset-0 z-[1]"
+          aria-label={`View ${product.name}`}
+        />
         {product.image && (
           <Image
             src={product.image}
             alt={product.name}
             fill
             sizes="(max-width: 768px) 50vw, 25vw"
-            className="object-cover object-top transition-transform duration-500"
+            className="object-cover object-top transition-transform duration-500 pointer-events-none"
             style={{ transform: hovered ? "scale(1.04)" : "scale(1)" }}
           />
         )}
         {product.badge && (
-          <span className="absolute top-3 left-3 font-barlow-cond font-bold uppercase text-white px-2.5 py-1" style={{ fontSize: "10px", letterSpacing: "0.15em", background: "#1A1A1A" }}>
+          <span className="absolute top-3 left-3 z-[2] font-barlow-cond font-bold uppercase text-white px-2.5 py-1 pointer-events-none" style={{ fontSize: "10px", letterSpacing: "0.15em", background: "#1A1A1A" }}>
             {product.badge}
           </span>
         )}
         <button
           type="button"
           aria-label="Toggle wishlist"
-          onClick={() => toggleWishlist({ id: product.id, name: product.name, price: product.price })}
-          className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center transition-all duration-200 opacity-0 group-hover:opacity-100"
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            toggleWishlist({ id: product.id, name: product.name, price: product.price });
+          }}
+          className="absolute top-3 right-3 z-[2] w-8 h-8 flex items-center justify-center transition-all duration-200 opacity-0 group-hover:opacity-100"
           style={{ background: "rgba(0,0,0,0.5)", color: wishlisted ? "#8B52CC" : "white" }}
         >
           <svg width="13" height="13" viewBox="0 0 24 24" fill={wishlisted ? "#8B52CC" : "none"} stroke="currentColor" strokeWidth="1.5">
@@ -64,15 +73,23 @@ function ProductCard({ product }: { product: StoreProduct }) {
         </button>
         {/* Size + Add to bag tray */}
         <div
-          className="absolute bottom-0 left-0 right-0 px-4 py-4 transition-transform duration-300"
-          style={{ background: "rgba(10,10,10,0.94)", transform: hovered ? "translateY(0)" : "translateY(100%)" }}
+          className="absolute bottom-0 left-0 right-0 z-[2] px-4 py-4 transition-transform duration-300"
+          style={{
+            background: "rgba(10,10,10,0.94)",
+            transform: hovered ? "translateY(0)" : "translateY(100%)",
+            pointerEvents: hovered ? "auto" : "none",
+          }}
         >
           <div className="flex gap-1.5 flex-wrap mb-3">
             {product.sizes.slice(0, 5).map((s) => (
               <button
                 key={s}
                 type="button"
-                onClick={() => setSelectedSize(s === selectedSize ? null : s)}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setSelectedSize(s === selectedSize ? null : s);
+                }}
                 className="font-barlow-cond font-bold uppercase px-2 py-1 transition-colors"
                 style={{
                   fontSize: "9px",
@@ -87,7 +104,11 @@ function ProductCard({ product }: { product: StoreProduct }) {
           </div>
           <button
             type="button"
-            onClick={() => addToCart({ id: product.id, name: product.name, price: product.price, ...(selectedSize ? { size: selectedSize } : {}) })}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              addToCart({ id: product.id, name: product.name, price: product.price, ...(selectedSize ? { size: selectedSize } : {}) });
+            }}
             className="w-full font-barlow-cond font-bold uppercase text-white transition-opacity hover:opacity-80"
             style={{ fontSize: "11px", letterSpacing: "0.14em", padding: "10px", background: "#5C2D8F" }}
           >
@@ -95,15 +116,14 @@ function ProductCard({ product }: { product: StoreProduct }) {
           </button>
         </div>
       </div>
-      <div className="pt-4 pb-2" style={{ background: "#FFFFFF" }}>
+      <Link href={productHref} className="block pt-4 pb-2" style={{ background: "#FFFFFF" }}>
         <div className="flex items-center justify-between gap-2">
           <h3 className="font-barlow-cond font-bold uppercase" style={{ fontSize: "14px", color: "#1A1A1A" }}>{product.name}</h3>
-          <div className="flex gap-1.5 flex-shrink-0">
+          <div className="flex gap-1.5 flex-shrink-0 pointer-events-none">
             {product.colors.map((c, i) => <span key={i} className="w-2.5 h-2.5" style={{ background: c, border: "1px solid #E0E0E0" }} />)}
           </div>
         </div>
         <p className="font-barlow mt-1" style={{ fontSize: "14px", color: "#6B6B6B" }}>{product.price}</p>
-      </div>
       </Link>
     </div>
   );

@@ -30,23 +30,28 @@ const CATEGORIES: Category[] = [
 function ProductCard({ product }: { product: StoreProduct }) {
   const { addToCart, isWishlisted, toggleWishlist } = useShop();
   const wishlisted = isWishlisted(product.id);
+  const productHref = `/products/${product.id}`;
 
   return (
     <div className="group cursor-pointer">
-      {/* Image container */}
       <div className="relative overflow-hidden" style={{ aspectRatio: "3/4" }}>
+        <Link
+          href={productHref}
+          className="absolute inset-0 z-[1]"
+          aria-label={`View ${product.name}`}
+        />
         {product.image ? (
           <Image
             src={product.image}
             alt={product.name}
             fill
             sizes="(max-width: 768px) 50vw, 25vw"
-            className="object-cover object-top transition-transform duration-500 ease-out group-hover:scale-[1.04]"
+            className="object-cover object-top transition-transform duration-500 ease-out group-hover:scale-[1.04] pointer-events-none"
             priority
           />
         ) : (
           <div
-            className="w-full h-full flex items-center justify-center"
+            className="w-full h-full flex items-center justify-center pointer-events-none"
             style={{ background: "#F7F7F7" }}
           >
             <svg viewBox="0 0 160 320" fill="none" className="w-1/2 opacity-10">
@@ -59,29 +64,29 @@ function ProductCard({ product }: { product: StoreProduct }) {
           </div>
         )}
 
-        {/* Badge — black only, never purple */}
         {product.badge && (
           <span
-            className="absolute top-4 left-4 font-barlow-cond font-bold text-[10px] tracking-[0.2em] uppercase text-white px-[10px] py-1"
+            className="absolute top-4 left-4 z-[2] font-barlow-cond font-bold text-[10px] tracking-[0.2em] uppercase text-white px-[10px] py-1 pointer-events-none"
             style={{ background: "#1A1A1A" }}
           >
             {product.badge}
           </span>
         )}
 
-        {/* Wishlist */}
         <button
           type="button"
           aria-label="Toggle wishlist"
-          onClick={() =>
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
             toggleWishlist({
               id: product.id,
               name: product.name,
               price: product.price,
               image: product.image,
-            })
-          }
-          className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center transition-all duration-300 opacity-0 group-hover:opacity-100"
+            });
+          }}
+          className="absolute top-4 right-4 z-[2] w-8 h-8 flex items-center justify-center transition-all duration-300 opacity-0 group-hover:opacity-100"
           style={{
             background: "rgba(0,0,0,0.5)",
             color: wishlisted ? "#5C2D8F" : "white",
@@ -100,34 +105,37 @@ function ProductCard({ product }: { product: StoreProduct }) {
         </button>
       </div>
 
-      {/* Info */}
-      <div className="pt-4 pb-2" style={{ background: "#FFFFFF" }}>
-        <div className="flex items-start justify-between gap-3">
-          <h3
-            className="font-barlow-cond font-bold text-[14px] tracking-[0.05em] uppercase leading-tight"
-            style={{ color: "#1A1A1A" }}
-          >
-            {product.name}
-          </h3>
-          <button
-            type="button"
-            onClick={() =>
-              addToCart({
-                id: product.id,
-                name: product.name,
-                price: product.price,
-                image: product.image,
-              })
-            }
-            className="font-barlow-cond font-bold text-[12px] tracking-[0.15em] uppercase whitespace-nowrap flex-shrink-0 transition-opacity duration-300 opacity-0 group-hover:opacity-100"
-            style={{ color: "#5C2D8F" }}
-          >
-            Add to Bag
-          </button>
-        </div>
-        <p className="font-barlow hp-body-sm mt-1">
-          {product.price}
-        </p>
+      <div className="pt-4 pb-2 relative" style={{ background: "#FFFFFF" }}>
+        <Link href={productHref} className="block">
+          <div className="flex items-start justify-between gap-3">
+            <h3
+              className="font-barlow-cond font-bold text-[14px] tracking-[0.05em] uppercase leading-tight"
+              style={{ color: "#1A1A1A" }}
+            >
+              {product.name}
+            </h3>
+          </div>
+          <p className="font-barlow hp-body-sm mt-1">
+            {product.price}
+          </p>
+        </Link>
+        <button
+          type="button"
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            addToCart({
+              id: product.id,
+              name: product.name,
+              price: product.price,
+              image: product.image,
+            });
+          }}
+          className="absolute top-4 right-0 font-barlow-cond font-bold text-[12px] tracking-[0.15em] uppercase whitespace-nowrap flex-shrink-0 transition-opacity duration-300 opacity-0 group-hover:opacity-100"
+          style={{ color: "#5C2D8F" }}
+        >
+          Add to Bag
+        </button>
       </div>
     </div>
   );

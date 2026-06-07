@@ -1,6 +1,8 @@
 .waitlist-page {
   min-height: 100vh;
   background: #ffffff;
+  color: #1a1a1a;
+  color-scheme: light;
 }
 
 /* ── Top bar: COMING SOON / hashtags ─────────────────────────────────────── */
@@ -65,22 +67,22 @@
   }
 }
 
-/* ── Offer copy — very bold, big ─────────────────────────────────────────── */
+/* ── Offer copy ─────────────────────────────────────────────────────────── */
 .waitlist-offer {
   color: #1a1a1a;
-  line-height: 0.95;
-  letter-spacing: -0.02em;
+  line-height: 1.25;
+  letter-spacing: 0.04em;
   margin: 0;
 }
 
 .waitlist-offer-line {
   display: block;
-  font-size: clamp(36px, 9.5vw, 72px);
+  font-size: clamp(24px, 4vw, 32px);
 }
 
 @media (min-width: 768px) {
   .waitlist-offer-line {
-    font-size: clamp(48px, 6.5vw, 88px);
+    font-size: clamp(28px, 2.5vw, 36px);
   }
 }
 
@@ -136,8 +138,76 @@
   transition: border-color 0.2s ease;
 }
 
+.waitlist-input::placeholder {
+  color: #9a9a9a;
+}
+
 .waitlist-input:focus {
   border-color: #5c2d8f;
+}
+
+/* ── Phone input with country flag ───────────────────────────────────────── */
+.waitlist-phone.PhoneInput {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  border: 1px solid #e0e0e0;
+  background: #ffffff;
+  transition: border-color 0.2s ease;
+}
+
+.waitlist-phone.PhoneInput:focus-within {
+  border-color: #5c2d8f;
+}
+
+.waitlist-phone .PhoneInputCountry {
+  margin-left: 12px;
+  margin-right: 0;
+  padding-right: 10px;
+  border-right: 1px solid #e0e0e0;
+}
+
+.waitlist-phone-country select option {
+  color: #1a1a1a;
+  background-color: #ffffff;
+}
+
+.waitlist-phone-dial {
+  font-size: 17px;
+  color: #1a1a1a;
+  margin-left: 6px;
+  margin-right: 2px;
+  pointer-events: none;
+  position: relative;
+  z-index: 0;
+  white-space: nowrap;
+}
+
+.waitlist-phone .PhoneInputCountryIcon {
+  width: 24px;
+  height: 16px;
+  box-shadow: none;
+}
+
+.waitlist-phone .PhoneInputCountrySelectArrow {
+  opacity: 0.45;
+  margin-left: 6px;
+}
+
+.waitlist-phone .PhoneInputInput {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  padding: 16px 20px;
+  font-size: 17px;
+  font-family: inherit;
+  background: transparent;
+  color: #1a1a1a;
+}
+
+.waitlist-phone .PhoneInputInput::placeholder {
+  color: #9a9a9a;
 }
 
 .waitlist-submit {

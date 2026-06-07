@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import { GeoPhoneInput, isValidPhoneNumber } from "@/components/geo-phone-input";
 import "../homepage.css";
 import "./waitlist.css";
 
@@ -9,14 +10,20 @@ type FormStatus = "idle" | "success" | "error" | "duplicate";
 
 export default function WaitlistPage() {
   const [fullName, setFullName] = useState("");
-  const [whatsapp, setWhatsapp] = useState("");
+  const [whatsapp, setWhatsapp] = useState<string>("");
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState<FormStatus>("idle");
+  const [phoneError, setPhoneError] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!fullName.trim() || !whatsapp.trim() || !email.trim()) return;
+    if (!isValidPhoneNumber(whatsapp)) {
+      setPhoneError(true);
+      return;
+    }
+    setPhoneError(false);
 
     setLoading(true);
     setStatus("idle");
@@ -92,25 +99,33 @@ export default function WaitlistPage() {
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
                   autoComplete="name"
+                  placeholder="Full Name"
                   required
                   className="waitlist-input font-barlow"
                 />
               </label>
 
-              <label className="waitlist-field">
+              <label className="waitlist-field" htmlFor="waitlist-whatsapp">
                 <span className="waitlist-field-label font-barlow-cond font-bold uppercase">
                   WhatsApp:
                 </span>
-                <input
-                  type="tel"
+                <GeoPhoneInput
+                  id="waitlist-whatsapp"
                   value={whatsapp}
-                  onChange={(e) => setWhatsapp(e.target.value)}
-                  autoComplete="tel"
-                  placeholder="+234..."
-                  required
-                  className="waitlist-input font-barlow"
+                  onChange={(v) => {
+                    setWhatsapp(v);
+                    setPhoneError(false);
+                  }}
+                  placeholder="WhatsApp Number"
+                  className="waitlist-phone font-barlow"
                 />
               </label>
+
+              {phoneError && (
+                <p className="font-barlow waitlist-form-note waitlist-form-note--error">
+                  Please enter a valid WhatsApp number.
+                </p>
+              )}
 
               <label className="waitlist-field">
                 <span className="waitlist-field-label font-barlow-cond font-bold uppercase">
@@ -121,6 +136,7 @@ export default function WaitlistPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   autoComplete="email"
+                  placeholder="Email Address"
                   required
                   className="waitlist-input font-barlow"
                 />

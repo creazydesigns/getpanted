@@ -2,12 +2,9 @@ import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 import { ADMIN_EMAIL } from "@/lib/admin/constants";
 
-export async function updateSession(request: NextRequest) {
-  const path = request.nextUrl.pathname;
-  if (!path.startsWith("/admin") && !path.startsWith("/api/admin")) {
-    return NextResponse.next({ request });
-  }
+const ACCOUNT_PUBLIC = ["/account/login", "/account/signup"];
 
+export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request });
 
   const supabase = createServerClient(
@@ -33,44 +30,62 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const isAdminRoute = path.startsWith("/admin");
-  const isLogin = path === "/admin/login";
-  const isAdminApi = path.startsWith("/api/admin");
+  const path = request.nextUrl.pathname;
 
-  if (!isAdminRoute && !isAdminApi) {
-    return supabaseResponse;
-  }
+  // ── Admin routes ────────────────────────────────────────────────────────────
+  if (path.startsWith("/admin") || path.startsWith("/api/admin")) {
+    const isAdminUser = user?.email?.toLowerCase() === ADMIN_EMAIL.toLowerCase();
+    const isLogin = path === "/admin/login";
+    const isAdminApi = path.startsWith("/api/admin");
 
-  const isAdminUser =
-    user?.email?.toLowerCase() === ADMIN_EMAIL.toLowerCase();
-
-  if (isAdminApi) {
-    if (!isAdminUser) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    if (isAdminApi) {
+      if (!isAdminUser) {
+        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      }
+      return supabaseResponse;
     }
-    return supabaseResponse;
-  }
 
-  if (path === "/admin") {
-    const url = request.nextUrl.clone();
-    url.pathname = isAdminUser ? "/admin/dashboard" : "/admin/login";
-    return NextResponse.redirect(url);
-  }
-
-  if (isLogin) {
-    if (isAdminUser) {
+    if (path === "/admin") {
       const url = request.nextUrl.clone();
-      url.pathname = "/admin/dashboard";
+      url.pathname = isAdminUser ? "/admin/dashboard" : "/admin/login";
       return NextResponse.redirect(url);
     }
+
+    if (isLogin) {
+      if (isAdminUser) {
+        const url = request.nextUrl.clone();
+        url.pathname = "/admin/dashboard";
+        return NextResponse.redirect(url);
+      }
+      return supabaseResponse;
+    }
+
+    if (!isAdminUser) {
+      const url = request.nextUrl.clone();
+      url.pathname = "/admin/login";
+      url.searchParams.set("next", path);
+      return NextResponse.redirect(url);
+    }
+
     return supabaseResponse;
   }
 
-  if (!isAdminUser) {
-    const url = request.nextUrl.clone();
-    url.pathname = "/admin/login";
-    url.searchParams.set("next", path);
-    return NextResponse.redirect(url);
+  // ── Customer account routes ─────────────────────────────────────────────────
+  if (path.startsWith("/account")) {
+    const isPublic = ACCOUNT_PUBLIC.includes(path);
+
+    if (!isPublic && !user) {
+      const url = request.nextUrl.clone();
+      url.pathname = "/account/login";
+      url.searchParams.set("next", path);
+      return NextResponse.redirect(url);
+    }
+
+    if (isPublic && user) {
+      const url = request.nextUrl.clone();
+      url.pathname = "/account";
+      return NextResponse.redirect(url);
+    }
   }
 
   return supabaseResponse;

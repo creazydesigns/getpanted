@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useShop } from "../context/shop-context";
+import { useAuth } from "../context/auth-context";
 import { AnnouncementBar } from "./announcement-bar";
 
 const NAV_LINKS = [
@@ -17,6 +18,7 @@ const NAV_LINKS = [
 export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const { cartCount, wishlistCount, openMiniCart } = useShop();
+  const { user, loading: authLoading } = useAuth();
   const pathname = usePathname();
 
   useEffect(() => {
@@ -83,6 +85,19 @@ export function Navbar() {
             >
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                 <circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" />
+              </svg>
+            </Link>
+
+            {/* Account */}
+            <Link
+              href={user ? "/account" : "/account/login"}
+              aria-label={user ? "My account" : "Sign in"}
+              className="transition-opacity duration-200 hover:opacity-60"
+              style={{ color: "#1A1A1A" }}
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                <circle cx="12" cy="7" r="4" />
               </svg>
             </Link>
 
@@ -191,6 +206,20 @@ export function Navbar() {
                     </Link>
                   </li>
                 ))}
+                <li>
+                  <Link
+                    href={user ? "/account" : "/account/login"}
+                    className="block py-3 font-barlow-cond font-bold uppercase transition-colors duration-200"
+                    style={{
+                      fontSize: "13px",
+                      letterSpacing: "0.12em",
+                      borderBottom: "1px solid #F0F0F0",
+                      color: pathname?.startsWith("/account") ? "#5C2D8F" : "#6B6B6B",
+                    }}
+                  >
+                    {authLoading ? "Account" : user ? "My Account" : "Sign In"}
+                  </Link>
+                </li>
               </ul>
             </nav>
             <div className="mt-auto">

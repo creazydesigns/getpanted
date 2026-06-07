@@ -57,7 +57,23 @@ Useful columns: `email`, `first_name` (full name from the form), `whatsapp`, `su
 | `migrations/001_initial_schema.sql` | Products, orders, bespoke, subscribers, cart + seed products |
 | `migrations/002_add_subscriber_source.sql` | `source` column |
 | `migrations/003_add_subscriber_whatsapp.sql` | `whatsapp` column |
+| `migrations/004_admin_dashboard.sql` | Admin CMS fields, site content, storage |
+| `migrations/005_customer_accounts.sql` | Customer profiles, wishlist, Paystack order fields |
+| `migrations/006_support_tickets.sql` | Client area support tickets |
+| `migrations/007_welcome_email_sent.sql` | Account welcome email tracking |
 | `waitlist_setup.sql` | Subscribers table only (includes source + whatsapp) |
+
+## Customer accounts & checkout
+
+1. Run migration `005_customer_accounts.sql` after migrations `001`–`004`.
+2. In Supabase **Authentication** → **Providers**, enable **Email** (password sign-up), **Google**, and **Facebook**. Add OAuth client IDs/secrets from each provider console.
+3. Under **Authentication** → **URL Configuration**, set **Site URL** to your production URL and add redirect URLs:
+   - `http://localhost:3000/auth/callback`
+   - `https://your-domain.com/auth/callback`
+4. Add `PAYSTACK_SECRET_KEY` to `.env.local` (from [Paystack Dashboard](https://dashboard.paystack.com) → Settings → API Keys). Use test keys locally.
+5. In Paystack, set the webhook URL to `https://your-domain.com/api/paystack/webhook` (production only).
+
+Customers can sign up with email/password or Google/Facebook at `/account/signup`. Guest checkout remains available at `/checkout` — orders are linked to `user_id` when signed in. Payments redirect to Paystack and return to `/checkout/complete`.
 
 ## Admin dashboard (`/admin`)
 
@@ -69,4 +85,17 @@ The admin CMS uses Supabase Auth cookies, the service role for data mutations, a
 
 ## Production (Vercel etc.)
 
-Add the same three Supabase variables (and `RESEND_API_KEY` if you want emails) in your host’s environment settings, then redeploy.
+Add the same environment variables from [`.env.example`](../.env.example) in your host’s settings, then redeploy.
+
+For the full step-by-step guide (Supabase, admin, client accounts, Paystack, Resend), see **[`SETUP.md`](../SETUP.md)** in the project root.
+
+### Resend emails (summary)
+
+Configure `RESEND_API_KEY` and verify your domain at [resend.com](https://resend.com). Set `RESEND_FROM_EMAIL` to a verified address (e.g. `GetPanted <noreply@getpanted.com>`).
+
+| Event | Customer email |
+|-------|------------------|
+| Waitlist signup | Welcome to the Clan |
+| New account | Your account is ready |
+| Support ticket | Acknowledgment + ticket number |
+| Paid order | Order confirmation |

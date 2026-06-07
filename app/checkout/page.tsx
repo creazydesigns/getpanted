@@ -3,8 +3,8 @@
 import { FormEvent, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useCartStore, selectCartCount, selectCartSubtotal } from "@/store/cartStore";
+import { useAuth } from "@/app/context/auth-context";
 import { PageFooter } from "../components/page-footer";
 import { Navbar } from "../components/navbar";
 
@@ -24,13 +24,19 @@ const inputStyle: React.CSSProperties = {
 };
 
 export default function CheckoutPage() {
-  const router   = useRouter();
+  const { user, profile } = useAuth();
   const items    = useCartStore((s) => s.items);
-  const clearCart = useCartStore((s) => s.clearCart);
   const cartCount    = useCartStore(selectCartCount);
   const cartSubtotal = useCartStore(selectCartSubtotal);
   const shipping     = cartSubtotal >= 50000 ? 0 : cartCount > 0 ? 3500 : 0;
   const total        = cartSubtotal + shipping;
+
+  const defaultFirst =
+    profile?.first_name ?? (user?.user_metadata?.first_name as string | undefined) ?? "";
+  const defaultLast =
+    profile?.last_name ?? (user?.user_metadata?.last_name as string | undefined) ?? "";
+  const defaultEmail = user?.email ?? "";
+  const defaultPhone = profile?.phone ?? "";
 
   const [loading, setLoading] = useState(false);
   const [error,   setError]   = useState<string | null>(null);
@@ -61,8 +67,7 @@ export default function CheckoutPage() {
     }));
 
     try {
-      // 1. Save order to Supabase via API
-      const res = await fetch("/api/orders", {
+      const res = await fetch("/api/checkout/pay", {
         method:  "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -71,38 +76,19 @@ export default function CheckoutPage() {
           customer_phone:   phone,
           shipping_address: { street, city, state, country },
           items:            orderItems,
+          subtotal:         cartSubtotal,
+          shipping_amount:  shipping,
           total_amount:     total,
-          notes,
+          customer_notes:   notes || null,
         }),
       });
 
-      const json = await res.json() as { orderId?: string; error?: string };
-      if (!res.ok) throw new Error(json.error ?? "Failed to place order");
+      const json = await res.json() as { authorizationUrl?: string; error?: string };
+      if (!res.ok) throw new Error(json.error ?? "Failed to start payment");
 
-      const orderId = json.orderId!;
+      if (!json.authorizationUrl) throw new Error("Payment link unavailable");
 
-      // 2. Send confirmation email (fire-and-forget)
-      fetch("/api/send-order-confirmation", {
-        method:  "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          customerEmail: email,
-          customerName:  `${firstName} ${lastName}`,
-          orderId,
-          items: orderItems.map((i) => ({
-            name:     i.name,
-            size:     i.size,
-            quantity: i.quantity,
-            price:    formatNaira(i.price),
-          })),
-          totalAmount:     formatNaira(total),
-          shippingAddress: { street, city, state, country },
-        }),
-      }).catch(() => {});
-
-      // 3. Clear cart & navigate
-      clearCart();
-      router.push(`/order-confirmation?id=${orderId}&name=${encodeURIComponent(firstName)}`);
+      window.location.href = json.authorizationUrl;
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
       setLoading(false);
@@ -147,16 +133,26 @@ export default function CheckoutPage() {
 
           {/* ── Left: Customer form ─────────────────────────────────────────── */}
           <form onSubmit={onSubmit} className="space-y-8">
+            {!user && (
+              <p className="font-barlow" style={{ fontSize: 13, color: "#6B6B6B" }}>
+                Checking out as a guest.{" "}
+                <Link href="/account/login?next=/checkout" style={{ color: "#5C2D8F" }}>
+                  Sign in
+                </Link>{" "}
+                to save your details and track orders.
+              </p>
+            )}
+
             {/* Contact */}
             <fieldset style={{ border: "1px solid #F0F0F0", padding: "32px" }}>
               <legend className="font-barlow-cond font-bold uppercase px-2" style={{ fontSize: "13px", letterSpacing: "0.14em", color: "#1A1A1A" }}>
                 Contact Details
               </legend>
               <div className="grid gap-4 md:grid-cols-2 mt-4">
-                <input required name="firstName" placeholder="First name" style={inputStyle} />
-                <input required name="lastName"  placeholder="Last name"  style={inputStyle} />
-                <input required name="email" type="email" placeholder="Email address" style={{ ...inputStyle, gridColumn: "1 / -1" }} />
-                <input required name="phone" placeholder="Phone number"  style={{ ...inputStyle, gridColumn: "1 / -1" }} />
+                <input required name="firstName" placeholder="First name" defaultValue={defaultFirst} style={inputStyle} />
+                <input required name="lastName"  placeholder="Last name"  defaultValue={defaultLast} style={inputStyle} />
+                <input required name="email" type="email" placeholder="Email address" defaultValue={defaultEmail} style={{ ...inputStyle, gridColumn: "1 / -1" }} />
+                <input required name="phone" placeholder="Phone number" defaultValue={defaultPhone} style={{ ...inputStyle, gridColumn: "1 / -1" }} />
               </div>
             </fieldset>
 
@@ -199,8 +195,11 @@ export default function CheckoutPage() {
               className="w-full font-barlow-cond font-bold uppercase text-white transition-opacity hover:opacity-80 disabled:opacity-50"
               style={{ fontSize: "14px", letterSpacing: "0.15em", padding: "18px", background: "#5C2D8F" }}
             >
-              {loading ? "Placing Order..." : "Place Order"}
+              {loading ? "Redirecting to Paystack…" : `Pay ${formatNaira(total)} with Paystack`}
             </button>
+            <p className="font-barlow text-center" style={{ fontSize: 12, color: "#6B6B6B" }}>
+              Secure payment via Paystack. Card, bank transfer, and USSD accepted.
+            </p>
           </form>
 
           {/* ── Right: Order summary ─────────────────────────────────────────── */}

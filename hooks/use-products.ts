@@ -8,11 +8,31 @@ export function useProducts() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/products")
-      .then((r) => r.json())
-      .then((d) => setProducts(d.products ?? []))
-      .catch(() => setProducts([]))
-      .finally(() => setLoading(false));
+    let cancelled = false;
+
+    async function load() {
+      for (let attempt = 0; attempt < 2; attempt++) {
+        try {
+          const r = await fetch("/api/products");
+          if (!r.ok) throw new Error(`HTTP ${r.status}`);
+          const d = await r.json();
+          if (!cancelled) setProducts(d.products ?? []);
+          return;
+        } catch (err) {
+          console.error("[useProducts]", err);
+          if (attempt === 0) await new Promise((resolve) => setTimeout(resolve, 800));
+        }
+      }
+      if (!cancelled) setProducts([]);
+    }
+
+    load().finally(() => {
+      if (!cancelled) setLoading(false);
+    });
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   return { products, loading };

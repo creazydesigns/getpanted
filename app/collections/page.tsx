@@ -30,7 +30,6 @@ function ProductCard({ product }: { product: StoreProduct }) {
 
   return (
     <div
-      data-reveal="up"
       className="group cursor-pointer"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}

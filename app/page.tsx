@@ -27,16 +27,12 @@ const CATEGORIES: Category[] = [
 ];
 
 // ── Product Card ──────────────────────────────────────────────────────────────
-function ProductCard({ product, delay = 0 }: { product: StoreProduct; delay?: number }) {
+function ProductCard({ product }: { product: StoreProduct }) {
   const { addToCart, isWishlisted, toggleWishlist } = useShop();
   const wishlisted = isWishlisted(product.id);
 
   return (
-    <div
-      data-reveal="up"
-      data-delay={delay > 0 ? String(delay) : undefined}
-      className="group cursor-pointer"
-    >
+    <div className="group cursor-pointer">
       {/* Image container */}
       <div className="relative overflow-hidden" style={{ aspectRatio: "3/4" }}>
         {product.image ? (
@@ -322,8 +318,8 @@ export default function HomePage() {
           {productsLoading ? (
             <p className="font-barlow col-span-full text-center py-12" style={{ color: "#6B6B6B" }}>Loading styles…</p>
           ) : (
-            featuredProducts.map((p, i) => (
-              <ProductCard key={p.id} product={p} delay={i + 1} />
+            featuredProducts.map((p) => (
+              <ProductCard key={p.id} product={p} />
             ))
           )}
         </div>

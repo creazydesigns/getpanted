@@ -13,7 +13,7 @@ import { useEffect } from "react";
  */
 export function useScrollReveal() {
   useEffect(() => {
-    const els = document.querySelectorAll<Element>("[data-reveal]");
+    const observed = new WeakSet<Element>();
 
     const obs = new IntersectionObserver(
       (entries) => {
@@ -27,7 +27,36 @@ export function useScrollReveal() {
       { threshold: 0.1, rootMargin: "0px 0px -60px 0px" }
     );
 
-    els.forEach((el) => obs.observe(el));
-    return () => obs.disconnect();
+    const observe = (el: Element) => {
+      if (observed.has(el) || el.classList.contains("in-view")) return;
+      observed.add(el);
+      obs.observe(el);
+    };
+
+    document.querySelectorAll("[data-reveal]").forEach(observe);
+
+    // Product grids load after fetch — observe [data-reveal] nodes added later.
+    const mo = new MutationObserver((mutations) => {
+      for (const mutation of mutations) {
+        mutation.addedNodes.forEach((node) => {
+          if (!(node instanceof Element)) return;
+          if (node.matches("[data-reveal]")) observe(node);
+          node.querySelectorAll("[data-reveal]").forEach(observe);
+        });
+      }
+    });
+
+    mo.observe(document.body, { childList: true, subtree: true });
+
+    const rescan = () => {
+      document.querySelectorAll("[data-reveal]:not(.in-view)").forEach(observe);
+    };
+    const timers = [150, 800, 2000].map((ms) => setTimeout(rescan, ms));
+
+    return () => {
+      timers.forEach(clearTimeout);
+      obs.disconnect();
+      mo.disconnect();
+    };
   }, []);
 }

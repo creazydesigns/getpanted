@@ -1,5 +1,6 @@
 import { buildSiteKnowledge } from "./site-knowledge";
-import { CATALOG } from "./catalog";
+import { fetchStoreProducts } from "./products/fetch";
+import type { StoreProduct } from "./products/types";
 
 export interface TaraMessage {
   role: "user" | "assistant";
@@ -21,9 +22,12 @@ export interface TaraReply {
   escalationReason?: string;
 }
 
-const SITE_KNOWLEDGE = buildSiteKnowledge();
+const SITE_KNOWLEDGE_FALLBACK = buildSiteKnowledge([]);
 
-export const TARA_SYSTEM_PROMPT = `You are Tara, the friendly AI shopping assistant for GetPanted — a Lagos-born women's trousers brand.
+function buildTaraSystemPrompt(products: StoreProduct[]): string {
+  const knowledge = products.length ? buildSiteKnowledge(products) : SITE_KNOWLEDGE_FALLBACK;
+
+  return `You are Tara, the friendly AI shopping assistant for GetPanted — a Lagos-born women's trousers brand.
 
 Personality: warm, confident, concise, and helpful — like a knowledgeable stylist at a premium boutique. Use plain language. Keep replies to 2–4 short paragraphs unless sizing or product comparison needs more detail.
 
@@ -41,7 +45,7 @@ When you CANNOT answer confidently (missing policy detail, order-specific issue,
 Response format: reply with valid JSON only, no markdown fences:
 {
   "message": "your reply to the customer",
-  "suggestedProductIds": ["1", "2"],
+  "suggestedProductIds": ["uuid-or-id", "2"],
   "needsEscalation": false,
   "escalationReason": "optional short reason for admin"
 }
@@ -53,12 +57,13 @@ Rules:
 - Prices are in Nigerian Naira (₦).
 
 SITE KNOWLEDGE:
-${SITE_KNOWLEDGE}`;
+${knowledge}`;
+}
 
-function mapSuggestedProducts(ids: string[]): TaraSuggestedProduct[] {
+function mapSuggestedProducts(ids: string[], catalog: StoreProduct[]): TaraSuggestedProduct[] {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://getpanted.com";
   return ids
-    .map((id) => CATALOG.find((p) => p.id === id))
+    .map((id) => catalog.find((p) => p.id === id))
     .filter(Boolean)
     .slice(0, 3)
     .map((p) => ({
@@ -70,7 +75,7 @@ function mapSuggestedProducts(ids: string[]): TaraSuggestedProduct[] {
     }));
 }
 
-function parseTaraJson(raw: string): TaraReply | null {
+function parseTaraJson(raw: string, catalog: StoreProduct[]): TaraReply | null {
   try {
     const cleaned = raw.replace(/^```json\s*/i, "").replace(/```\s*$/i, "").trim();
     const parsed = JSON.parse(cleaned) as {
@@ -82,7 +87,7 @@ function parseTaraJson(raw: string): TaraReply | null {
     if (!parsed.message) return null;
     return {
       message: parsed.message,
-      suggestedProducts: mapSuggestedProducts(parsed.suggestedProductIds ?? []),
+      suggestedProducts: mapSuggestedProducts(parsed.suggestedProductIds ?? [], catalog),
       needsEscalation: Boolean(parsed.needsEscalation),
       escalationReason: parsed.escalationReason,
     };
@@ -91,7 +96,8 @@ function parseTaraJson(raw: string): TaraReply | null {
   }
 }
 
-function fallbackReply(userMessage: string): TaraReply {
+function fallbackReply(userMessage: string, catalog: StoreProduct[]): TaraReply {
+  const defaultIds = catalog.slice(0, 3).map((p) => p.id);
   const lower = userMessage.toLowerCase();
   const keywords = ["ship", "deliver", "size", "fit", "return", "exchange", "order", "track", "payment", "wholesale", "complaint"];
   const needsEscalation = keywords.some((k) => lower.includes(k));
@@ -100,7 +106,7 @@ function fallbackReply(userMessage: string): TaraReply {
     return {
       message:
         "Shipping is free on orders of ₦50,000 and above. For smaller orders, the standard fee is ₦3,500. After your order is confirmed, delivery typically takes 5–7 business days. Browse our collections or tell me what occasion you're dressing for and I'll suggest pieces.",
-      suggestedProducts: mapSuggestedProducts(["1", "2", "4"]),
+      suggestedProducts: mapSuggestedProducts(defaultIds, catalog),
       needsEscalation: false,
     };
   }
@@ -118,7 +124,7 @@ function fallbackReply(userMessage: string): TaraReply {
     message: needsEscalation
       ? "That's a great question — I'd like our team to give you the most accurate answer. I've flagged this for them. You can also reach us on WhatsApp or email for a faster response."
       : "Hi, I'm Tara — your GetPanted stylist. I can help you find trousers by occasion, suggest pieces from our PRESENCE collection, explain sizing, or talk through made-to-order options. What are you looking for today?",
-    suggestedProducts: mapSuggestedProducts(["1", "2", "3"]),
+    suggestedProducts: mapSuggestedProducts(defaultIds, catalog),
     needsEscalation,
     escalationReason: needsEscalation ? "Question needs human follow-up (AI key not configured or complex query)" : undefined,
   };
@@ -128,16 +134,17 @@ export async function generateTaraReply(
   messages: TaraMessage[],
   latestUserMessage: string
 ): Promise<TaraReply> {
+  const catalog = await fetchStoreProducts();
   const apiKey = process.env.OPENAI_API_KEY;
   const model = process.env.TARA_MODEL ?? "gpt-4o-mini";
 
   if (!apiKey) {
     console.warn("[tara] OPENAI_API_KEY not set — using fallback responses");
-    return fallbackReply(latestUserMessage);
+    return fallbackReply(latestUserMessage, catalog);
   }
 
   const chatMessages = [
-    { role: "system" as const, content: TARA_SYSTEM_PROMPT },
+    { role: "system" as const, content: buildTaraSystemPrompt(catalog) },
     ...messages.slice(-10).map((m) => ({ role: m.role, content: m.content })),
   ];
 
@@ -160,14 +167,14 @@ export async function generateTaraReply(
     if (!res.ok) {
       const err = await res.text();
       console.error("[tara] OpenAI error:", err);
-      return fallbackReply(latestUserMessage);
+      return fallbackReply(latestUserMessage, catalog);
     }
 
     const data = (await res.json()) as {
       choices?: { message?: { content?: string } }[];
     };
     const content = data.choices?.[0]?.message?.content ?? "";
-    const parsed = parseTaraJson(content);
+    const parsed = parseTaraJson(content, catalog);
     if (parsed) return parsed;
 
     return {
@@ -177,6 +184,6 @@ export async function generateTaraReply(
     };
   } catch (err) {
     console.error("[tara]", err);
-    return fallbackReply(latestUserMessage);
+    return fallbackReply(latestUserMessage, catalog);
   }
 }

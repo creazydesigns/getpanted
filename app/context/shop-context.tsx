@@ -6,7 +6,7 @@ import type { CartItem as ZustandCartItem } from "../../store/cartStore";
 
 // ── Legacy types (kept for backward-compat with existing components) ───────────
 export interface ShopProduct {
-  id: number;
+  id: number | string;
   name: string;
   price: string;  // formatted e.g. "₦45,000"
   image?: string;
@@ -58,8 +58,9 @@ function legacyToZustand(product: ShopProduct, quantity: number): ZustandCartIte
 }
 
 function zustandToLegacy(item: ZustandCartItem): CartItem {
+  const numericId = Number(item.id);
   return {
-    id: Number(item.id) || 0,
+    id: Number.isNaN(numericId) ? 0 : numericId,
     name: item.name,
     price: item.price,
     image: item.image,
@@ -79,10 +80,10 @@ interface ShopContextValue {
   wishlistCount: number;
   cartSubtotal: number;
   addToCart: (product: ShopProduct, quantity?: number) => void;
-  removeFromCart: (id: number, size?: string) => void;
-  updateCartQuantity: (id: number, quantity: number, size?: string) => void;
+  removeFromCart: (id: number | string, size?: string) => void;
+  updateCartQuantity: (id: number | string, quantity: number, size?: string) => void;
   clearCart: () => void;
-  isWishlisted: (id: number) => boolean;
+  isWishlisted: (id: number | string) => boolean;
   toggleWishlist: (product: ShopProduct) => void;
   dismissToast: (id: string) => void;
   openMiniCart: () => void;
@@ -137,26 +138,27 @@ export function ShopProvider({ children }: { children: React.ReactNode }) {
     showToast(`${product.name} added to cart`);
   };
 
-  const removeFromCart = (id: number, size?: string) => {
+  const removeFromCart = (id: number | string, size?: string) => {
     const found = zustandItems.find((i) => i.id === String(id) && i.size === (size ?? ""));
     if (found) showToast(`${found.name} removed from cart`);
     zustandRemove(String(id), size ?? "");
   };
 
-  const updateCartQuantity = (id: number, quantity: number, size?: string) => {
+  const updateCartQuantity = (id: number | string, quantity: number, size?: string) => {
     zustandUpdate(String(id), size ?? "", quantity);
   };
 
   const clearCart = () => zustandClear();
 
   // ── Wishlist ───────────────────────────────────────────────────────────────
-  const isWishlisted = (id: number) => wishlistItems.some((i) => i.id === id);
+  const isWishlisted = (id: number | string) =>
+    wishlistItems.some((i) => String(i.id) === String(id));
 
   const toggleWishlist = (product: ShopProduct) => {
     setWishlistItems((prev) => {
-      if (prev.some((i) => i.id === product.id)) {
+      if (prev.some((i) => String(i.id) === String(product.id))) {
         showToast(`${product.name} removed from wishlist`);
-        const next = prev.filter((i) => i.id !== product.id);
+        const next = prev.filter((i) => String(i.id) !== String(product.id));
         localStorage.setItem(WISHLIST_STORAGE_KEY, JSON.stringify(next));
         return next;
       }

@@ -7,19 +7,11 @@ import { useShop } from "../context/shop-context";
 import { useScrollReveal } from "../hooks/use-scroll-reveal";
 import { PageFooter } from "../components/page-footer";
 import { useSiteContent } from "@/hooks/use-site-content";
+import { useProducts } from "@/hooks/use-products";
+import type { StoreProduct } from "@/lib/products/types";
+import type { ProductFilterTag } from "@/lib/products/types";
 
-type FilterKey = "all" | "solid" | "new";
-
-interface Product {
-  id: number;
-  name: string;
-  price: string;
-  image?: string;
-  category: FilterKey[];
-  colors: string[];
-  badge?: string;
-  sizes: string[];
-}
+type FilterKey = "all" | ProductFilterTag;
 
 const FILTERS: { key: FilterKey; label: string }[] = [
   { key: "all",   label: "All Styles" },
@@ -29,23 +21,8 @@ const FILTERS: { key: FilterKey; label: string }[] = [
 
 const SORT_OPTIONS = ["Featured", "Newest First", "Price: Low to High", "Price: High to Low"];
 
-const PRODUCTS: Product[] = [
-  { id: 1,  name: "The Royal Pleat",  price: "₦45,000", image: "/images/gp-royal-pleat.png",       category: ["solid"],       colors: ["#6B2D8B"], badge: "Bestseller", sizes: ["XS","S","M","L","XL","2XL"] },
-  { id: 2,  name: "Onyx Statement",   price: "₦38,000", image: "/images/gp-onyx-statement.png",    category: ["solid","new"], colors: ["#1a1a1a"], badge: "New",        sizes: ["XS","S","M","L","XL","2XL","3XL"] },
-  { id: 3,  name: "Ivory Sovereign",  price: "₦42,000", image: "/images/gp-ivory-sovereign.png",   category: ["solid","new"], colors: ["#f5f0e8"], badge: "New",        sizes: ["S","M","L","XL"] },
-  { id: 4,  name: "Sahara Wide",      price: "₦36,000", image: "/images/gp-sahara-wide.png",       category: ["solid","new"], colors: ["#c4a882"], badge: "New",        sizes: ["XS","S","M","L","XL","2XL"] },
-  { id: 5,  name: "Petal Pleat",      price: "₦40,000", image: "/images/gp-petal-pleat.png",       category: ["solid","new"], colors: ["#f4a7b9"], badge: "New",        sizes: ["XS","S","M","L","XL","2XL"] },
-  { id: 6,  name: "Eden Wide",        price: "₦40,000", image: "/images/gp-eden-wide.png",         category: ["solid","new"], colors: ["#4CAF50"], badge: "New",        sizes: ["S","M","L","XL","2XL"] },
-  { id: 7,  name: "Solar Statement",  price: "₦38,000", image: "/images/gp-solar-statement.png",   category: ["solid","new"], colors: ["#FFC107"], badge: "New",        sizes: ["XS","S","M","L","XL"] },
-  { id: 8,  name: "Nude Palazzo",     price: "₦44,000", image: "/images/gp-nude-palazzo.png",      category: ["solid"],       colors: ["#d4b896"],                      sizes: ["S","M","L","XL","2XL"] },
-  { id: 9,  name: "Cacao Wide",       price: "₦44,000", image: "/images/gp-cacao-wide.png",        category: ["solid"],       colors: ["#3E1C0D"],                      sizes: ["XS","S","M","L","XL"] },
-  { id: 10, name: "Blush Ultra Wide", price: "₦46,000", image: "/images/gp-blush-ultra-wide.png",  category: ["solid","new"], colors: ["#E8A0A0"], badge: "New",        sizes: ["S","M","L","XL","2XL","3XL"] },
-  { id: 11, name: "Peach Sovereign",  price: "₦42,000", image: "/images/gp-peach-sovereign.png",   category: ["solid","new"], colors: ["#FFAB76"],                      sizes: ["XS","S","M","L","XL"] },
-  { id: 12, name: "Lemon Luxe",       price: "₦40,000", image: "/images/gp-lemon-luxe.png",        category: ["solid","new"], colors: ["#F9F06B"], badge: "New",        sizes: ["S","M","L","XL","2XL"] },
-];
-
 // ── Product Card ──────────────────────────────────────────────────────────────
-function ProductCard({ product }: { product: Product }) {
+function ProductCard({ product }: { product: StoreProduct }) {
   const [hovered, setHovered] = useState(false);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const { addToCart, isWishlisted, toggleWishlist } = useShop();
@@ -136,6 +113,7 @@ function ProductCard({ product }: { product: Product }) {
 // ── Main Page ─────────────────────────────────────────────────────────────────
 export default function CollectionsPage() {
   const { get } = useSiteContent();
+  const { products, loading } = useProducts();
   const [activeFilter, setActiveFilter] = useState<FilterKey>("all");
   const [sortBy, setSortBy] = useState("Featured");
   const [sortOpen, setSortOpen] = useState(false);
@@ -152,15 +130,16 @@ export default function CollectionsPage() {
   }, []);
 
   const filteredProducts = useMemo(() => {
-    const base = PRODUCTS.filter((p) => activeFilter === "all" || p.category.includes(activeFilter));
-    const getPrice = (price: string) => Number(price.replace(/[^\d]/g, ""));
+    const base = products.filter(
+      (p) => activeFilter === "all" || p.categories.includes(activeFilter)
+    );
     switch (sortBy) {
-      case "Newest First":       return [...base].sort((a, b) => b.id - a.id);
-      case "Price: Low to High": return [...base].sort((a, b) => getPrice(a.price) - getPrice(b.price));
-      case "Price: High to Low": return [...base].sort((a, b) => getPrice(b.price) - getPrice(a.price));
+      case "Newest First":       return [...base].sort((a, b) => b.sortKey - a.sortKey);
+      case "Price: Low to High": return [...base].sort((a, b) => a.priceRaw - b.priceRaw);
+      case "Price: High to Low": return [...base].sort((a, b) => b.priceRaw - a.priceRaw);
       default: return base;
     }
-  }, [activeFilter, sortBy]);
+  }, [products, activeFilter, sortBy]);
 
   useEffect(() => { setVisibleCount(8); }, [activeFilter, sortBy]);
 
@@ -280,7 +259,11 @@ export default function CollectionsPage() {
 
           {/* Grid */}
           <div className="grid grid-cols-2 md:grid-cols-4" style={{ gap: "2px" }}>
-            {visibleProducts.map((p) => <ProductCard key={p.id} product={p} />)}
+            {loading ? (
+              <p className="font-barlow col-span-full text-center py-16" style={{ color: "#6B6B6B" }}>Loading collection…</p>
+            ) : (
+              visibleProducts.map((p) => <ProductCard key={p.id} product={p} />)
+            )}
           </div>
 
           {filteredProducts.length === 0 && (

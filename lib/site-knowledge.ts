@@ -1,4 +1,4 @@
-import { CATALOG } from "./catalog";
+import type { StoreProduct } from "@/lib/products/types";
 import { ADMIN_EMAIL, SUPPORT_EMAIL, WHATSAPP_URL, SITE_URL } from "./resend";
 
 const SIZE_CHART = [
@@ -10,11 +10,13 @@ const SIZE_CHART = [
   { size: "2XL", waist: "85–90", hips: "111–116", length: "105" },
 ];
 
-export function buildSiteKnowledge(): string {
-  const products = CATALOG.map(
-    (p) =>
-      `- ID ${p.id}: ${p.name} — ${p.price}${p.badge ? ` (${p.badge})` : ""}. Sizes: ${p.sizes.join(", ")}. ${p.description} Product URL: ${SITE_URL}/products/${p.id}`
-  ).join("\n");
+export function buildSiteKnowledge(products: StoreProduct[]): string {
+  const productLines = products
+    .map(
+      (p) =>
+        `- ID ${p.id}: ${p.name} — ${p.price}${p.badge ? ` (${p.badge})` : ""}. Sizes: ${p.sizes.join(", ")}. ${p.description} Product URL: ${SITE_URL}/products/${p.id}`
+    )
+    .join("\n");
 
   const sizes = SIZE_CHART.map(
     (r) => `- ${r.size}: waist ${r.waist} cm, hips ${r.hips} cm, length ${r.length} cm`
@@ -42,8 +44,8 @@ Site pages
 - Cart: ${SITE_URL}/cart
 - Checkout: ${SITE_URL}/checkout
 
-Product catalog (${CATALOG.length} pieces)
-${products}
+Product catalog (${products.length} pieces)
+${productLines}
 
 Shop by style (collections framing)
 - Minimal Essentials: clean everyday trousers

@@ -6,15 +6,16 @@ import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useCartStore } from "@/store/cartStore";
 import { useShop } from "@/app/context/shop-context";
+import { useProduct, useProducts } from "@/hooks/use-products";
 import { PageFooter } from "@/app/components/page-footer";
 import { Navbar } from "@/app/components/navbar";
-import { CATALOG } from "@/lib/catalog";
 
 export default function ProductDetailPage() {
   const params   = useParams();
   const router   = useRouter();
   const id       = Array.isArray(params.id) ? params.id[0] : params.id;
-  const product  = CATALOG.find((p) => p.id === id);
+  const { product, loading } = useProduct(id);
+  const { products } = useProducts();
 
   const [selectedSize,  setSelectedSize]  = useState<string | null>(null);
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
@@ -26,13 +27,22 @@ export default function ProductDetailPage() {
 
   // Suggested products from same category
   const suggested = product
-    ? CATALOG.filter((p) => p.id !== product.id && p.category === product.category).slice(0, 4)
+    ? products.filter((p) => p.id !== product.id && p.category === product.category).slice(0, 4)
     : [];
 
   useEffect(() => {
     if (product && product.colors.length > 0) setSelectedColor(product.colors[0]);
     if (product && product.sizes.length > 0)  setSelectedSize(product.sizes[2] ?? product.sizes[0]);
   }, [product]);
+
+  if (loading) {
+    return (
+      <div className="font-barlow min-h-screen flex items-center justify-center" style={{ background: "#FFFFFF" }}>
+        <Navbar />
+        <p style={{ paddingTop: 120, color: "#6B6B6B" }}>Loading product…</p>
+      </div>
+    );
+  }
 
   if (!product) {
     return (
@@ -48,7 +58,7 @@ export default function ProductDetailPage() {
     );
   }
 
-  const wishlisted  = isWishlisted(Number(product.id));
+  const wishlisted  = isWishlisted(product.id);
 
   const handleAddToBag = () => {
     if (!selectedSize) return;
@@ -67,7 +77,7 @@ export default function ProductDetailPage() {
   };
 
   const handleWishlist = () => {
-    toggleWishlist({ id: Number(product.id), name: product.name, price: product.price, image: product.image, size: selectedSize ?? undefined });
+    toggleWishlist({ id: product.id, name: product.name, price: product.price, image: product.image, size: selectedSize ?? undefined });
   };
 
   return (

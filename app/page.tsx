@@ -8,17 +8,10 @@ import { useShop } from "./context/shop-context";
 import { useScrollReveal } from "./hooks/use-scroll-reveal";
 import { PageFooter } from "./components/page-footer";
 import { useSiteContent } from "@/hooks/use-site-content";
+import { useProducts } from "@/hooks/use-products";
+import type { StoreProduct } from "@/lib/products/types";
 
 // ── Types ────────────────────────────────────────────────────────────────────
-interface Product {
-  id: number;
-  name: string;
-  price: string;
-  badge?: string;
-  colors: string[];
-  image?: string;
-}
-
 interface Category {
   name: string;
   count: string;
@@ -26,13 +19,6 @@ interface Category {
 }
 
 // ── Data ─────────────────────────────────────────────────────────────────────
-const PRODUCTS: Product[] = [
-  { id: 1, name: "Royal Pleat",     price: "₦45,000", badge: "Bestseller", colors: ["#5C2D8F"], image: "/images/gp-royal-pleat.png" },
-  { id: 2, name: "Onyx Statement",  price: "₦38,000", badge: "New",        colors: ["#1A1A1A"], image: "/images/gp-onyx-statement.png" },
-  { id: 3, name: "Ivory Sovereign", price: "₦42,000", badge: "New",        colors: ["#E8E8E8"], image: "/images/gp-ivory-sovereign.png" },
-  { id: 4, name: "Sahara Wide",     price: "₦36,000", badge: "New",        colors: ["#8A8680"], image: "/images/gp-sahara-wide.png" },
-];
-
 const CATEGORIES: Category[] = [
   { name: "Minimal Essentials", count: "Clean everyday trousers", image: "/images/solid-luxe.png" },
   { name: "Statement Pants",    count: "Bold silhouettes",        image: "/images/gp-onyx-statement.png" },
@@ -41,7 +27,7 @@ const CATEGORIES: Category[] = [
 ];
 
 // ── Product Card ──────────────────────────────────────────────────────────────
-function ProductCard({ product, delay = 0 }: { product: Product; delay?: number }) {
+function ProductCard({ product, delay = 0 }: { product: StoreProduct; delay?: number }) {
   const { addToCart, isWishlisted, toggleWishlist } = useShop();
   const wishlisted = isWishlisted(product.id);
 
@@ -194,6 +180,8 @@ function CategoryTile({ cat }: { cat: Category }) {
 export default function HomePage() {
   useScrollReveal();
   const { get } = useSiteContent();
+  const { products, loading: productsLoading } = useProducts();
+  const featuredProducts = products.slice(0, 4);
 
   // Newsletter state
   const [nlEmail,   setNlEmail]   = useState("");
@@ -331,9 +319,13 @@ export default function HomePage() {
           className="grid grid-cols-2 md:grid-cols-4 px-5 md:px-12 pb-16 md:pb-20"
           style={{ gap: "2px" }}
         >
-          {PRODUCTS.map((p, i) => (
-            <ProductCard key={p.id} product={p} delay={i + 1} />
-          ))}
+          {productsLoading ? (
+            <p className="font-barlow col-span-full text-center py-12" style={{ color: "#6B6B6B" }}>Loading styles…</p>
+          ) : (
+            featuredProducts.map((p, i) => (
+              <ProductCard key={p.id} product={p} delay={i + 1} />
+            ))
+          )}
         </div>
       </section>
 

@@ -423,9 +423,14 @@
   cursor: pointer;
 }
 
-.nc-recipient-list-pill:hover {
+.nc-recipient-list-pill:hover:not(:disabled) {
   background: #ede6f5;
   border-color: #5c2d8f;
+}
+
+.nc-recipient-list-pill:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
 }
 
 .nc-recipient-summary {

@@ -7,7 +7,7 @@ import {
   NewsletterComposer,
   type NewsletterSendPayload,
 } from "@/components/admin/NewsletterComposer";
-import { buildRecipientLists } from "@/lib/newsletter/recipient-lists";
+import type { RecipientList } from "@/lib/newsletter/recipient-lists";
 
 type Subscriber = {
   id: string;
@@ -24,6 +24,13 @@ export default function AdminNewsletterPage() {
   const [q, setQ] = useState("");
   const [composerOpen, setComposerOpen] = useState(false);
   const [sending, setSending] = useState(false);
+  const [recipientLists, setRecipientLists] = useState<RecipientList[]>([]);
+
+  const loadLists = () => {
+    adminFetch<{ lists: RecipientList[] }>("/api/admin/newsletter/lists").then(({ data }) => {
+      setRecipientLists(data?.lists ?? []);
+    });
+  };
 
   const load = () => {
     const params = q ? `?q=${encodeURIComponent(q)}` : "";
@@ -39,7 +46,14 @@ export default function AdminNewsletterPage() {
     load();
   }, []);
 
-  const recipientLists = buildRecipientLists(subscribers);
+  useEffect(() => {
+    if (composerOpen) loadLists();
+  }, [composerOpen]);
+
+  const openComposer = () => {
+    loadLists();
+    setComposerOpen(true);
+  };
 
   const exportCsv = () => {
     const header = "email,name,subscribed_at,source\n";
@@ -130,7 +144,7 @@ export default function AdminNewsletterPage() {
         <button
           type="button"
           className="admin-btn admin-btn-primary"
-          onClick={() => setComposerOpen(true)}
+          onClick={openComposer}
         >
           New Broadcast
         </button>

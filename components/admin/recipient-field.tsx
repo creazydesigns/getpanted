@@ -74,7 +74,7 @@ export function RecipientField({
 
   return (
     <div className="nc-recipient-field">
-      {availableLists.length > 0 && (
+      {lists.length > 0 && (
         <div className="nc-recipient-lists-bar">
           <label className="nc-recipient-lists-label" htmlFor={id ? `${id}-list` : undefined}>
             Lists:
@@ -90,20 +90,21 @@ export function RecipientField({
           >
             <option value="">Add a list…</option>
             {availableLists.map((list) => (
-              <option key={list.id} value={list.id}>
+              <option key={list.id} value={list.id} disabled={list.count === 0}>
                 {list.label} ({list.count})
               </option>
             ))}
           </select>
           <div className="nc-recipient-list-quick">
-            {availableLists.map((list) => (
+            {lists.map((list) => (
               <button
                 key={list.id}
                 type="button"
                 className="nc-recipient-list-pill"
+                disabled={list.count === 0 || selectedListIds.includes(list.id)}
                 onClick={() => addList(list.id)}
               >
-                + {list.label}
+                + {list.label} ({list.count})
               </button>
             ))}
           </div>

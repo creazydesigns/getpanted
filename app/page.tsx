@@ -197,7 +197,7 @@ export default function HomePage() {
     setNlLoading(true);
     setNlStatus("idle");
     try {
-      const res  = await fetch("/api/subscribe", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email: nlEmail }) });
+      const res  = await fetch("/api/subscribe", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email: nlEmail, source: "newsletter" }) });
       const json = await res.json() as { error?: string };
       if (res.status === 409 || json.error === "already_subscribed") { setNlStatus("duplicate"); }
       else if (!res.ok) { setNlStatus("error"); }

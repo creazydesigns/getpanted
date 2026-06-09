@@ -44,7 +44,7 @@ export function AdminSidebar() {
   return (
     <aside className="admin-sidebar">
       <div className="admin-sidebar-brand">GetPanted Admin</div>
-      <nav style={{ flex: 1 }}>
+      <nav className="admin-sidebar-nav">
         {NAV.map((item) => {
           const active = pathname === item.href || pathname.startsWith(item.href + "/");
           const count = item.badge ? badges[item.badge] : 0;
@@ -60,14 +60,16 @@ export function AdminSidebar() {
           );
         })}
       </nav>
-      <button
-        type="button"
-        className="admin-nav-link"
-        style={{ border: "none", background: "none", width: "100%", cursor: "pointer", textAlign: "left" }}
-        onClick={signOut}
-      >
-        Sign Out
-      </button>
+      <div className="admin-sidebar-footer">
+        <button
+          type="button"
+          className="admin-nav-link"
+          style={{ border: "none", background: "none", width: "100%", cursor: "pointer", textAlign: "left" }}
+          onClick={signOut}
+        >
+          Sign Out
+        </button>
+      </div>
     </aside>
   );
 }

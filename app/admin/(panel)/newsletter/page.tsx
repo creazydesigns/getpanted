@@ -3,6 +3,11 @@
 import { useEffect, useState } from "react";
 import { adminFetch } from "@/components/admin/admin-fetch";
 import { useAdminToast } from "@/components/admin/admin-toast";
+import {
+  NewsletterComposer,
+  type NewsletterSendPayload,
+} from "@/components/admin/NewsletterComposer";
+import { buildRecipientLists } from "@/lib/newsletter/recipient-lists";
 
 type Subscriber = {
   id: string;
@@ -17,8 +22,7 @@ export default function AdminNewsletterPage() {
   const [subscribers, setSubscribers] = useState<Subscriber[]>([]);
   const [total, setTotal] = useState(0);
   const [q, setQ] = useState("");
-  const [subject, setSubject] = useState("");
-  const [body, setBody] = useState("");
+  const [composerOpen, setComposerOpen] = useState(false);
   const [sending, setSending] = useState(false);
 
   const load = () => {
@@ -34,6 +38,8 @@ export default function AdminNewsletterPage() {
   useEffect(() => {
     load();
   }, []);
+
+  const recipientLists = buildRecipientLists(subscribers);
 
   const exportCsv = () => {
     const header = "email,name,subscribed_at,source\n";
@@ -65,19 +71,38 @@ export default function AdminNewsletterPage() {
     }
   };
 
-  const sendBroadcast = async () => {
-    if (!confirm(`You are about to email ${total} subscribers. Continue?`)) return;
+  const sendBroadcast = async (payload: NewsletterSendPayload) => {
+    const count = payload.to.length;
+    if (!confirm(`You are about to email ${count} recipient${count === 1 ? "" : "s"}. Continue?`)) {
+      return;
+    }
+
     setSending(true);
     const { data, error } = await adminFetch<{ sent: number; total: number }>(
       "/api/admin/newsletter",
       {
         method: "POST",
-        body: JSON.stringify({ subject, body, confirm: true }),
+        body: JSON.stringify({
+          subject: payload.subject,
+          body: payload.body,
+          html: payload.html,
+          to: payload.to,
+          cc: payload.cc,
+          bcc: payload.bcc,
+          attachments: payload.attachments,
+          confirm: true,
+        }),
       }
     );
     setSending(false);
-    if (error) toast(error, "error");
-    else toast(`Sent to ${data?.sent ?? 0} of ${data?.total ?? 0} subscribers`);
+
+    if (error) {
+      toast(error, "error");
+      return;
+    }
+
+    toast(`Sent to ${data?.sent ?? 0} of ${data?.total ?? 0} subscribers`);
+    setComposerOpen(false);
   };
 
   return (
@@ -102,9 +127,16 @@ export default function AdminNewsletterPage() {
         <button type="button" className="admin-btn" onClick={exportCsv}>
           Export CSV
         </button>
+        <button
+          type="button"
+          className="admin-btn admin-btn-primary"
+          onClick={() => setComposerOpen(true)}
+        >
+          New Broadcast
+        </button>
       </div>
 
-      <div className="admin-card admin-table-wrap" style={{ marginBottom: 24 }}>
+      <div className="admin-card admin-table-wrap">
         <table className="admin-table">
           <thead>
             <tr>
@@ -123,7 +155,11 @@ export default function AdminNewsletterPage() {
                 <td>{new Date(s.subscribed_at).toLocaleDateString()}</td>
                 <td>{s.source ?? "—"}</td>
                 <td>
-                  <button type="button" className="admin-btn admin-btn-danger" onClick={() => unsubscribe(s.id)}>
+                  <button
+                    type="button"
+                    className="admin-btn admin-btn-danger"
+                    onClick={() => unsubscribe(s.id)}
+                  >
                     Unsubscribe
                   </button>
                 </td>
@@ -133,25 +169,13 @@ export default function AdminNewsletterPage() {
         </table>
       </div>
 
-      <div className="admin-card">
-        <h2 style={{ fontSize: 15, margin: "0 0 12px" }}>Send to all subscribers</h2>
-        <div className="admin-field">
-          <label className="admin-label">Subject</label>
-          <input className="admin-input" value={subject} onChange={(e) => setSubject(e.target.value)} />
-        </div>
-        <div className="admin-field">
-          <label className="admin-label">Message (plain text)</label>
-          <textarea className="admin-textarea" value={body} onChange={(e) => setBody(e.target.value)} rows={8} />
-        </div>
-        <button
-          type="button"
-          className="admin-btn admin-btn-primary"
-          onClick={sendBroadcast}
-          disabled={sending || !subject || !body}
-        >
-          {sending ? "Sending…" : `Send to ${total} subscribers`}
-        </button>
-      </div>
+      <NewsletterComposer
+        open={composerOpen}
+        onClose={() => setComposerOpen(false)}
+        recipientLists={recipientLists}
+        sending={sending}
+        onSend={sendBroadcast}
+      />
     </div>
   );
 }

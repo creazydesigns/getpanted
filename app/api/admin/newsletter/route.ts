@@ -2,6 +2,12 @@ import { supabaseAdmin } from "@/lib/supabase";
 import { resend, FROM_EMAIL } from "@/lib/resend";
 import { requireAdminApi, jsonOk, jsonError } from "@/lib/admin/api-response";
 
+type AttachmentInput = { filename: string; content: string };
+
+function stripTags(html: string): string {
+  return html.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+}
+
 export async function GET(req: Request) {
   const auth = await requireAdminApi();
   if (auth.response) return auth.response;
@@ -50,32 +56,74 @@ export async function POST(req: Request) {
   const auth = await requireAdminApi();
   if (auth.response) return auth.response;
 
-  const { subject, body, confirm } = await req.json();
+  const {
+    subject,
+    body,
+    html,
+    confirm,
+    to,
+    cc,
+    bcc,
+    attachments,
+  }: {
+    subject?: string;
+    body?: string;
+    html?: string;
+    confirm?: boolean;
+    to?: string[];
+    cc?: string[];
+    bcc?: string[];
+    attachments?: AttachmentInput[];
+  } = await req.json();
+
   if (!confirm) return jsonError("Confirmation required", 400);
-  if (!subject?.trim() || !body?.trim()) return jsonError("Subject and body required");
+  if (!subject?.trim() || (!body?.trim() && !html?.trim())) {
+    return jsonError("Subject and body required");
+  }
 
-  const { data: subscribers, error } = await supabaseAdmin
-    .from("newsletter_subscribers")
-    .select("email")
-    .eq("active", true);
+  let emails: string[] = [];
 
-  if (error) return jsonError(error.message, 500);
+  if (Array.isArray(to) && to.length > 0) {
+    emails = to.map((e) => e.trim().toLowerCase()).filter(Boolean);
+  } else {
+    const { data: subscribers, error } = await supabaseAdmin
+      .from("newsletter_subscribers")
+      .select("email")
+      .eq("active", true);
 
-  const emails = (subscribers ?? []).map((s) => s.email).filter(Boolean);
+    if (error) return jsonError(error.message, 500);
+    emails = (subscribers ?? []).map((s) => s.email).filter(Boolean);
+  }
+
+  const ccList = Array.isArray(cc) ? cc.map((e) => e.trim()).filter(Boolean) : [];
+  const bccList = Array.isArray(bcc) ? bcc.map((e) => e.trim()).filter(Boolean) : [];
+
+  const resendAttachments =
+    attachments?.map((a) => ({
+      filename: a.filename,
+      content: Buffer.from(a.content, "base64"),
+    })) ?? [];
+
   let sent = 0;
   const failures: string[] = [];
 
-  for (const to of emails) {
+  for (const email of emails) {
     try {
-      await resend.emails.send({
+      const payload: Parameters<typeof resend.emails.send>[0] = {
         from: FROM_EMAIL,
-        to,
+        to: email,
         subject: subject.trim(),
-        text: body.trim(),
-      });
+        text: body?.trim() || stripTags(html ?? ""),
+      };
+      if (ccList.length) payload.cc = ccList;
+      if (bccList.length) payload.bcc = bccList;
+      if (html?.trim()) payload.html = html.trim();
+      if (resendAttachments.length) payload.attachments = resendAttachments;
+
+      await resend.emails.send(payload);
       sent++;
     } catch {
-      failures.push(to);
+      failures.push(email);
     }
   }
 

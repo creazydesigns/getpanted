@@ -76,11 +76,11 @@ export function Navbar() {
 
           {/* Right icons */}
           <div className="flex items-center gap-5">
-            {/* Search */}
+            {/* Search — desktop only */}
             <Link
               href="/collections"
               aria-label="Search products"
-              className="transition-opacity duration-200 hover:opacity-60"
+              className="hidden md:block transition-opacity duration-200 hover:opacity-60"
               style={{ color: "#1A1A1A" }}
             >
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -88,11 +88,11 @@ export function Navbar() {
               </svg>
             </Link>
 
-            {/* Account */}
+            {/* Account — desktop only */}
             <Link
               href={user ? "/account" : "/account/login"}
               aria-label={user ? "My account" : "Sign in"}
-              className="transition-opacity duration-200 hover:opacity-60"
+              className="hidden md:block transition-opacity duration-200 hover:opacity-60"
               style={{ color: "#1A1A1A" }}
             >
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -101,11 +101,11 @@ export function Navbar() {
               </svg>
             </Link>
 
-            {/* Wishlist */}
+            {/* Wishlist — desktop only */}
             <Link
               href="/wishlist"
               aria-label="Wishlist"
-              className="relative transition-opacity duration-200 hover:opacity-60"
+              className="hidden md:block relative transition-opacity duration-200 hover:opacity-60"
               style={{ color: "#1A1A1A" }}
             >
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">

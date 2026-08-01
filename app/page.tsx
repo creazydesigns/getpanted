@@ -191,7 +191,7 @@ export default function HomePage() {
             <Link href="/collections" className="hp-look-tag hp-look-tag--leg">
               Wide-Leg Trouser
             </Link>
-            <Link href="/collections" className="hp-look-tag hp-look-tag--hem hidden sm:inline-flex">
+            <Link href="/collections" className="hp-look-tag hp-look-tag--hem">
               Full-Length Fit
             </Link>
           </div>

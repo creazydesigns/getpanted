@@ -59,14 +59,15 @@
   justify-content: center;
   align-items: center;
   text-align: center;
-  padding: 32px 24px 8px;
+  padding: 52px 20px 12px;
   background: transparent;
   z-index: 2;
 }
 .hp-hero-title {
   font-family: "Barlow Condensed", sans-serif;
   font-weight: 700;
-  font-size: clamp(40px, 10vw, 64px);
+  /* Sized so "DRESS THE POWER." stays one line on ~360px screens */
+  font-size: clamp(32px, 8.4vw, 56px);
   line-height: 0.95;
   letter-spacing: -0.02em;
   text-transform: uppercase;
@@ -75,6 +76,7 @@
 }
 .hp-hero-title > span {
   display: block;
+  white-space: nowrap;
 }
 @media (min-width: 900px) {
   .hp-hero-copy {
@@ -91,9 +93,6 @@
     line-height: 0.92;
     letter-spacing: -0.03em;
     text-align: left;
-  }
-  .hp-hero-title > span {
-    white-space: nowrap;
   }
   .hp-hero-sub {
     max-width: 42ch;
@@ -113,7 +112,6 @@
 }
 .hp-hero-visual {
   position: relative;
-  /* Crop padded pink margins in the JPG so the figure fills mobile width */
   min-height: min(118vw, 620px);
   background: transparent;
   overflow: hidden;
@@ -124,17 +122,23 @@
   }
 }
 @media (max-width: 899px) {
+  /*
+    Portrait media matching the JPG aspect, zoomed so the figure
+    (not the padded pink frame) fills the viewport — look tags live
+    inside this box and track the model.
+  */
   .hp-hero-media {
     inset: auto;
     top: 0;
     left: 50%;
-    width: 168%;
-    height: 108%;
+    width: min(178vw, 860px);
+    aspect-ratio: 4480 / 7020;
+    height: auto;
     transform: translateX(-50%);
   }
   .hp-hero-img {
     object-fit: contain !important;
-    object-position: center 12% !important;
+    object-position: center top !important;
   }
 }
 @media (min-width: 900px) {
@@ -299,21 +303,21 @@
   flex-shrink: 0;
 }
 
-/* Sit on the figure (model is right-of-center in the contained portrait) */
+/* Sit on the figure within the photo frame (tags live inside .hp-hero-media) */
 .hp-look-tag--waist {
-  top: 36%;
-  left: 52%;
+  top: 38%;
+  left: 34%;
   transform: translateX(-100%);
   animation-delay: 0s;
 }
 .hp-look-tag--leg {
-  top: 55%;
-  left: 58%;
+  top: 56%;
+  left: 66%;
   animation-delay: 1.6s;
 }
 .hp-look-tag--hem {
   top: 78%;
-  left: 48%;
+  left: 36%;
   transform: translateX(-100%);
   animation-delay: 3.2s;
 }
@@ -327,27 +331,27 @@
 @media (min-width: 900px) {
   .hp-look-tag--waist {
     top: 34%;
-    left: 50%;
+    left: 38%;
   }
   .hp-look-tag--leg {
     top: 52%;
-    left: 62%;
+    left: 68%;
   }
   .hp-look-tag--hem {
     top: 80%;
-    left: 50%;
+    left: 40%;
   }
 }
 
 @media (max-width: 639px) {
   .hp-look-tag { font-size: 9px; padding: 6px 10px; }
   .hp-look-tag--waist {
-    top: 38%;
-    left: 42%;
+    top: 40%;
+    left: 32%;
   }
   .hp-look-tag--leg {
     top: 58%;
-    left: 56%;
+    left: 68%;
   }
 }
 

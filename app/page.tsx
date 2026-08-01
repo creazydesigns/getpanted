@@ -184,16 +184,17 @@ export default function HomePage() {
               quality={90}
               className="hp-hero-img"
             />
+            {/* Anchored to the photo frame so tags sit on the figure, not the crop box */}
+            <Link href="/collections" className="hp-look-tag hp-look-tag--waist">
+              Pleated Waist
+            </Link>
+            <Link href="/collections" className="hp-look-tag hp-look-tag--leg">
+              Wide-Leg Trouser
+            </Link>
+            <Link href="/collections" className="hp-look-tag hp-look-tag--hem hidden sm:inline-flex">
+              Full-Length Fit
+            </Link>
           </div>
-          <Link href="/collections" className="hp-look-tag hp-look-tag--waist">
-            Pleated Waist
-          </Link>
-          <Link href="/collections" className="hp-look-tag hp-look-tag--leg">
-            Wide-Leg Trouser
-          </Link>
-          <Link href="/collections" className="hp-look-tag hp-look-tag--hem hidden sm:inline-flex">
-            Full-Length Fit
-          </Link>
         </div>
       </section>
 

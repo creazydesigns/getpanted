@@ -112,25 +112,22 @@
 }
 .hp-hero-visual {
   position: relative;
-  min-height: min(125vw, 640px);
+  min-height: min(78vw, 640px);
   background: transparent;
   overflow: hidden;
 }
-@media (min-width: 640px) and (max-width: 899px) {
-  .hp-hero-visual {
-    min-height: min(105vw, 700px);
-  }
-}
 @media (max-width: 899px) {
   /*
-    Fill the visual, then scale the whole photo+tags layer so the
-    figure crops past the pink padding. Avoid aspect-ratio/height:auto
-    with Next Image `fill` — that collapsed the media box on mobile.
+    Full-length mobile: visual matches the JPG aspect so object-contain
+    shows head-to-toe edge-to-edge (no scale crop). Look tags sit in the
+    same photo coordinate space as the figure.
   */
+  .hp-hero-visual {
+    min-height: calc(100vw * 7020 / 4480);
+  }
   .hp-hero-media {
     inset: 0;
-    transform: scale(1.42);
-    transform-origin: center 16%;
+    transform: none;
   }
   .hp-hero-img {
     object-fit: contain !important;
@@ -299,21 +296,21 @@
   flex-shrink: 0;
 }
 
-/* Sit on the figure within the photo (tags are inside .hp-hero-media) */
+/* Locked to body landmarks in the photo (tags live inside .hp-hero-media) */
 .hp-look-tag--waist {
-  top: 39%;
-  left: 28%;
+  top: 44%;
+  left: 38%;
   transform: translateX(-100%);
   animation-delay: 0s;
 }
 .hp-look-tag--leg {
-  top: 56%;
-  left: 72%;
+  top: 62%;
+  left: 70%;
   animation-delay: 1.6s;
 }
 .hp-look-tag--hem {
-  top: 78%;
-  left: 30%;
+  top: 87%;
+  left: 40%;
   transform: translateX(-100%);
   animation-delay: 3.2s;
 }
@@ -326,28 +323,32 @@
 
 @media (min-width: 900px) {
   .hp-look-tag--waist {
-    top: 34%;
-    left: 36%;
+    top: 42%;
+    left: 40%;
   }
   .hp-look-tag--leg {
-    top: 52%;
-    left: 68%;
+    top: 60%;
+    left: 72%;
   }
   .hp-look-tag--hem {
-    top: 80%;
-    left: 38%;
+    top: 86%;
+    left: 42%;
   }
 }
 
 @media (max-width: 639px) {
   .hp-look-tag { font-size: 9px; padding: 6px 10px; }
   .hp-look-tag--waist {
-    top: 40%;
-    left: 30%;
+    top: 45%;
+    left: 36%;
   }
   .hp-look-tag--leg {
-    top: 58%;
-    left: 70%;
+    top: 63%;
+    left: 68%;
+  }
+  .hp-look-tag--hem {
+    top: 88%;
+    left: 38%;
   }
 }
 

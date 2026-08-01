@@ -41,7 +41,6 @@
 
 .hp-hero {
   position: relative;
-  min-height: calc(100vh - 56px);
   display: grid;
   grid-template-columns: 1fr;
   background: #f3ebeb;
@@ -58,25 +57,29 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 48px 24px 56px;
+  align-items: center;
+  text-align: center;
+  padding: 32px 24px 8px;
   background: transparent;
   z-index: 2;
 }
 .hp-hero-title {
   font-family: "Barlow Condensed", sans-serif;
   font-weight: 700;
-  font-size: clamp(42px, 8vw, 72px);
+  font-size: clamp(40px, 10vw, 64px);
   line-height: 0.95;
   letter-spacing: -0.02em;
   text-transform: uppercase;
   color: var(--hp-ink);
-  max-width: 12ch;
+  text-align: center;
 }
 .hp-hero-title > span {
   display: block;
 }
 @media (min-width: 900px) {
   .hp-hero-copy {
+    align-items: flex-start;
+    text-align: left;
     padding: 64px clamp(32px, 4vw, 64px) 64px clamp(40px, 5vw, 72px);
     max-width: none;
   }
@@ -87,27 +90,52 @@
     font-weight: 800;
     line-height: 0.92;
     letter-spacing: -0.03em;
+    text-align: left;
   }
   .hp-hero-title > span {
     white-space: nowrap;
   }
   .hp-hero-sub {
     max-width: 42ch;
+    margin-left: 0;
+    margin-right: 0;
+    text-align: left;
   }
 }
 .hp-hero-sub {
   font-family: "Barlow", sans-serif;
-  font-size: 16px;
-  line-height: 1.7;
+  font-size: 15px;
+  line-height: 1.65;
   color: var(--hp-muted);
-  max-width: 36ch;
-  margin-top: 20px;
+  max-width: 32ch;
+  margin: 16px auto 0;
+  text-align: center;
 }
 .hp-hero-visual {
   position: relative;
-  min-height: min(78vw, 640px);
+  /* Crop padded pink margins in the JPG so the figure fills mobile width */
+  min-height: min(118vw, 620px);
   background: transparent;
   overflow: hidden;
+}
+@media (min-width: 640px) and (max-width: 899px) {
+  .hp-hero-visual {
+    min-height: min(100vw, 700px);
+  }
+}
+@media (max-width: 899px) {
+  .hp-hero-media {
+    inset: auto;
+    top: 0;
+    left: 50%;
+    width: 168%;
+    height: 108%;
+    transform: translateX(-50%);
+  }
+  .hp-hero-img {
+    object-fit: contain !important;
+    object-position: center 12% !important;
+  }
 }
 @media (min-width: 900px) {
   .hp-hero-visual {
@@ -314,12 +342,12 @@
 @media (max-width: 639px) {
   .hp-look-tag { font-size: 9px; padding: 6px 10px; }
   .hp-look-tag--waist {
-    top: 34%;
-    left: 48%;
+    top: 38%;
+    left: 42%;
   }
   .hp-look-tag--leg {
-    top: 54%;
-    left: 54%;
+    top: 58%;
+    left: 56%;
   }
 }
 

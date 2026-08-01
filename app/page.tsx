@@ -152,7 +152,10 @@ export default function HomePage() {
   const heroLine2 = get("homepage.hero_line_2") || "Effortless Elegance";
   const heroTagline =
     get("homepage.hero_tagline") ||
-    "Elevated trousers for women who dress with intention — clean, confident, never ordinary.";
+    "Elevated trousers made for confidence, comfort, and style — from clean everyday silhouettes to bold statement pieces.";
+  const heroTaglineMatch = heroTagline.match(/^(.*?[—–-])\s*(.+)$/s);
+  const heroTaglineLine1 = heroTaglineMatch?.[1]?.trim() || heroTagline;
+  const heroTaglineLine2 = heroTaglineMatch?.[2]?.trim() || "";
   const heroCtaLabel = get("homepage.hero_button_label") || "Shop All";
   const heroCtaLink = get("homepage.hero_button_link") || "/collections";
 
@@ -165,7 +168,10 @@ export default function HomePage() {
             <span>{heroLine1}</span>
             <span>{heroLine2}</span>
           </h1>
-          <p className="hp-hero-sub animate-fade-up animation-delay-100">{heroTagline}</p>
+          <p className="hp-hero-sub animate-fade-up animation-delay-100">
+            <span>{heroTaglineLine1}</span>
+            {heroTaglineLine2 ? <span>{heroTaglineLine2}</span> : null}
+          </p>
           <div className="mt-8 animate-fade-up animation-delay-200">
             <Link href={heroCtaLink} className="btn-hp-dark">
               {heroCtaLabel}
@@ -176,7 +182,7 @@ export default function HomePage() {
         <div className="hp-hero-visual">
           <div className="hp-hero-media">
             <Image
-              src="/images/gp-hero-full.jpg"
+              src="/images/gp-hero-full.png"
               alt="Model in GetPanted full-length wide-leg trousers"
               fill
               priority

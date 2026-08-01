@@ -5,7 +5,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useShop } from "../context/shop-context";
 import { useAuth } from "../context/auth-context";
-import { AnnouncementBar } from "./announcement-bar";
 
 const NAV_LINKS = [
   { label: "About",        href: "/about" },
@@ -33,7 +32,6 @@ export function Navbar() {
   return (
     <>
       <div className="sticky top-0 z-50">
-        <AnnouncementBar />
         <nav
           style={{
             background: "rgba(255,255,255,0.96)",

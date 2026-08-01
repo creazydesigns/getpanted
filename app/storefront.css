@@ -78,6 +78,18 @@
   display: block;
   white-space: nowrap;
 }
+.hp-hero-sub {
+  font-family: "Barlow", sans-serif;
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--hp-muted);
+  max-width: 32ch;
+  margin: 16px auto 0;
+  text-align: center;
+}
+.hp-hero-sub > span {
+  display: block;
+}
 @media (min-width: 900px) {
   .hp-hero-copy {
     align-items: flex-start;
@@ -95,20 +107,17 @@
     text-align: left;
   }
   .hp-hero-sub {
-    max-width: 42ch;
-    margin-left: 0;
-    margin-right: 0;
+    max-width: none;
+    width: auto;
+    margin: 22px 0 0;
+    font-size: 17px;
+    line-height: 1.55;
     text-align: left;
   }
-}
-.hp-hero-sub {
-  font-family: "Barlow", sans-serif;
-  font-size: 15px;
-  line-height: 1.65;
-  color: var(--hp-muted);
-  max-width: 32ch;
-  margin: 16px auto 0;
-  text-align: center;
+  .hp-hero-sub > span {
+    display: block;
+    white-space: nowrap;
+  }
 }
 .hp-hero-visual {
   position: relative;
@@ -118,12 +127,11 @@
 }
 @media (max-width: 899px) {
   /*
-    Full-length mobile: visual matches the JPG aspect so object-contain
-    shows head-to-toe edge-to-edge (no scale crop). Look tags sit in the
-    same photo coordinate space as the figure.
+    Full-length cutout PNG (2052×6233). Frame matches photo aspect so
+    head-to-toe fills the width; look tags share this coordinate space.
   */
   .hp-hero-visual {
-    min-height: calc(100vw * 7020 / 4480);
+    min-height: calc(100vw * 6233 / 2052);
   }
   .hp-hero-media {
     inset: 0;
@@ -297,25 +305,25 @@
 }
 
 /*
-  Look tags locked to the figure in photo space (same on mobile + desktop
-  when the full-length JPG fills the media frame).
-  Waist + hem sit just left of the body; wide-leg overlaps the right thigh.
+  Look tags sit ON the cutout — overlapping waist, right thigh, and hem.
 */
 .hp-look-tag--waist {
-  top: 42%;
-  left: 43%;
-  transform: translateX(-100%);
+  /* Viewer's-left arm at bust height: half on the arm, half off */
+  top: 28%;
+  left: 34%;
+  transform: translateX(-50%);
   animation-delay: 0s;
 }
 .hp-look-tag--leg {
-  top: 57%;
-  left: 57%;
+  top: 54%;
+  left: 48%;
   animation-delay: 1.6s;
 }
 .hp-look-tag--hem {
-  top: 80%;
-  left: 41%;
-  transform: translateX(-100%);
+  /* Viewer's-left leg: half on the fabric, half off */
+  top: 78%;
+  left: 34%;
+  transform: translateX(-50%);
   animation-delay: 3.2s;
 }
 
@@ -328,16 +336,18 @@
 @media (max-width: 639px) {
   .hp-look-tag { font-size: 9px; padding: 6px 10px; }
   .hp-look-tag--waist {
-    top: 42%;
-    left: 42%;
+    top: 27%;
+    left: 32%;
+    transform: translateX(-50%);
   }
   .hp-look-tag--leg {
-    top: 56%;
-    left: 55%;
+    top: 53%;
+    left: 46%;
   }
   .hp-look-tag--hem {
-    top: 79%;
-    left: 40%;
+    top: 76%;
+    left: 32%;
+    transform: translateX(-50%);
   }
 }
 

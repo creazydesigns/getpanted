@@ -112,33 +112,29 @@
 }
 .hp-hero-visual {
   position: relative;
-  min-height: min(118vw, 620px);
+  min-height: min(125vw, 640px);
   background: transparent;
   overflow: hidden;
 }
 @media (min-width: 640px) and (max-width: 899px) {
   .hp-hero-visual {
-    min-height: min(100vw, 700px);
+    min-height: min(105vw, 700px);
   }
 }
 @media (max-width: 899px) {
   /*
-    Portrait media matching the JPG aspect, zoomed so the figure
-    (not the padded pink frame) fills the viewport — look tags live
-    inside this box and track the model.
+    Fill the visual, then scale the whole photo+tags layer so the
+    figure crops past the pink padding. Avoid aspect-ratio/height:auto
+    with Next Image `fill` — that collapsed the media box on mobile.
   */
   .hp-hero-media {
-    inset: auto;
-    top: 0;
-    left: 50%;
-    width: min(178vw, 860px);
-    aspect-ratio: 4480 / 7020;
-    height: auto;
-    transform: translateX(-50%);
+    inset: 0;
+    transform: scale(1.42);
+    transform-origin: center 16%;
   }
   .hp-hero-img {
     object-fit: contain !important;
-    object-position: center top !important;
+    object-position: center center !important;
   }
 }
 @media (min-width: 900px) {
@@ -303,21 +299,21 @@
   flex-shrink: 0;
 }
 
-/* Sit on the figure within the photo frame (tags live inside .hp-hero-media) */
+/* Sit on the figure within the photo (tags are inside .hp-hero-media) */
 .hp-look-tag--waist {
-  top: 38%;
-  left: 34%;
+  top: 39%;
+  left: 28%;
   transform: translateX(-100%);
   animation-delay: 0s;
 }
 .hp-look-tag--leg {
   top: 56%;
-  left: 66%;
+  left: 72%;
   animation-delay: 1.6s;
 }
 .hp-look-tag--hem {
   top: 78%;
-  left: 36%;
+  left: 30%;
   transform: translateX(-100%);
   animation-delay: 3.2s;
 }
@@ -331,7 +327,7 @@
 @media (min-width: 900px) {
   .hp-look-tag--waist {
     top: 34%;
-    left: 38%;
+    left: 36%;
   }
   .hp-look-tag--leg {
     top: 52%;
@@ -339,7 +335,7 @@
   }
   .hp-look-tag--hem {
     top: 80%;
-    left: 40%;
+    left: 38%;
   }
 }
 
@@ -347,11 +343,11 @@
   .hp-look-tag { font-size: 9px; padding: 6px 10px; }
   .hp-look-tag--waist {
     top: 40%;
-    left: 32%;
+    left: 30%;
   }
   .hp-look-tag--leg {
     top: 58%;
-    left: 68%;
+    left: 70%;
   }
 }
 

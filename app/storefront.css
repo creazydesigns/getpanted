@@ -83,12 +83,16 @@
   font-size: 15px;
   line-height: 1.65;
   color: var(--hp-muted);
-  max-width: 32ch;
+  max-width: 36ch;
   margin: 16px auto 0;
   text-align: center;
 }
+/* Mobile: flow as one block so it settles on three lines */
 .hp-hero-sub > span {
-  display: block;
+  display: inline;
+}
+.hp-hero-sub > span + span::before {
+  content: "\00a0";
 }
 @media (min-width: 900px) {
   .hp-hero-copy {
@@ -117,6 +121,9 @@
   .hp-hero-sub > span {
     display: block;
     white-space: nowrap;
+  }
+  .hp-hero-sub > span + span::before {
+    content: none;
   }
 }
 .hp-hero-visual {
@@ -225,12 +232,25 @@
   }
 }
 
+@media (max-width: 899px) {
+  .hp-presence-banner {
+    padding-top: 64px;
+  }
+  .hp-presence-banner-headline {
+    top: 48px;
+  }
+}
+
 @media (max-width: 639px) {
   .hp-editorial-panel { margin: 16px; padding: 20px 18px; }
   .hp-quote-feature { min-height: 360px; }
   .hp-dark-cta-media { min-height: 280px; }
+  /* Room above the headline so the bounce-in isn't clipped */
+  .hp-presence-banner {
+    padding-top: 72px;
+  }
   .hp-presence-banner-headline {
-    top: 4%;
+    top: 52px;
     font-size: clamp(40px, 12vw, 64px);
   }
 }

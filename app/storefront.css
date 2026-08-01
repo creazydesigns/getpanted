@@ -43,7 +43,7 @@
   position: relative;
   display: grid;
   grid-template-columns: 1fr;
-  background: #f3ebeb;
+  background: #ffffff;
   overflow: hidden;
 }
 @media (min-width: 900px) {

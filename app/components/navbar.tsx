@@ -195,12 +195,14 @@ export function Navbar() {
                   <li key={item.label}>
                     <Link
                       href={item.href}
-                      className="block py-3 font-barlow-cond font-bold uppercase transition-colors duration-200"
+                      className="block py-3.5 font-barlow-cond uppercase transition-colors duration-200"
                       style={{
-                        fontSize: "13px",
-                        letterSpacing: "0.12em",
+                        fontSize: "22px",
+                        fontWeight: 800,
+                        letterSpacing: "0.04em",
+                        lineHeight: 1.1,
                         borderBottom: "1px solid #F0F0F0",
-                        color: pathname === item.href ? "#5C2D8F" : "#6B6B6B",
+                        color: pathname === item.href ? "#5C2D8F" : "#1A1A1A",
                       }}
                     >
                       {item.label}
@@ -210,12 +212,14 @@ export function Navbar() {
                 <li>
                   <Link
                     href={user ? "/account" : "/account/login"}
-                    className="block py-3 font-barlow-cond font-bold uppercase transition-colors duration-200"
+                    className="block py-3.5 font-barlow-cond uppercase transition-colors duration-200"
                     style={{
-                      fontSize: "13px",
-                      letterSpacing: "0.12em",
+                      fontSize: "22px",
+                      fontWeight: 800,
+                      letterSpacing: "0.04em",
+                      lineHeight: 1.1,
                       borderBottom: "1px solid #F0F0F0",
-                      color: pathname?.startsWith("/account") ? "#5C2D8F" : "#6B6B6B",
+                      color: pathname?.startsWith("/account") ? "#5C2D8F" : "#1A1A1A",
                     }}
                   >
                     {authLoading ? "Account" : user ? "My Account" : "Sign In"}

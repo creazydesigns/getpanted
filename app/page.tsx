@@ -153,7 +153,7 @@ export default function HomePage() {
   const heroTagline =
     get("homepage.hero_tagline") ||
     "Elevated trousers made for confidence, comfort, and style — from clean everyday silhouettes to bold statement pieces.";
-  const heroTaglineMatch = heroTagline.match(/^(.*?[—–-])\s*(.+)$/s);
+  const heroTaglineMatch = heroTagline.match(/^(.*?[—–-])\s*(.+)$/);
   const heroTaglineLine1 = heroTaglineMatch?.[1]?.trim() || heroTagline;
   const heroTaglineLine2 = heroTaglineMatch?.[2]?.trim() || "";
   const heroCtaLabel = get("homepage.hero_button_label") || "Shop All";

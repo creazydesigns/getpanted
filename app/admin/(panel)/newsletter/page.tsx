@@ -122,8 +122,8 @@ export default function AdminNewsletterPage() {
   return (
     <div>
       <h1 className="admin-page-title">Newsletter</h1>
-      <p style={{ marginBottom: 20, color: "#71717a" }}>
-        <strong>{total}</strong> active subscribers
+      <p className="admin-page-sub">
+        <strong style={{ color: "var(--admin-text)" }}>{total}</strong> active subscribers
       </p>
 
       <div className="admin-toolbar">

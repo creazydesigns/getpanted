@@ -44,10 +44,8 @@ export function AdminLoginForm() {
 
   return (
     <div className="admin-login-card">
-      <h1 style={{ margin: "0 0 8px", fontSize: 18, fontWeight: 600 }}>Sign in</h1>
-      <p style={{ margin: "0 0 24px", color: "#71717a", fontSize: 13 }}>
-        Use your admin email and password.
-      </p>
+      <h1>Sign in</h1>
+      <p>Use your admin email and password.</p>
       <form onSubmit={handleSubmit}>
         <div className="admin-field">
           <label className="admin-label" htmlFor="email">
@@ -78,7 +76,7 @@ export function AdminLoginForm() {
           />
         </div>
         {error && (
-          <p style={{ color: "#dc2626", fontSize: 13, marginBottom: 12 }}>{error}</p>
+          <p style={{ color: "var(--admin-danger)", fontSize: 13, marginBottom: 12 }}>{error}</p>
         )}
         <button
           type="submit"

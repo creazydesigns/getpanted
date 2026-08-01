@@ -43,7 +43,7 @@ export default function AdminDashboardPage() {
     });
   }, []);
 
-  if (loading) return <p>Loading…</p>;
+  if (loading) return <p className="admin-empty">Loading dashboard…</p>;
 
   const cards = stats
     ? [
@@ -61,6 +61,8 @@ export default function AdminDashboardPage() {
   return (
     <div>
       <h1 className="admin-page-title">Dashboard</h1>
+      <p className="admin-page-sub">Overview of orders, catalogue health, and inbound requests.</p>
+
       <div className="admin-stats">
         {cards.map((c) => (
           <div key={c.label} className="admin-card">
@@ -72,65 +74,73 @@ export default function AdminDashboardPage() {
 
       <div className="admin-grid-2">
         <div className="admin-card">
-          <h2 style={{ margin: "0 0 12px", fontSize: 15 }}>Last 5 orders</h2>
-          <div className="admin-table-wrap">
-            <table className="admin-table">
-              <thead>
-                <tr>
-                  <th>Order</th>
-                  <th>Customer</th>
-                  <th>Total</th>
-                  <th>Status</th>
-                  <th>Date</th>
-                </tr>
-              </thead>
-              <tbody>
-                {recentOrders.map((o) => (
-                  <tr key={o.id} className="clickable" onClick={() => (window.location.href = `/admin/orders/${o.id}`)}>
-                    <td>{shortId(o.id)}</td>
-                    <td>{o.customer_name}</td>
-                    <td>{formatNaira(Number(o.total_amount))}</td>
-                    <td>
-                      <span className={`admin-status admin-status-${o.status}`}>{o.status}</span>
-                    </td>
-                    <td>{new Date(o.created_at).toLocaleDateString()}</td>
+          <h2 className="admin-section-title">Last 5 orders</h2>
+          {recentOrders.length === 0 ? (
+            <p className="admin-empty" style={{ padding: "24px 0" }}>No orders yet.</p>
+          ) : (
+            <div className="admin-table-wrap">
+              <table className="admin-table">
+                <thead>
+                  <tr>
+                    <th>Order</th>
+                    <th>Customer</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                    <th>Date</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <Link href="/admin/orders" className="admin-btn" style={{ marginTop: 12 }}>
+                </thead>
+                <tbody>
+                  {recentOrders.map((o) => (
+                    <tr key={o.id} className="clickable" onClick={() => (window.location.href = `/admin/orders/${o.id}`)}>
+                      <td>{shortId(o.id)}</td>
+                      <td>{o.customer_name}</td>
+                      <td>{formatNaira(Number(o.total_amount))}</td>
+                      <td>
+                        <span className={`admin-status admin-status-${o.status}`}>{o.status}</span>
+                      </td>
+                      <td>{new Date(o.created_at).toLocaleDateString()}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+          <Link href="/admin/orders" className="admin-btn" style={{ marginTop: 16 }}>
             View all orders
           </Link>
         </div>
 
         <div className="admin-card">
-          <h2 style={{ margin: "0 0 12px", fontSize: 15 }}>Last 5 bespoke inquiries</h2>
-          <div className="admin-table-wrap">
-            <table className="admin-table">
-              <thead>
-                <tr>
-                  <th>Customer</th>
-                  <th>Style</th>
-                  <th>Date</th>
-                </tr>
-              </thead>
-              <tbody>
-                {recentBespoke.map((o) => (
-                  <tr
-                    key={o.id}
-                    className="clickable"
-                    onClick={() => (window.location.href = `/admin/bespoke/${o.id}`)}
-                  >
-                    <td>{o.customer_name}</td>
-                    <td>{o.silhouette}</td>
-                    <td>{new Date(o.created_at).toLocaleDateString()}</td>
+          <h2 className="admin-section-title">Last 5 bespoke inquiries</h2>
+          {recentBespoke.length === 0 ? (
+            <p className="admin-empty" style={{ padding: "24px 0" }}>No bespoke inquiries yet.</p>
+          ) : (
+            <div className="admin-table-wrap">
+              <table className="admin-table">
+                <thead>
+                  <tr>
+                    <th>Customer</th>
+                    <th>Style</th>
+                    <th>Date</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <Link href="/admin/bespoke" className="admin-btn" style={{ marginTop: 12 }}>
+                </thead>
+                <tbody>
+                  {recentBespoke.map((o) => (
+                    <tr
+                      key={o.id}
+                      className="clickable"
+                      onClick={() => (window.location.href = `/admin/bespoke/${o.id}`)}
+                    >
+                      <td>{o.customer_name}</td>
+                      <td>{o.silhouette}</td>
+                      <td>{new Date(o.created_at).toLocaleDateString()}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+          <Link href="/admin/bespoke" className="admin-btn" style={{ marginTop: 16 }}>
             View all bespoke
           </Link>
         </div>

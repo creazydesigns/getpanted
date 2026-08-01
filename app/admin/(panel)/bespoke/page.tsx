@@ -30,8 +30,9 @@ export default function AdminBespokePage() {
   return (
     <div>
       <h1 className="admin-page-title">Bespoke Orders</h1>
+      <p className="admin-page-sub">Made-to-order inquiries and production status.</p>
       {loading ? (
-        <p>Loading…</p>
+        <p className="admin-empty">Loading…</p>
       ) : (
         <div className="admin-card admin-table-wrap">
           <table className="admin-table">

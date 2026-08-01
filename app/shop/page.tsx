@@ -2,80 +2,100 @@
 
 import Link from "next/link";
 import { PageFooter } from "../components/page-footer";
+import { StorefrontHeader } from "../components/storefront-header";
+import "../storefront.css";
 
 const ENTRIES = [
-  { title: "New Arrivals",  subtitle: "The latest from GetPanted",     href: "/new-arrivals", icon: "→" },
-  { title: "Collections",  subtitle: "All drops including PRESENCE",  href: "/collections",  icon: "→" },
-  { title: "Made to Order", subtitle: "Request sold-out pieces again", href: "/made-to-order", icon: "→" },
+  {
+    title: "New Arrivals",
+    subtitle: "The latest from GetPanted",
+    href: "/new-arrivals",
+  },
+  {
+    title: "Collections",
+    subtitle: "All drops including PRESENCE",
+    href: "/collections",
+  },
+  {
+    title: "Made to Order",
+    subtitle: "Request sold-out pieces again",
+    href: "/made-to-order",
+  },
+];
+
+const QUICK_LINKS = [
+  { label: "About GetPanted", href: "/about" },
+  { label: "Size Guide", href: "/size-guide" },
+  { label: "Contact Us", href: "/contact" },
+  { label: "Made to Order", href: "/made-to-order" },
 ];
 
 export default function ShopPage() {
   return (
-    <main className="font-barlow overflow-x-hidden" style={{ background: "#FFFFFF" }}>
+    <main className="hp-page font-barlow overflow-x-hidden">
+      <StorefrontHeader
+        eyebrow="Shop"
+        title="Find Your Signature Pair"
+        description="Browse new arrivals, explore collections, or request a sold-out piece through made to order."
+        crumbs={[
+          { label: "Home", href: "/" },
+          { label: "Shop" },
+        ]}
+      />
 
-      {/* ── PAGE HEADER ────────────────────────────────────────────────────── */}
-      <section className="px-5 md:px-12 pt-28 pb-14" style={{ background: "#FFFFFF", borderBottom: "1px solid #F0F0F0" }}>
-        <div className="max-w-[1400px] mx-auto">
-          <p className="font-barlow-cond font-bold uppercase mb-4" style={{ fontSize: "11px", letterSpacing: "0.25em", color: "#5C2D8F" }}>Shop</p>
-          <h1 style={{ fontSize: "clamp(48px, 7vw, 88px)", fontWeight: 600, lineHeight: 0.95, color: "#1A1A1A" }}>
-            Find Your Signature Pair
-          </h1>
-          <p className="font-barlow mt-5" style={{ fontSize: "15px", color: "#6B6B6B", maxWidth: "480px", lineHeight: 1.7 }}>
-            Browse new arrivals, explore collections, or request a sold-out piece through made to order.
-          </p>
-        </div>
-      </section>
-
-      {/* ── SHOP ENTRIES ───────────────────────────────────────────────────── */}
-      <section className="px-5 md:px-12 py-16" style={{ background: "#FFFFFF" }}>
-        <div className="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-3" style={{ gap: "2px", background: "#F0F0F0" }}>
+      {/* ── SHOP ENTRIES ─────────────────────────────────────────────────── */}
+      <section className="hp-section py-14 md:py-16">
+        <div className="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-4">
           {ENTRIES.map((entry) => (
             <Link
               key={entry.href}
               href={entry.href}
-              className="group flex flex-col justify-between"
-              style={{ background: "#FFFFFF", padding: "56px 48px", minHeight: "260px", transition: "background 0.2s" }}
-              onMouseEnter={(e) => (e.currentTarget.style.background = "#FAFAFA")}
-              onMouseLeave={(e) => (e.currentTarget.style.background = "#FFFFFF")}
+              className="group flex flex-col justify-between transition-colors"
+              style={{
+                background: "#F7F7F7",
+                border: "1px solid #E8E8E8",
+                padding: "40px 32px",
+                minHeight: "220px",
+                textDecoration: "none",
+              }}
             >
               <div>
-                <p className="font-barlow-cond font-bold uppercase mb-4" style={{ fontSize: "10px", letterSpacing: "0.22em", color: "#5C2D8F" }}>{entry.subtitle}</p>
-                <h2 style={{ fontSize: "clamp(24px, 3vw, 36px)", color: "#1A1A1A" }}>{entry.title}</h2>
+                <p className="hp-eyebrow mb-4">{entry.subtitle}</p>
+                <h2
+                  className="font-barlow-cond font-bold uppercase"
+                  style={{ fontSize: "clamp(24px, 3vw, 36px)", color: "#1A1A1A", lineHeight: 1.05 }}
+                >
+                  {entry.title}
+                </h2>
               </div>
-              <div className="flex items-center justify-between mt-8">
-                <span className="font-barlow-cond font-bold uppercase transition-colors group-hover:text-[#5C2D8F]" style={{ fontSize: "11px", letterSpacing: "0.16em", color: "#6B6B6B" }}>
+              <div className="flex items-center justify-between mt-10">
+                <span
+                  className="font-barlow-cond font-bold uppercase transition-colors group-hover:text-[#5C2D8F]"
+                  style={{ fontSize: "11px", letterSpacing: "0.16em", color: "#6B6B6B" }}
+                >
                   Enter
                 </span>
-                <div
-                  className="w-10 h-10 flex items-center justify-center transition-all duration-300 group-hover:bg-[#5C2D8F] group-hover:text-white"
-                  style={{ border: "1px solid #E0E0E0", color: "#6B6B6B" }}
+                <span
+                  className="w-10 h-10 flex items-center justify-center transition-all duration-300 group-hover:border-[#5C2D8F] group-hover:text-[#5C2D8F]"
+                  style={{ border: "1px solid #E8E8E8", color: "#6B6B6B" }}
+                  aria-hidden
                 >
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                    <path d="m5 12 14 0M12 5l7 7-7 7"/>
+                    <path d="m5 12 14 0M12 5l7 7-7 7" />
                   </svg>
-                </div>
+                </span>
               </div>
             </Link>
           ))}
         </div>
       </section>
 
-      {/* ── QUICK LINKS ────────────────────────────────────────────────────── */}
-      <section className="px-5 md:px-12 pb-20" style={{ background: "#FFFFFF" }}>
+      {/* ── QUICK LINKS ──────────────────────────────────────────────────── */}
+      <section className="hp-section pb-16 md:pb-20">
         <div className="max-w-[1400px] mx-auto">
-          <div className="flex flex-wrap gap-3 pt-8" style={{ borderTop: "1px solid #F0F0F0" }}>
-            {[
-              { label: "About GetPanted", href: "/about" },
-              { label: "Size Guide",      href: "/size-guide" },
-              { label: "Contact Us",      href: "/contact" },
-              { label: "Made to Order",   href: "/made-to-order" },
-            ].map((link) => (
-              <Link
-                key={link.href + link.label}
-                href={link.href}
-                className="font-barlow-cond font-bold uppercase transition-all duration-200 hover:border-[#5C2D8F] hover:text-[#5C2D8F]"
-                style={{ fontSize: "11px", letterSpacing: "0.14em", padding: "10px 20px", border: "1px solid #E0E0E0", color: "#6B6B6B" }}
-              >
+          <div className="flex flex-wrap gap-2 pt-8" style={{ borderTop: "1px solid #E8E8E8" }}>
+            {QUICK_LINKS.map((link) => (
+              <Link key={link.href + link.label} href={link.href} className="hp-chip">
                 {link.label}
               </Link>
             ))}

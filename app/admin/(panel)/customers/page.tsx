@@ -35,6 +35,7 @@ export default function AdminCustomersPage() {
   return (
     <div>
       <h1 className="admin-page-title">Customers</h1>
+      <p className="admin-page-sub">Browse customer purchase history and contact details.</p>
       <div className="admin-toolbar">
         <input
           className="admin-input"

@@ -32,13 +32,13 @@ export default function AdminContentPage() {
   return (
     <div>
       <h1 className="admin-page-title">Site Content</h1>
-      <p style={{ color: "#71717a", marginBottom: 20 }}>
+      <p className="admin-page-sub">
         Update homepage, about, collections, and bespoke copy without deploying code.
       </p>
 
       {Object.entries(SITE_CONTENT_GROUPS).map(([section, fields]) => (
         <div key={section} className="admin-card" style={{ marginBottom: 20 }}>
-          <h2 style={{ fontSize: 15, margin: "0 0 16px", textTransform: "capitalize" }}>{section}</h2>
+          <h2 className="admin-section-title" style={{ textTransform: "capitalize" }}>{section}</h2>
           {fields.map((field) => (
             <div key={field.key} className="admin-field">
               <label className="admin-label">{field.label}</label>

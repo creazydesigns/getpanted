@@ -18,11 +18,12 @@
   min-height: 620px;
   max-height: calc(100vh - 32px);
   background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.22);
-  color: #202124;
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  border-radius: 0;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.18);
+  color: #1a1a1a;
+  font-family: "Barlow", system-ui, sans-serif;
   overflow: hidden;
+  border: 1px solid #e8e8e8;
 }
 
 .nc-window--expanded {
@@ -49,7 +50,7 @@
   justify-content: space-between;
   padding: 10px 14px;
   background: #f2f2f2;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid #e8e8e8;
   cursor: move;
   user-select: none;
   flex-shrink: 0;
@@ -58,7 +59,7 @@
 .nc-titlebar-title {
   font-size: 14px;
   font-weight: 500;
-  color: #3c4043;
+  color: #1a1a1a;
 }
 
 .nc-titlebar-actions {
@@ -73,13 +74,13 @@
   background: transparent;
   border-radius: 4px;
   cursor: pointer;
-  color: #5f6368;
+  color: #6b6b6b;
   font-size: 14px;
   line-height: 1;
 }
 
 .nc-titlebar-btn:hover {
-  background: #e8eaed;
+  background: #e8e8e8;
 }
 
 .nc-fields {
@@ -95,7 +96,7 @@
   align-items: flex-start;
   gap: 8px;
   padding: 8px 14px;
-  border-bottom: 1px solid #e8eaed;
+  border-bottom: 1px solid #e8e8e8;
   min-height: 40px;
 }
 
@@ -103,7 +104,7 @@
   width: 56px;
   flex-shrink: 0;
   font-size: 13px;
-  color: #5f6368;
+  color: #6b6b6b;
   padding-top: 6px;
 }
 
@@ -122,14 +123,14 @@
 .nc-toggle-link {
   border: none;
   background: none;
-  color: #5f6368;
+  color: #6b6b6b;
   font-size: 12px;
   cursor: pointer;
   padding: 0;
 }
 
 .nc-toggle-link:hover {
-  color: #1a73e8;
+  color: #5c2d8f;
   text-decoration: underline;
 }
 
@@ -140,7 +141,7 @@
   font-size: 14px;
   padding: 6px 0;
   background: transparent;
-  color: #202124;
+  color: #1a1a1a;
 }
 
 .nc-subject-input::placeholder {
@@ -173,12 +174,12 @@
   padding: 4px 10px;
   border-radius: 999px;
   cursor: pointer;
-  color: #5f6368;
+  color: #6b6b6b;
 }
 
 .nc-mode-btn.active {
   background: #fff;
-  color: #1a73e8;
+  color: #5c2d8f;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
 }
 
@@ -192,7 +193,7 @@
   font-size: 14px;
   line-height: 1.6;
   font-family: inherit;
-  color: #202124;
+  color: #1a1a1a;
   min-height: 200px;
 }
 
@@ -209,7 +210,7 @@
   align-items: center;
   gap: 4px;
   padding: 6px 10px;
-  border-bottom: 1px solid #e8eaed;
+  border-bottom: 1px solid #e8e8e8;
   background: #fafafa;
   position: sticky;
   top: 0;
@@ -222,7 +223,7 @@
   border-radius: 4px;
   padding: 4px 6px;
   background: #fff;
-  color: #202124;
+  color: #1a1a1a;
   max-width: 140px;
 }
 
@@ -235,12 +236,12 @@
   cursor: pointer;
   font-size: 13px;
   font-weight: 600;
-  color: #3c4043;
+  color: #1a1a1a;
 }
 
 .nc-toolbar-btn:hover,
 .nc-toolbar-btn.active {
-  background: #e8eaed;
+  background: #e8e8e8;
 }
 
 .nc-toolbar-divider {
@@ -298,13 +299,13 @@
 .nc-image-panel {
   padding: 10px 14px;
   background: #f8f9fa;
-  border-bottom: 1px solid #e8eaed;
+  border-bottom: 1px solid #e8e8e8;
 }
 
 .nc-image-panel-title {
   margin: 0 0 8px;
   font-size: 12px;
-  color: #5f6368;
+  color: #6b6b6b;
 }
 
 .nc-image-panel-row {
@@ -393,7 +394,7 @@
 
 .nc-recipient-lists-label {
   font-size: 12px;
-  color: #5f6368;
+  color: #6b6b6b;
   flex-shrink: 0;
 }
 
@@ -403,7 +404,7 @@
   border-radius: 4px;
   padding: 4px 8px;
   background: #fff;
-  color: #202124;
+  color: #1a1a1a;
   max-width: 180px;
 }
 
@@ -436,7 +437,7 @@
 .nc-recipient-summary {
   margin: 6px 0 0;
   font-size: 11px;
-  color: #5f6368;
+  color: #6b6b6b;
 }
 
 .nc-chip-input {
@@ -447,7 +448,7 @@
   font-size: 13px;
   padding: 4px 0;
   background: transparent;
-  color: #202124;
+  color: #1a1a1a;
 }
 
 .nc-attachments {
@@ -456,7 +457,7 @@
   align-items: center;
   gap: 8px;
   padding: 8px 14px;
-  border-top: 1px solid #e8eaed;
+  border-top: 1px solid #e8e8e8;
   background: #fafafa;
   flex-shrink: 0;
 }
@@ -464,14 +465,14 @@
 .nc-attach-btn {
   border: none;
   background: none;
-  color: #5f6368;
+  color: #6b6b6b;
   font-size: 12px;
   cursor: pointer;
   padding: 4px 0;
 }
 
 .nc-attach-btn:hover {
-  color: #1a73e8;
+  color: #5c2d8f;
 }
 
 .nc-attach-chip {
@@ -483,7 +484,7 @@
   border-radius: 16px;
   padding: 4px 10px;
   font-size: 12px;
-  color: #3c4043;
+  color: #1a1a1a;
 }
 
 .nc-actionbar {
@@ -491,7 +492,7 @@
   align-items: center;
   gap: 8px;
   padding: 10px 14px;
-  border-top: 1px solid #e0e0e0;
+  border-top: 1px solid #e8e8e8;
   background: #f8f9fa;
   flex-shrink: 0;
 }
@@ -501,13 +502,16 @@
 }
 
 .nc-send-btn {
-  background: #1a73e8;
+  background: #5c2d8f;
   color: #fff;
   border: none;
-  border-radius: 4px;
-  padding: 8px 20px;
-  font-size: 13px;
-  font-weight: 500;
+  border-radius: 0;
+  padding: 10px 20px;
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
   cursor: pointer;
 }
 
@@ -517,7 +521,7 @@
 }
 
 .nc-send-btn:hover:not(:disabled) {
-  background: #1765cc;
+  background: #8b52cc;
 }
 
 .nc-secondary-btn {
@@ -527,7 +531,7 @@
   padding: 7px 14px;
   font-size: 13px;
   cursor: pointer;
-  color: #3c4043;
+  color: #1a1a1a;
 }
 
 .nc-icon-btn {
@@ -541,12 +545,12 @@
 }
 
 .nc-icon-btn:hover {
-  background: #e8eaed;
+  background: #e8e8e8;
 }
 
 .nc-schedule-panel {
   padding: 8px 14px;
-  border-top: 1px solid #e8eaed;
+  border-top: 1px solid #e8e8e8;
   background: #fff;
   display: flex;
   align-items: center;

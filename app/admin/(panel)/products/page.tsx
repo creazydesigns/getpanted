@@ -74,8 +74,11 @@ export default function AdminProductsPage() {
 
   return (
     <div>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <h1 className="admin-page-title">Products</h1>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 16, marginBottom: 8 }}>
+        <div>
+          <h1 className="admin-page-title" style={{ marginBottom: 8 }}>Products</h1>
+          <p className="admin-page-sub" style={{ marginBottom: 0 }}>Manage catalogue, stock, and product status.</p>
+        </div>
         <Link href="/admin/products/new" className="admin-btn admin-btn-primary">
           Add New Product
         </Link>

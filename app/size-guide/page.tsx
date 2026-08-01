@@ -2,33 +2,41 @@
 
 import Link from "next/link";
 import { PageFooter } from "../components/page-footer";
+import { StorefrontHeader } from "../components/storefront-header";
+import "../storefront.css";
 
 const SIZE_CHART = [
   { size: "XS", waist: "60–64", hips: "86–90", length: "100" },
-  { size: "S",  waist: "65–69", hips: "91–95", length: "101" },
-  { size: "M",  waist: "70–74", hips: "96–100", length: "102" },
-  { size: "L",  waist: "75–79", hips: "101–105", length: "103" },
+  { size: "S", waist: "65–69", hips: "91–95", length: "101" },
+  { size: "M", waist: "70–74", hips: "96–100", length: "102" },
+  { size: "L", waist: "75–79", hips: "101–105", length: "103" },
   { size: "XL", waist: "80–84", hips: "106–110", length: "104" },
   { size: "2XL", waist: "85–90", hips: "111–116", length: "105" },
 ];
 
 export default function SizeGuidePage() {
   return (
-    <main className="font-barlow overflow-x-hidden" style={{ background: "#FFFFFF" }}>
-      <section className="px-5 md:px-12 pt-28 pb-16" style={{ background: "#FFFFFF", borderBottom: "1px solid #F0F0F0" }}>
-        <div className="max-w-[900px] mx-auto">
-          <p className="font-barlow-cond font-bold uppercase mb-4" style={{ fontSize: "11px", letterSpacing: "0.25em", color: "#5C2D8F" }}>
-            GetPanted Size Guide
-          </p>
-          <h1 className="font-barlow-cond font-bold" style={{ fontSize: "clamp(40px, 6vw, 72px)", lineHeight: 1, color: "#1A1A1A" }}>
-            Find the fit that feels like you.
-          </h1>
-          <p className="font-barlow mt-6" style={{ fontSize: "16px", color: "#6B6B6B", lineHeight: 1.75 }}>
-            Our trousers are designed with real women&apos;s bodies in mind, with attention to waist, hips, length, and movement.
-          </p>
-          <p className="font-barlow mt-4" style={{ fontSize: "16px", color: "#6B6B6B", lineHeight: 1.75 }}>
+    <main className="hp-page font-barlow overflow-x-hidden">
+      <StorefrontHeader
+        eyebrow="GetPanted Size Guide"
+        title="Find the fit that feels like you."
+        description="Our trousers are designed with real women's bodies in mind, with attention to waist, hips, length, and movement."
+        crumbs={[
+          { label: "Home", href: "/" },
+          { label: "Size Guide" },
+        ]}
+        narrow
+      />
+
+      <section className="hp-section py-8 md:py-10">
+        <div className="mx-auto max-w-[900px]">
+          <p className="hp-body">
             Before ordering, please compare your body measurements with the GetPanted size chart. If you are between sizes,{" "}
-            <Link href="/contact" className="underline transition-colors hover:text-[#5C2D8F]" style={{ color: "#1A1A1A" }}>
+            <Link
+              href="/contact"
+              className="underline transition-colors hover:text-[var(--hp-accent)]"
+              style={{ color: "var(--hp-ink)" }}
+            >
               contact us
             </Link>{" "}
             and we will recommend the best fit based on your measurements.
@@ -36,27 +44,25 @@ export default function SizeGuidePage() {
         </div>
       </section>
 
-      <section className="px-5 md:px-12 py-16" style={{ background: "#F7F7F7", borderBottom: "1px solid #F0F0F0" }}>
-        <div className="max-w-[900px] mx-auto">
-          <p className="font-barlow-cond font-bold uppercase mb-3" style={{ fontSize: "11px", letterSpacing: "0.2em", color: "#5C2D8F" }}>
-            Measurement Tip
-          </p>
-          <p className="font-barlow" style={{ fontSize: "15px", color: "#6B6B6B", lineHeight: 1.8 }}>
+      <section className="hp-section hp-soft-band py-12 md:py-14">
+        <div className="mx-auto max-w-[900px]">
+          <p className="hp-eyebrow mb-3">Measurement Tip</p>
+          <p className="hp-body" style={{ fontSize: "15px", lineHeight: 1.8 }}>
             Measure your waist, hips, and preferred trouser length while standing straight. For the best result, use a soft measuring tape.
           </p>
         </div>
       </section>
 
-      <section className="px-5 md:px-12 py-16 md:py-24" style={{ background: "#FFFFFF" }}>
-        <div className="max-w-[900px] mx-auto overflow-x-auto">
+      <section className="hp-section py-16 md:py-24">
+        <div className="mx-auto max-w-[900px] overflow-x-auto">
           <table className="w-full min-w-[560px]" style={{ borderCollapse: "collapse" }}>
             <thead>
-              <tr style={{ borderBottom: "2px solid #1A1A1A" }}>
+              <tr style={{ borderBottom: "1px solid var(--hp-ink)" }}>
                 {["Size", "Waist (cm)", "Hips (cm)", "Trouser Length (cm)"].map((heading) => (
                   <th
                     key={heading}
                     className="font-barlow-cond font-bold uppercase text-left py-4 pr-6"
-                    style={{ fontSize: "11px", letterSpacing: "0.14em", color: "#1A1A1A" }}
+                    style={{ fontSize: "11px", letterSpacing: "0.14em", color: "var(--hp-ink)" }}
                   >
                     {heading}
                   </th>
@@ -65,33 +71,39 @@ export default function SizeGuidePage() {
             </thead>
             <tbody>
               {SIZE_CHART.map((row) => (
-                <tr key={row.size} style={{ borderBottom: "1px solid #F0F0F0" }}>
-                  <td className="font-barlow-cond font-bold py-4 pr-6" style={{ fontSize: "14px", color: "#5C2D8F" }}>{row.size}</td>
-                  <td className="font-barlow py-4 pr-6" style={{ fontSize: "14px", color: "#6B6B6B" }}>{row.waist}</td>
-                  <td className="font-barlow py-4 pr-6" style={{ fontSize: "14px", color: "#6B6B6B" }}>{row.hips}</td>
-                  <td className="font-barlow py-4" style={{ fontSize: "14px", color: "#6B6B6B" }}>{row.length}</td>
+                <tr key={row.size} style={{ borderBottom: "1px solid var(--hp-border)" }}>
+                  <td
+                    className="font-barlow-cond font-bold py-4 pr-6"
+                    style={{ fontSize: "14px", color: "var(--hp-accent)" }}
+                  >
+                    {row.size}
+                  </td>
+                  <td className="hp-body-sm py-4 pr-6">{row.waist}</td>
+                  <td className="hp-body-sm py-4 pr-6">{row.hips}</td>
+                  <td className="hp-body-sm py-4">{row.length}</td>
                 </tr>
               ))}
             </tbody>
           </table>
-          <p className="font-barlow mt-6" style={{ fontSize: "13px", color: "#AAAAAA", fontStyle: "italic" }}>
+          <p className="hp-body-sm mt-6" style={{ color: "#AAAAAA", fontStyle: "italic" }}>
             Size chart is a guide. Final fit may vary slightly by style. Contact us if you need help choosing your size.
           </p>
         </div>
       </section>
 
-      <section className="px-5 md:px-12 py-20 text-center" style={{ background: "#F7F7F7", borderTop: "1px solid #F0F0F0" }}>
-        <p className="font-barlow-cond font-bold uppercase mb-4" style={{ fontSize: "11px", letterSpacing: "0.25em", color: "#5C2D8F" }}>Sold Out in Your Size?</p>
-        <h2 className="mx-auto mb-6 font-barlow-cond font-bold" style={{ fontSize: "clamp(28px, 3vw, 40px)", color: "#1A1A1A", maxWidth: "480px" }}>
-          Request made to order.
-        </h2>
-        <Link
-          href="/made-to-order"
-          className="font-barlow-cond font-bold uppercase text-white inline-block transition-opacity hover:opacity-80"
-          style={{ fontSize: "13px", letterSpacing: "0.15em", padding: "16px 48px", background: "#5C2D8F" }}
-        >
-          Made to Order
-        </Link>
+      <section className="hp-section hp-soft-band py-20 text-center">
+        <div className="mx-auto max-w-[480px]">
+          <p className="hp-eyebrow mb-4">Sold Out in Your Size?</p>
+          <h2
+            className="font-barlow-cond font-bold mb-6"
+            style={{ fontSize: "clamp(28px, 3vw, 40px)", color: "var(--hp-ink)" }}
+          >
+            Request made to order.
+          </h2>
+          <Link href="/made-to-order" className="btn-hp-primary">
+            Made to Order
+          </Link>
+        </div>
       </section>
 
       <PageFooter />

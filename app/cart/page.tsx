@@ -4,6 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { useShop } from "../context/shop-context";
 import { PageFooter } from "../components/page-footer";
+import { StorefrontHeader } from "../components/storefront-header";
+import "../storefront.css";
 
 function formatNaira(value: number) {
   return `₦${value.toLocaleString()}`;
@@ -15,98 +17,123 @@ export default function CartPage() {
   const total = cartSubtotal + shipping;
 
   return (
-    <main className="font-barlow overflow-x-hidden" style={{ background: "#FFFFFF", minHeight: "100vh" }}>
-
-      {/* ── PAGE HEADER ────────────────────────────────────────────────────── */}
-      <section className="px-5 md:px-12 pt-28 pb-10" style={{ background: "#FFFFFF", borderBottom: "1px solid #F0F0F0" }}>
-        <div className="max-w-[1100px] mx-auto flex items-end justify-between gap-4">
-          <div>
-            <p className="font-barlow-cond font-bold uppercase mb-3" style={{ fontSize: "11px", letterSpacing: "0.25em", color: "#5C2D8F" }}>Your Bag</p>
-            <h1 style={{ fontSize: "clamp(36px, 5vw, 60px)", fontWeight: 600, lineHeight: 0.95, color: "#1A1A1A" }}>
-              Your Cart {cartCount > 0 && <span style={{ color: "#6B6B6B" }}>({cartCount})</span>}
-            </h1>
-          </div>
+    <main className="hp-page font-barlow overflow-x-hidden" style={{ minHeight: "100vh" }}>
+      <StorefrontHeader
+        eyebrow="Your Bag"
+        title={
+          <>
+            Your Cart{" "}
+            {cartCount > 0 && <span style={{ color: "var(--hp-muted)" }}>({cartCount})</span>}
+          </>
+        }
+        crumbs={[
+          { label: "Home", href: "/" },
+          { label: "Cart" },
+        ]}
+        actions={
           <Link
             href="/collections"
-            className="font-barlow-cond font-bold uppercase transition-colors hover:text-[#5C2D8F]"
-            style={{ fontSize: "11px", letterSpacing: "0.14em", color: "#6B6B6B" }}
+            className="font-barlow-cond font-bold uppercase transition-colors hover:text-[var(--hp-accent)]"
+            style={{ fontSize: "11px", letterSpacing: "0.14em", color: "var(--hp-muted)" }}
           >
             ← Continue Shopping
           </Link>
-        </div>
-      </section>
+        }
+      />
 
-      <div className="px-5 md:px-12 py-14" style={{ background: "#FFFFFF" }}>
+      <section className="hp-section py-14 md:py-16">
         <div className="max-w-[1100px] mx-auto">
-
           {cartItems.length === 0 ? (
-            <div className="text-center py-24" style={{ borderTop: "1px solid #F0F0F0" }}>
-              <p className="font-barlow-cond font-bold uppercase mb-4" style={{ fontSize: "20px", color: "#6B6B6B" }}>Your cart is empty</p>
-              <p className="font-barlow mb-8" style={{ fontSize: "14px", color: "#6B6B6B" }}>Add some pieces to get started.</p>
-              <Link
-                href="/new-arrivals"
-                className="font-barlow-cond font-bold uppercase text-white inline-block transition-opacity hover:opacity-80"
-                style={{ fontSize: "13px", letterSpacing: "0.15em", padding: "14px 40px", background: "#5C2D8F" }}
+            <div className="text-center py-24" style={{ borderTop: "1px solid var(--hp-border)" }}>
+              <p
+                className="font-barlow-cond font-bold uppercase mb-4"
+                style={{ fontSize: "20px", color: "var(--hp-muted)" }}
               >
+                Your cart is empty
+              </p>
+              <p className="hp-body mb-8">Add some pieces to get started.</p>
+              <Link href="/new-arrivals" className="btn-hp-primary">
                 Shop New Arrivals
               </Link>
             </div>
           ) : (
             <div className="grid gap-8 md:grid-cols-[1.5fr_1fr]">
-              {/* Cart items */}
-              <section style={{ border: "1px solid #F0F0F0" }}>
+              <section style={{ borderTop: "1px solid var(--hp-border)" }}>
                 {cartItems.map((item) => (
                   <div
                     key={`${item.id}-${item.size ?? "default"}`}
                     className="flex items-center justify-between gap-4"
-                    style={{ padding: "20px 24px", borderBottom: "1px solid #F0F0F0" }}
+                    style={{ padding: "24px 0", borderBottom: "1px solid var(--hp-border)" }}
                   >
-                    {/* Product image */}
-                    <div className="shrink-0" style={{ background: "#F7F7F7" }}>
+                    <div className="shrink-0 relative" style={{ width: 80, height: 100, background: "var(--hp-soft)" }}>
                       {item.image ? (
                         <Image
                           src={item.image}
                           alt={item.name}
-                          width={80}
-                          height={100}
+                          fill
                           className="object-cover object-top"
+                          sizes="80px"
                         />
                       ) : (
-                        <div style={{ width: 80, height: 100, background: "#F0F0F0" }} />
+                        <div className="hp-placeholder absolute inset-0" style={{ fontSize: "8px" }}>
+                          Item
+                        </div>
                       )}
                     </div>
 
-                    <div className="flex-1">
-                      <p className="font-barlow-cond font-bold uppercase" style={{ fontSize: "14px", color: "#1A1A1A" }}>{item.name}</p>
-                      <p className="font-barlow mt-1" style={{ fontSize: "13px", color: "#6B6B6B" }}>
-                        {item.size ? `Size ${item.size} · ` : ""}{item.price}
+                    <div className="flex-1 min-w-0">
+                      <p
+                        className="font-barlow-cond font-bold uppercase"
+                        style={{ fontSize: "14px", color: "var(--hp-ink)" }}
+                      >
+                        {item.name}
+                      </p>
+                      <p className="hp-body-sm mt-1">
+                        {item.size ? `Size ${item.size} · ` : ""}
+                        {item.price}
                       </p>
                     </div>
+
                     <div className="flex items-center gap-3">
                       <button
                         type="button"
                         onClick={() => updateCartQuantity(item.id, item.quantity - 1, item.size)}
-                        className="font-barlow-cond font-bold flex items-center justify-center transition-colors hover:border-[#5C2D8F] hover:text-[#5C2D8F]"
-                        style={{ width: "32px", height: "32px", border: "1px solid #E0E0E0", color: "#6B6B6B", fontSize: "16px" }}
+                        className="font-barlow-cond font-bold flex items-center justify-center transition-colors hover:border-[var(--hp-accent)] hover:text-[var(--hp-accent)]"
+                        style={{
+                          width: "32px",
+                          height: "32px",
+                          border: "1px solid var(--hp-border)",
+                          color: "var(--hp-muted)",
+                          fontSize: "16px",
+                        }}
                       >
                         −
                       </button>
-                      <span className="font-barlow-cond font-bold text-center" style={{ width: "24px", fontSize: "14px", color: "#1A1A1A" }}>
+                      <span
+                        className="font-barlow-cond font-bold text-center"
+                        style={{ width: "24px", fontSize: "14px", color: "var(--hp-ink)" }}
+                      >
                         {item.quantity}
                       </span>
                       <button
                         type="button"
                         onClick={() => updateCartQuantity(item.id, item.quantity + 1, item.size)}
-                        className="font-barlow-cond font-bold flex items-center justify-center transition-colors hover:border-[#5C2D8F] hover:text-[#5C2D8F]"
-                        style={{ width: "32px", height: "32px", border: "1px solid #E0E0E0", color: "#6B6B6B", fontSize: "16px" }}
+                        className="font-barlow-cond font-bold flex items-center justify-center transition-colors hover:border-[var(--hp-accent)] hover:text-[var(--hp-accent)]"
+                        style={{
+                          width: "32px",
+                          height: "32px",
+                          border: "1px solid var(--hp-border)",
+                          color: "var(--hp-muted)",
+                          fontSize: "16px",
+                        }}
                       >
                         +
                       </button>
                       <button
                         type="button"
                         onClick={() => removeFromCart(item.id, item.size)}
-                        className="font-barlow-cond font-bold uppercase ml-4 transition-colors hover:text-[#1A1A1A]"
-                        style={{ fontSize: "10px", letterSpacing: "0.14em", color: "#6B6B6B" }}
+                        className="font-barlow-cond font-bold uppercase ml-4 transition-colors hover:text-[var(--hp-ink)]"
+                        style={{ fontSize: "10px", letterSpacing: "0.14em", color: "var(--hp-muted)" }}
                       >
                         Remove
                       </button>
@@ -115,10 +142,17 @@ export default function CartPage() {
                 ))}
               </section>
 
-              {/* Order summary */}
-              <aside className="h-fit" style={{ border: "1px solid #F0F0F0", padding: "32px" }}>
-                <h2 style={{ fontSize: "20px", color: "#1A1A1A", marginBottom: "20px" }}>Order Summary</h2>
-                <div className="space-y-3 font-barlow" style={{ fontSize: "14px", color: "#6B6B6B" }}>
+              <aside
+                className="h-fit"
+                style={{ border: "1px solid var(--hp-border)", padding: "32px" }}
+              >
+                <h2
+                  className="font-barlow-cond font-bold uppercase mb-5"
+                  style={{ fontSize: "16px", letterSpacing: "0.1em", color: "var(--hp-ink)" }}
+                >
+                  Order Summary
+                </h2>
+                <div className="space-y-3 hp-body-sm">
                   <div className="flex justify-between">
                     <span>Items ({cartCount})</span>
                     <span>{formatNaira(cartSubtotal)}</span>
@@ -130,22 +164,18 @@ export default function CartPage() {
                 </div>
                 <div
                   className="flex justify-between mt-5 pt-5 font-barlow-cond font-bold"
-                  style={{ borderTop: "1px solid #F0F0F0", fontSize: "16px" }}
+                  style={{ borderTop: "1px solid var(--hp-border)", fontSize: "16px" }}
                 >
-                  <span style={{ color: "#1A1A1A" }}>Total</span>
-                  <span style={{ color: "#5C2D8F" }}>{formatNaira(total)}</span>
+                  <span style={{ color: "var(--hp-ink)" }}>Total</span>
+                  <span style={{ color: "var(--hp-accent)" }}>{formatNaira(total)}</span>
                 </div>
-                <Link
-                  href="/checkout"
-                  className="block w-full text-center font-barlow-cond font-bold uppercase text-white mt-6 transition-opacity hover:opacity-80"
-                  style={{ fontSize: "13px", letterSpacing: "0.15em", padding: "16px", background: "#5C2D8F" }}
-                >
+                <Link href="/checkout" className="btn-hp-primary w-full mt-6">
                   Proceed to Checkout
                 </Link>
                 <Link
                   href="/collections"
-                  className="block w-full text-center font-barlow-cond font-bold uppercase mt-3 transition-colors hover:text-[#5C2D8F]"
-                  style={{ fontSize: "11px", letterSpacing: "0.14em", color: "#6B6B6B" }}
+                  className="block w-full text-center font-barlow-cond font-bold uppercase mt-3 transition-colors hover:text-[var(--hp-accent)]"
+                  style={{ fontSize: "11px", letterSpacing: "0.14em", color: "var(--hp-muted)" }}
                 >
                   Continue Shopping
                 </Link>
@@ -153,7 +183,7 @@ export default function CartPage() {
             </div>
           )}
         </div>
-      </div>
+      </section>
 
       <PageFooter />
     </main>

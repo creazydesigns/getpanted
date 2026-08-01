@@ -14,13 +14,13 @@ export function AnnouncementBar() {
 
   return (
     <div
+      className="font-barlow-cond font-bold uppercase text-center"
       style={{
-        background: "#1A1A1A",
+        background: "#5C2D8F",
         color: "#FFFFFF",
-        textAlign: "center",
-        fontSize: 12,
-        padding: "8px 16px",
-        letterSpacing: "0.04em",
+        fontSize: 11,
+        padding: "9px 16px",
+        letterSpacing: "0.14em",
       }}
     >
       {text}

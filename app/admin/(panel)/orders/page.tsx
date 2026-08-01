@@ -44,6 +44,7 @@ export default function AdminOrdersPage() {
   return (
     <div>
       <h1 className="admin-page-title">Orders</h1>
+      <p className="admin-page-sub">Search, filter, and manage customer orders.</p>
       <div className="admin-toolbar">
         <input
           className="admin-input"

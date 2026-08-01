@@ -1,135 +1,26 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback, useMemo } from "react";
-import Image from "next/image";
+import { useState, useEffect, useRef, useMemo } from "react";
 import Link from "next/link";
-import { useShop } from "../context/shop-context";
 import { useScrollReveal } from "../hooks/use-scroll-reveal";
 import { PageFooter } from "../components/page-footer";
+import { StorefrontHeader } from "../components/storefront-header";
+import { ProductCard } from "../components/product-card";
 import { useSiteContent } from "@/hooks/use-site-content";
 import { useProducts } from "@/hooks/use-products";
-import type { StoreProduct } from "@/lib/products/types";
 import type { ProductFilterTag } from "@/lib/products/types";
+import "../storefront.css";
 
 type FilterKey = "all" | ProductFilterTag;
 
 const FILTERS: { key: FilterKey; label: string }[] = [
-  { key: "all",   label: "All Styles" },
-  { key: "new",   label: "New In" },
+  { key: "all", label: "All Styles" },
+  { key: "new", label: "New In" },
   { key: "solid", label: "Solid Luxe" },
 ];
 
 const SORT_OPTIONS = ["Featured", "Newest First", "Price: Low to High", "Price: High to Low"];
 
-// ── Product Card ──────────────────────────────────────────────────────────────
-function ProductCard({ product }: { product: StoreProduct }) {
-  const [hovered, setHovered] = useState(false);
-  const [selectedSize, setSelectedSize] = useState<string | null>(null);
-  const { addToCart, isWishlisted, toggleWishlist } = useShop();
-  const wishlisted = isWishlisted(product.id);
-  const productHref = `/products/${product.id}`;
-
-  return (
-    <div
-      className="group cursor-pointer"
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-    >
-      <div className="relative overflow-hidden" style={{ aspectRatio: "3/4", background: "#F7F7F7" }}>
-        <Link
-          href={productHref}
-          className="absolute inset-0 z-[1]"
-          aria-label={`View ${product.name}`}
-        />
-        {product.image && (
-          <Image
-            src={product.image}
-            alt={product.name}
-            fill
-            sizes="(max-width: 768px) 50vw, 25vw"
-            className="object-cover object-top transition-transform duration-500 pointer-events-none"
-            style={{ transform: hovered ? "scale(1.04)" : "scale(1)" }}
-          />
-        )}
-        {product.badge && (
-          <span className="absolute top-3 left-3 z-[2] font-barlow-cond font-bold uppercase text-white px-2.5 py-1 pointer-events-none" style={{ fontSize: "10px", letterSpacing: "0.15em", background: "#1A1A1A" }}>
-            {product.badge}
-          </span>
-        )}
-        <button
-          type="button"
-          aria-label="Toggle wishlist"
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            toggleWishlist({ id: product.id, name: product.name, price: product.price });
-          }}
-          className="absolute top-3 right-3 z-[2] w-8 h-8 flex items-center justify-center transition-all duration-200 opacity-0 group-hover:opacity-100"
-          style={{ background: "rgba(0,0,0,0.5)", color: wishlisted ? "#8B52CC" : "white" }}
-        >
-          <svg width="13" height="13" viewBox="0 0 24 24" fill={wishlisted ? "#8B52CC" : "none"} stroke="currentColor" strokeWidth="1.5">
-            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z" />
-          </svg>
-        </button>
-        {/* Size + Add to bag tray */}
-        <div
-          className="absolute bottom-0 left-0 right-0 z-[2] px-4 py-4 transition-transform duration-300"
-          style={{
-            background: "rgba(10,10,10,0.94)",
-            transform: hovered ? "translateY(0)" : "translateY(100%)",
-            pointerEvents: hovered ? "auto" : "none",
-          }}
-        >
-          <div className="flex gap-1.5 flex-wrap mb-3">
-            {product.sizes.slice(0, 5).map((s) => (
-              <button
-                key={s}
-                type="button"
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  setSelectedSize(s === selectedSize ? null : s);
-                }}
-                className="font-barlow-cond font-bold uppercase px-2 py-1 transition-colors"
-                style={{
-                  fontSize: "9px",
-                  letterSpacing: "0.1em",
-                  border: `1px solid ${selectedSize === s ? "#8B52CC" : "rgba(255,255,255,0.2)"}`,
-                  color: selectedSize === s ? "#8B52CC" : "rgba(255,255,255,0.5)",
-                }}
-              >
-                {s}
-              </button>
-            ))}
-          </div>
-          <button
-            type="button"
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              addToCart({ id: product.id, name: product.name, price: product.price, ...(selectedSize ? { size: selectedSize } : {}) });
-            }}
-            className="w-full font-barlow-cond font-bold uppercase text-white transition-opacity hover:opacity-80"
-            style={{ fontSize: "11px", letterSpacing: "0.14em", padding: "10px", background: "#5C2D8F" }}
-          >
-            {selectedSize ? `Add ${selectedSize} to Bag` : "Add to Bag"}
-          </button>
-        </div>
-      </div>
-      <Link href={productHref} className="block pt-4 pb-2" style={{ background: "#FFFFFF" }}>
-        <div className="flex items-center justify-between gap-2">
-          <h3 className="font-barlow-cond font-bold uppercase" style={{ fontSize: "14px", color: "#1A1A1A" }}>{product.name}</h3>
-          <div className="flex gap-1.5 flex-shrink-0 pointer-events-none">
-            {product.colors.map((c, i) => <span key={i} className="w-2.5 h-2.5" style={{ background: c, border: "1px solid #E0E0E0" }} />)}
-          </div>
-        </div>
-        <p className="font-barlow mt-1" style={{ fontSize: "14px", color: "#6B6B6B" }}>{product.price}</p>
-      </Link>
-    </div>
-  );
-}
-
-// ── Main Page ─────────────────────────────────────────────────────────────────
 export default function CollectionsPage() {
   const { get } = useSiteContent();
   const { products, loading } = useProducts();
@@ -153,119 +44,117 @@ export default function CollectionsPage() {
       (p) => activeFilter === "all" || p.categories.includes(activeFilter)
     );
     switch (sortBy) {
-      case "Newest First":       return [...base].sort((a, b) => b.sortKey - a.sortKey);
-      case "Price: Low to High": return [...base].sort((a, b) => a.priceRaw - b.priceRaw);
-      case "Price: High to Low": return [...base].sort((a, b) => b.priceRaw - a.priceRaw);
-      default: return base;
+      case "Newest First":
+        return [...base].sort((a, b) => b.sortKey - a.sortKey);
+      case "Price: Low to High":
+        return [...base].sort((a, b) => a.priceRaw - b.priceRaw);
+      case "Price: High to Low":
+        return [...base].sort((a, b) => b.priceRaw - a.priceRaw);
+      default:
+        return base;
     }
   }, [products, activeFilter, sortBy]);
 
-  useEffect(() => { setVisibleCount(8); }, [activeFilter, sortBy]);
+  useEffect(() => {
+    setVisibleCount(8);
+  }, [activeFilter, sortBy]);
 
   const visibleProducts = filteredProducts.slice(0, visibleCount);
 
   return (
-    <main className="font-barlow overflow-x-hidden" style={{ background: "#FFFFFF" }}>
+    <main className="hp-page font-barlow overflow-x-hidden">
+      <StorefrontHeader
+        eyebrow="Collections"
+        title={get("collections.banner_headline")}
+        description="Every drop and every silhouette. PRESENCE is our debut collection — explore elevated trousers designed for intentional dressing."
+        crumbs={[
+          { label: "Home", href: "/" },
+          { label: "Collections" },
+        ]}
+      />
 
-      {/* ── PAGE HEADER ────────────────────────────────────────────────────── */}
-      <section className="px-5 md:px-12 pt-28 pb-14" style={{ background: "#FFFFFF", borderBottom: "1px solid #F0F0F0" }}>
+      {/* ── PRESENCE EDITORIAL ───────────────────────────────────────────── */}
+      <section className="hp-section py-12 md:py-16">
         <div className="max-w-[1400px] mx-auto">
-          <div className="flex items-center gap-2 font-barlow-cond font-bold uppercase mb-6" style={{ fontSize: "10px", letterSpacing: "0.16em", color: "#6B6B6B" }}>
-            <Link href="/" className="hover:text-[#5C2D8F] transition-colors">Home</Link>
-            <span>/</span>
-            <span style={{ color: "#1A1A1A" }}>Collections</span>
-          </div>
-          <p className="font-barlow-cond font-bold uppercase mb-4" style={{ fontSize: "11px", letterSpacing: "0.25em", color: "#5C2D8F" }}>Collections</p>
-          <h1 style={{ fontSize: "clamp(48px, 7vw, 88px)", fontWeight: 600, lineHeight: 0.95, color: "#1A1A1A" }}>
-            {get("collections.banner_headline")}
-          </h1>
-          <p className="font-barlow mt-5" style={{ fontSize: "15px", color: "#6B6B6B", maxWidth: "480px", lineHeight: 1.7 }}>
-            Every drop and every silhouette. PRESENCE is our debut collection — explore elevated trousers designed for intentional dressing.
-          </p>
-        </div>
-      </section>
-
-      {/* ── PRESENCE COLLECTION INTRO ──────────────────────────────────────── */}
-      <section className="px-5 md:px-12 py-16 md:py-20" style={{ background: "#F7F7F7", borderBottom: "1px solid #F0F0F0" }}>
-        <div className="max-w-[1400px] mx-auto">
-          <p className="font-barlow-cond font-bold uppercase mb-4" style={{ fontSize: "11px", letterSpacing: "0.25em", color: "#5C2D8F" }}>
-            Introducing Our First Drop
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-[1fr_1.2fr] gap-10 md:gap-16 items-end">
-            <div>
-              <h2 className="font-barlow-cond font-bold mb-6" style={{ fontSize: "clamp(48px, 6vw, 88px)", lineHeight: 0.95, color: "#1A1A1A" }}>
-                PRESENCE
-              </h2>
-              <p className="font-barlow mb-8" style={{ fontSize: "16px", color: "#6B6B6B", lineHeight: 1.8, maxWidth: "480px" }}>
-                PRESENCE is our debut collection — the first expression of the GetPanted woman. Designed with clean silhouettes, intentional fit, and a refined balance of minimal and bold details, PRESENCE introduces what we believe pants can be: flattering, confident, expressive, and easy to style.
+          <div className="hp-editorial" data-reveal="fade">
+            <div className="absolute inset-0">
+              <div className="hp-placeholder absolute inset-0">Editorial Image Placeholder</div>
+            </div>
+            <p className="hp-editorial-title">PRESENCE</p>
+            <div className="hp-editorial-panel">
+              <p className="hp-eyebrow mb-3">Introducing Our First Drop</p>
+              <p className="hp-body mb-6">
+                PRESENCE is our debut collection — the first expression of the GetPanted woman. Clean
+                silhouettes, intentional fit, and a refined balance of minimal and bold.
               </p>
-              <Link
-                href="/collections"
-                className="font-barlow-cond font-bold uppercase text-white inline-block transition-opacity hover:opacity-80"
-                style={{ fontSize: "13px", letterSpacing: "0.15em", padding: "16px 48px", background: "#5C2D8F" }}
-              >
+              <p className="hp-body-sm mb-6">The debut drop. Not the whole brand — the first chapter.</p>
+              <Link href="/collections" className="btn-hp-primary">
                 Shop PRESENCE
               </Link>
             </div>
-            <p className="font-barlow md:text-right" style={{ fontSize: "14px", color: "#6B6B6B", lineHeight: 1.7 }}>
-              The debut drop. Not the whole brand — the first chapter.
-            </p>
           </div>
         </div>
       </section>
 
-      {/* ── PRODUCT SECTION ────────────────────────────────────────────────── */}
-      <section className="px-5 md:px-12 py-14" style={{ background: "#FFFFFF" }}>
+      {/* ── PRODUCT SECTION ──────────────────────────────────────────────── */}
+      <section className="hp-section py-14 md:py-16">
         <div className="max-w-[1400px] mx-auto">
-          {/* Toolbar */}
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-5 mb-10">
-            {/* Filters */}
             <div className="flex gap-2 flex-wrap">
               {FILTERS.map((f) => (
                 <button
                   key={f.key}
                   type="button"
                   onClick={() => setActiveFilter(f.key)}
-                  className="font-barlow-cond font-bold uppercase transition-all duration-200"
-                  style={{
-                    fontSize: "11px",
-                    letterSpacing: "0.14em",
-                    padding: "8px 20px",
-                    border: `1px solid ${activeFilter === f.key ? "#5C2D8F" : "#E0E0E0"}`,
-                    color: activeFilter === f.key ? "#5C2D8F" : "#6B6B6B",
-                    background: activeFilter === f.key ? "rgba(92,45,143,0.05)" : "transparent",
-                  }}
+                  className={`hp-chip${activeFilter === f.key ? " is-active" : ""}`}
                 >
                   {f.label}
                 </button>
               ))}
             </div>
-            {/* Right controls */}
             <div className="flex items-center gap-5">
-              <span className="font-barlow-cond" style={{ fontSize: "11px", color: "#6B6B6B" }}>
+              <span className="hp-body-sm">
                 {visibleProducts.length} of {filteredProducts.length} styles
               </span>
               <div className="relative" ref={sortRef}>
                 <button
                   type="button"
                   onClick={() => setSortOpen(!sortOpen)}
-                  className="flex items-center gap-2 font-barlow-cond font-bold uppercase transition-colors hover:border-[#5C2D8F]"
-                  style={{ fontSize: "11px", letterSpacing: "0.12em", padding: "8px 16px", border: "1px solid #E0E0E0", color: "#6B6B6B" }}
+                  className="hp-chip inline-flex items-center gap-2"
                 >
                   {sortBy}
-                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={`transition-transform duration-200 ${sortOpen ? "rotate-180" : ""}`}>
+                  <svg
+                    width="10"
+                    height="10"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    className={`transition-transform duration-200 ${sortOpen ? "rotate-180" : ""}`}
+                  >
                     <polyline points="6 9 12 15 18 9" />
                   </svg>
                 </button>
                 {sortOpen && (
-                  <div className="absolute right-0 top-full mt-1 z-30 py-1" style={{ background: "#FFFFFF", border: "1px solid #E0E0E0", minWidth: "200px" }}>
+                  <div
+                    className="absolute right-0 top-full mt-1 z-30 py-1"
+                    style={{ background: "#FFFFFF", border: "1px solid #E8E8E8", minWidth: "200px" }}
+                  >
                     {SORT_OPTIONS.map((opt) => (
                       <button
                         key={opt}
                         type="button"
-                        onClick={() => { setSortBy(opt); setSortOpen(false); }}
+                        onClick={() => {
+                          setSortBy(opt);
+                          setSortOpen(false);
+                        }}
                         className="w-full text-left font-barlow-cond font-bold uppercase transition-colors hover:text-[#5C2D8F]"
-                        style={{ fontSize: "11px", letterSpacing: "0.1em", padding: "10px 16px", color: "#6B6B6B" }}
+                        style={{
+                          fontSize: "11px",
+                          letterSpacing: "0.1em",
+                          padding: "10px 16px",
+                          color: "#6B6B6B",
+                        }}
                       >
                         {opt}
                       </button>
@@ -276,19 +165,23 @@ export default function CollectionsPage() {
             </div>
           </div>
 
-          {/* Grid */}
-          <div className="grid grid-cols-2 md:grid-cols-4" style={{ gap: "2px" }}>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-10">
             {loading ? (
-              <p className="font-barlow col-span-full text-center py-16" style={{ color: "#6B6B6B" }}>Loading collection…</p>
+              <p className="hp-body col-span-full text-center py-16">Loading collection…</p>
             ) : (
-              visibleProducts.map((p) => <ProductCard key={p.id} product={p} />)
+              visibleProducts.map((p) => <ProductCard key={p.id} product={p} quickAdd />)
             )}
           </div>
 
-          {filteredProducts.length === 0 && (
+          {!loading && filteredProducts.length === 0 && (
             <div className="text-center py-24">
-              <p className="font-barlow-cond font-bold uppercase" style={{ fontSize: "20px", color: "#6B6B6B" }}>Nothing here yet</p>
-              <p className="font-barlow mt-2" style={{ fontSize: "13px", color: "#6B6B6B" }}>Try a different filter</p>
+              <p
+                className="font-barlow-cond font-bold uppercase"
+                style={{ fontSize: "20px", color: "#6B6B6B" }}
+              >
+                Nothing here yet
+              </p>
+              <p className="hp-body-sm mt-2">Try a different filter</p>
             </div>
           )}
 
@@ -298,13 +191,12 @@ export default function CollectionsPage() {
                 <button
                   type="button"
                   onClick={() => setVisibleCount((prev) => prev + 8)}
-                  className="font-barlow-cond font-bold uppercase transition-all duration-200 hover:bg-[#1A1A1A] hover:text-white"
-                  style={{ fontSize: "11px", letterSpacing: "0.16em", padding: "14px 48px", border: "1px solid #1A1A1A", color: "#1A1A1A" }}
+                  className="btn-hp-outline"
                 >
                   Load More
                 </button>
               )}
-              <p className="font-barlow mt-4" style={{ fontSize: "12px", color: "#6B6B6B" }}>
+              <p className="hp-body-sm mt-4">
                 Showing {visibleProducts.length} of {filteredProducts.length} styles
               </p>
             </div>
@@ -312,32 +204,52 @@ export default function CollectionsPage() {
         </div>
       </section>
 
-      {/* ── BESPOKE CTA ────────────────────────────────────────────────────── */}
-      <section className="px-5 md:px-12 py-20" style={{ background: "#F7F7F7", borderTop: "1px solid #F0F0F0" }}>
-        <div className="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-          <div>
-            <p className="font-barlow-cond font-bold uppercase mb-4" style={{ fontSize: "11px", letterSpacing: "0.25em", color: "#5C2D8F" }}>Made to Order</p>
-            <h2 style={{ fontSize: "clamp(28px, 3vw, 44px)", color: "#1A1A1A", marginBottom: "16px" }}>
-              Missed your size? We can make it again.
-            </h2>
-            <p className="font-barlow mb-8" style={{ fontSize: "15px", color: "#6B6B6B", lineHeight: 1.8, maxWidth: "420px" }}>
-              Selected sold-out pieces may be available through made-to-order. We confirm availability, price, and production timeline before your piece goes into production.
-            </p>
-            <Link
-              href="/made-to-order"
-              className="font-barlow-cond font-bold uppercase text-white inline-block transition-opacity hover:opacity-80"
-              style={{ fontSize: "13px", letterSpacing: "0.15em", padding: "16px 48px", background: "#5C2D8F" }}
+      {/* ── MADE TO ORDER CTA ────────────────────────────────────────────── */}
+      <section className="hp-soft-band">
+        <div className="hp-section py-16 md:py-20">
+          <div className="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <div>
+              <p className="hp-eyebrow mb-4">Made to Order</p>
+              <h2
+                className="font-barlow-cond font-bold uppercase mb-4"
+                style={{ fontSize: "clamp(28px, 3vw, 44px)", color: "#1A1A1A", lineHeight: 1.05 }}
+              >
+                Missed your size? We can make it again.
+              </h2>
+              <p className="hp-body mb-8 max-w-[420px]">
+                Selected sold-out pieces may be available through made-to-order. We confirm availability,
+                price, and production timeline before your piece goes into production.
+              </p>
+              <Link href="/made-to-order" className="btn-hp-primary">
+                Request Made to Order
+              </Link>
+            </div>
+            <div
+              className="flex items-center justify-center"
+              style={{ aspectRatio: "4/3", background: "#FFFFFF", border: "1px solid #E8E8E8" }}
             >
-              Request Made to Order
-            </Link>
-          </div>
-          <div className="flex items-center justify-center" style={{ aspectRatio: "4/3", background: "#FFFFFF", borderTop: "4px solid #5C2D8F" }}>
-            <div className="text-center">
-              <svg viewBox="0 0 120 80" fill="none" className="w-20 mx-auto mb-4" style={{ opacity: 0.15 }}>
-                <path d="M10 70 C20 40 40 20 60 10 C80 20 100 40 110 70" stroke="#5C2D8F" strokeWidth="2" fill="none"/>
-                <circle cx="60" cy="10" r="6" fill="#5C2D8F"/>
-              </svg>
-              <p className="font-barlow-cond font-bold uppercase" style={{ fontSize: "12px", letterSpacing: "0.2em", color: "#6B6B6B" }}>Measured. Made. Yours.</p>
+              <div className="text-center">
+                <svg
+                  viewBox="0 0 120 80"
+                  fill="none"
+                  className="w-20 mx-auto mb-4"
+                  style={{ opacity: 0.15 }}
+                >
+                  <path
+                    d="M10 70 C20 40 40 20 60 10 C80 20 100 40 110 70"
+                    stroke="#5C2D8F"
+                    strokeWidth="2"
+                    fill="none"
+                  />
+                  <circle cx="60" cy="10" r="6" fill="#5C2D8F" />
+                </svg>
+                <p
+                  className="font-barlow-cond font-bold uppercase"
+                  style={{ fontSize: "12px", letterSpacing: "0.2em", color: "#6B6B6B" }}
+                >
+                  Measured. Made. Yours.
+                </p>
+              </div>
             </div>
           </div>
         </div>

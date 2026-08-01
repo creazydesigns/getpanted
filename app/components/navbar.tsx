@@ -32,17 +32,19 @@ export function Navbar() {
 
   return (
     <>
-      <AnnouncementBar />
-      <nav
-        className="fixed top-0 left-0 right-0 z-50"
-        style={{
-          background: "#FFFFFF",
-          borderBottom: "1px solid #F0F0F0",
-          height: "56px",
-        }}
-      >
-        <div className="max-w-[1400px] mx-auto flex items-center justify-between h-full" style={{ padding: "0 48px" }}>
-
+      <div className="sticky top-0 z-50">
+        <AnnouncementBar />
+        <nav
+          style={{
+            background: "rgba(255,255,255,0.96)",
+            backdropFilter: "blur(8px)",
+            borderBottom: "1px solid #E8E8E8",
+            height: "56px",
+          }}
+        >
+        <div
+          className="max-w-[1400px] mx-auto flex items-center justify-between h-full px-5 md:px-12"
+        >
           {/* Logo */}
           <Link
             href="/"
@@ -54,15 +56,15 @@ export function Navbar() {
           </Link>
 
           {/* Desktop links */}
-          <ul className="hidden md:flex gap-8 list-none">
+          <ul className="hidden md:flex gap-9 list-none">
             {NAV_LINKS.map((item) => (
               <li key={item.label}>
                 <Link
                   href={item.href}
                   className="font-barlow-cond font-bold uppercase transition-colors duration-200"
                   style={{
-                    fontSize: "12px",
-                    letterSpacing: "0.12em",
+                    fontSize: "11px",
+                    letterSpacing: "0.16em",
                     color: pathname === item.href ? "#5C2D8F" : "#6B6B6B",
                   }}
                   onMouseEnter={(e) => (e.currentTarget.style.color = "#5C2D8F")}
@@ -75,7 +77,7 @@ export function Navbar() {
           </ul>
 
           {/* Right icons */}
-          <div className="flex items-center gap-5">
+          <div className="flex items-center gap-4 md:gap-5">
             {/* Search — desktop only */}
             <Link
               href="/collections"
@@ -169,6 +171,7 @@ export function Navbar() {
           </div>
         </div>
       </nav>
+      </div>
 
       {/* Mobile drawer */}
       {mobileOpen && (
@@ -181,11 +184,11 @@ export function Navbar() {
             onClick={() => setMobileOpen(false)}
           />
           <aside
-            className="absolute top-0 right-0 h-full flex flex-col pt-16 px-8 pb-10"
+            className="absolute top-0 right-0 h-full flex flex-col pt-20 px-8 pb-10"
             style={{
               width: "min(80vw, 300px)",
               background: "#FFFFFF",
-              borderLeft: "1px solid #F0F0F0",
+              borderLeft: "1px solid #E8E8E8",
             }}
           >
             <nav>

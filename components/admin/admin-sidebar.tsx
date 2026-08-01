@@ -43,7 +43,13 @@ export function AdminSidebar() {
 
   return (
     <aside className="admin-sidebar">
-      <div className="admin-sidebar-brand">GetPanted Admin</div>
+      <div className="admin-sidebar-brand">
+        <p className="admin-sidebar-brand-mark">
+          <span>Get</span>
+          <span>Panted</span>
+        </p>
+        <span className="admin-sidebar-brand-tag">Admin</span>
+      </div>
       <nav className="admin-sidebar-nav">
         {NAV.map((item) => {
           const active = pathname === item.href || pathname.startsWith(item.href + "/");
@@ -64,7 +70,7 @@ export function AdminSidebar() {
         <button
           type="button"
           className="admin-nav-link"
-          style={{ border: "none", background: "none", width: "100%", cursor: "pointer", textAlign: "left" }}
+          style={{ border: "none", background: "none", width: "calc(100% - 16px)", cursor: "pointer", textAlign: "left" }}
           onClick={signOut}
         >
           Sign Out

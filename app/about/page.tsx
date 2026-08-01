@@ -3,7 +3,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { PageFooter } from "../components/page-footer";
+import { StorefrontHeader } from "../components/storefront-header";
 import { useSiteContent } from "@/hooks/use-site-content";
+import "../storefront.css";
 
 const BRAND_PILLARS = [
   {
@@ -66,7 +68,7 @@ const BUILDING = [
   },
   {
     title: "The GetPanted Lifestyle",
-    body: "A brand that grows beyond clothing into styling, wardrobe identity, confidence, and how women show up in the world.",
+    body: "A brand that grows beyond clothing into styling,wardrobe identity, confidence, and how women show up in the world.",
   },
   {
     title: "The Future Space",
@@ -76,41 +78,59 @@ const BUILDING = [
 
 export default function AboutPage() {
   const { get } = useSiteContent();
+  const aboutImage = get("about.image");
 
   return (
-    <main className="font-barlow overflow-x-hidden" style={{ background: "#FFFFFF" }}>
+    <main className="hp-page font-barlow overflow-x-hidden">
+      <style>{`
+        @media (min-width: 1024px) {
+          .about-pillars.hp-pillars {
+            grid-template-columns: repeat(4, 1fr) !important;
+          }
+          .about-pillars .hp-pillar:nth-child(2n) {
+            border-right: 1px solid var(--hp-border) !important;
+          }
+          .about-pillars .hp-pillar:last-child {
+            border-right: none !important;
+          }
+        }
+      `}</style>
 
-      <section className="px-5 md:px-12 pt-28 pb-16" style={{ background: "#FFFFFF", borderBottom: "1px solid #F0F0F0" }}>
-        <div className="max-w-[1400px] mx-auto">
-          <p className="font-barlow-cond font-bold uppercase mb-4" style={{ fontSize: "11px", letterSpacing: "0.25em", color: "#5C2D8F" }}>
-            About GetPanted
-          </p>
-          <h1 className="font-barlow-cond" style={{ fontSize: "clamp(40px, 6vw, 80px)", fontWeight: 600, lineHeight: 1, letterSpacing: "-0.01em", color: "#1A1A1A", maxWidth: "820px" }}>
-            Pants for women who show up intentionally.
-          </h1>
-          <p className="font-barlow mt-6" style={{ fontSize: "16px", color: "#6B6B6B", maxWidth: "560px", lineHeight: 1.75, whiteSpace: "pre-line" }}>
+      <StorefrontHeader
+        eyebrow="About GetPanted"
+        title="Pants for women who show up intentionally."
+        crumbs={[
+          { label: "Home", href: "/" },
+          { label: "About" },
+        ]}
+      />
+
+      <section className="hp-section py-10 md:py-14">
+        <div className="mx-auto max-w-[1400px]">
+          <p className="hp-body max-w-[560px]" style={{ whiteSpace: "pre-line" }}>
             {get("about.brand_story")}
           </p>
-          {get("about.image") && (
-            <div className="relative mt-8" style={{ width: "100%", maxWidth: 400, aspectRatio: "4/5" }}>
-              <Image src={get("about.image")} alt="GetPanted" fill className="object-cover" unoptimized />
+          {aboutImage && (
+            <div className="relative mt-8 mb-8" style={{ width: "100%", maxWidth: 400, aspectRatio: "4/5" }}>
+              <Image src={aboutImage} alt="GetPanted" fill className="object-cover" unoptimized />
             </div>
           )}
-          <p className="font-barlow mt-4" style={{ fontSize: "16px", color: "#6B6B6B", maxWidth: "560px", lineHeight: 1.75 }}>
+          <p className={`hp-body max-w-[560px] ${aboutImage ? "" : "mt-6"}`}>
             Born in Lagos, we design pants that move with real women, fit beautifully, and make everyday dressing feel more expressive.
           </p>
         </div>
       </section>
 
-      <section className="px-5 md:px-12 py-20 md:py-28" style={{ background: "#FFFFFF" }}>
-        <div className="max-w-[800px] mx-auto">
-          <p className="font-barlow-cond font-bold uppercase mb-5" style={{ fontSize: "11px", letterSpacing: "0.25em", color: "#5C2D8F" }}>
-            The GetPanted Story
-          </p>
-          <h2 className="font-barlow-cond font-bold leading-[1.1] mb-8" style={{ fontSize: "clamp(32px, 4vw, 52px)", color: "#1A1A1A" }}>
+      <section className="hp-section py-16 md:py-24">
+        <div className="mx-auto max-w-[800px]">
+          <p className="hp-eyebrow mb-5">The GetPanted Story</p>
+          <h2
+            className="font-barlow-cond font-bold leading-[1.1] mb-8"
+            style={{ fontSize: "clamp(32px, 4vw, 52px)", color: "var(--hp-ink)" }}
+          >
             Built around the power of a good pair of pants.
           </h2>
-          <div className="font-barlow space-y-5" style={{ fontSize: "16px", color: "#6B6B6B", lineHeight: 1.85 }}>
+          <div className="hp-body space-y-5" style={{ lineHeight: 1.85 }}>
             <p>GetPanted was created from a simple belief: a good pair of pants can change how a woman feels.</p>
             <p>It can make her feel sharper. Softer. Bolder. More confident. More like herself.</p>
             <p>
@@ -128,81 +148,134 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="px-5 md:px-12 py-20 md:py-28" style={{ background: "#F7F7F7", borderTop: "1px solid #F0F0F0", borderBottom: "1px solid #F0F0F0" }}>
-        <div className="max-w-[1400px] mx-auto">
-          <div className="mb-14">
-            <p className="font-barlow-cond font-bold uppercase mb-3" style={{ fontSize: "11px", letterSpacing: "0.25em", color: "#5C2D8F" }}>What We Stand For</p>
-            <h2 style={{ fontSize: "clamp(32px, 4vw, 48px)", color: "#1A1A1A" }}>Our Brand Pillars</h2>
+      <section className="hp-section hp-soft-band py-16 md:py-24">
+        <div className="mx-auto max-w-[1400px]">
+          <div className="mb-12">
+            <p className="hp-eyebrow mb-3">What We Stand For</p>
+            <h2
+              className="font-barlow-cond font-bold"
+              style={{ fontSize: "clamp(32px, 4vw, 48px)", color: "var(--hp-ink)" }}
+            >
+              Our Brand Pillars
+            </h2>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2" style={{ gap: "1px", background: "#E0E0E0" }}>
+          <div className="hp-pillars about-pillars">
             {BRAND_PILLARS.map((pillar) => (
-              <div key={pillar.number} style={{ background: "#FFFFFF", padding: "48px" }}>
-                <p className="font-barlow-cond font-bold mb-4" style={{ fontSize: "28px", color: "rgba(92,45,143,0.2)", lineHeight: 1 }}>{pillar.number}</p>
-                <h3 style={{ fontSize: "18px", color: "#1A1A1A", marginBottom: "12px" }}>{pillar.title}</h3>
-                <p className="font-barlow" style={{ fontSize: "14px", color: "#6B6B6B", lineHeight: 1.85 }}>{pillar.body}</p>
+              <div key={pillar.number} className="hp-pillar">
+                <p
+                  className="font-barlow-cond font-bold mb-4"
+                  style={{ fontSize: "28px", color: "rgba(92,45,143,0.2)", lineHeight: 1 }}
+                >
+                  {pillar.number}
+                </p>
+                <h3
+                  className="font-barlow-cond font-bold mb-3"
+                  style={{
+                    fontSize: "16px",
+                    letterSpacing: "0.04em",
+                    textTransform: "uppercase",
+                    color: "var(--hp-ink)",
+                  }}
+                >
+                  {pillar.title}
+                </h3>
+                <p className="hp-body-sm">{pillar.body}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="px-5 md:px-12 py-20 md:py-28" style={{ background: "#FFFFFF" }}>
-        <div className="max-w-[1400px] mx-auto">
-          <div className="mb-14">
-            <p className="font-barlow-cond font-bold uppercase mb-3" style={{ fontSize: "11px", letterSpacing: "0.25em", color: "#5C2D8F" }}>What Drives Us</p>
-            <h2 style={{ fontSize: "clamp(32px, 4vw, 48px)", color: "#1A1A1A" }}>Our Values</h2>
+      <section className="hp-section py-16 md:py-24">
+        <div className="mx-auto max-w-[900px]">
+          <div className="mb-12">
+            <p className="hp-eyebrow mb-3">What Drives Us</p>
+            <h2
+              className="font-barlow-cond font-bold"
+              style={{ fontSize: "clamp(32px, 4vw, 48px)", color: "var(--hp-ink)" }}
+            >
+              Our Values
+            </h2>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3" style={{ gap: "1px", background: "#F0F0F0" }}>
+          <div style={{ borderTop: "1px solid var(--hp-border)" }}>
             {VALUES.map((v) => (
-              <div key={v.title} style={{ background: "#FFFFFF", padding: "40px" }}>
-                <h3 style={{ fontSize: "16px", color: "#1A1A1A", marginBottom: "12px" }}>{v.title}</h3>
-                <p className="font-barlow" style={{ fontSize: "14px", color: "#6B6B6B", lineHeight: 1.85 }}>{v.body}</p>
+              <div
+                key={v.title}
+                className="py-8 md:py-10 md:grid md:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] md:gap-10"
+                style={{ borderBottom: "1px solid var(--hp-border)" }}
+              >
+                <h3
+                  className="font-barlow-cond font-bold mb-3 md:mb-0"
+                  style={{ fontSize: "18px", color: "var(--hp-ink)" }}
+                >
+                  {v.title}
+                </h3>
+                <p className="hp-body-sm" style={{ lineHeight: 1.85 }}>
+                  {v.body}
+                </p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="px-5 md:px-12 py-20 md:py-28" style={{ background: "#F7F7F7", borderTop: "1px solid #F0F0F0" }}>
-        <div className="max-w-[900px] mx-auto">
-          <div className="mb-14">
-            <p className="font-barlow-cond font-bold uppercase mb-3" style={{ fontSize: "11px", letterSpacing: "0.25em", color: "#5C2D8F" }}>Where We Are Going</p>
-            <h2 style={{ fontSize: "clamp(32px, 4vw, 48px)", color: "#1A1A1A" }}>What We Are Building</h2>
+      <section className="hp-section hp-soft-band py-16 md:py-24">
+        <div className="mx-auto max-w-[900px]">
+          <div className="mb-12">
+            <p className="hp-eyebrow mb-3">Where We Are Going</p>
+            <h2
+              className="font-barlow-cond font-bold"
+              style={{ fontSize: "clamp(32px, 4vw, 48px)", color: "var(--hp-ink)" }}
+            >
+              What We Are Building
+            </h2>
           </div>
-          <div className="space-y-8">
-            {BUILDING.map((item) => (
-              <div key={item.title} className="pb-8" style={{ borderBottom: "1px solid #E0E0E0" }}>
-                <h3 className="font-barlow-cond font-bold mb-2" style={{ fontSize: "18px", color: "#1A1A1A" }}>{item.title}</h3>
-                <p className="font-barlow" style={{ fontSize: "15px", color: "#6B6B6B", lineHeight: 1.8 }}>{item.body}</p>
+          <div>
+            {BUILDING.map((item, i) => (
+              <div
+                key={item.title}
+                className="pb-8 mb-8"
+                style={{
+                  borderBottom: i === BUILDING.length - 1 ? "none" : "1px solid var(--hp-border)",
+                  marginBottom: i === BUILDING.length - 1 ? 0 : undefined,
+                  paddingBottom: i === BUILDING.length - 1 ? 0 : undefined,
+                }}
+              >
+                <h3
+                  className="font-barlow-cond font-bold mb-2"
+                  style={{ fontSize: "18px", color: "var(--hp-ink)" }}
+                >
+                  {item.title}
+                </h3>
+                <p className="hp-body-sm" style={{ lineHeight: 1.8 }}>
+                  {item.body}
+                </p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="px-5 md:px-12 py-24 text-center" style={{ background: "#FFFFFF", borderTop: "1px solid #F0F0F0" }}>
-        <p className="font-barlow-cond font-bold uppercase mb-4" style={{ fontSize: "11px", letterSpacing: "0.25em", color: "#5C2D8F" }}>Ready to Get Panted?</p>
-        <h2 className="mx-auto mb-4 font-barlow-cond font-bold" style={{ fontSize: "clamp(32px, 4vw, 52px)", color: "#1A1A1A", maxWidth: "520px" }}>
-          Step into your presence.
-        </h2>
-        <p className="font-barlow mx-auto mb-8" style={{ fontSize: "16px", color: "#6B6B6B", maxWidth: "440px", lineHeight: 1.7 }}>
-          Explore elevated trousers designed to make everyday dressing feel intentional.
-        </p>
-        <div className="flex flex-wrap items-center justify-center gap-4">
-          <Link
-            href="/collections"
-            className="font-barlow-cond font-bold uppercase text-white inline-block transition-opacity hover:opacity-80"
-            style={{ fontSize: "13px", letterSpacing: "0.15em", padding: "16px 48px", background: "#5C2D8F" }}
+      <section className="hp-section hp-soft-band py-20 md:py-28 text-center">
+        <div className="mx-auto max-w-[560px]">
+          <p className="hp-eyebrow mb-4">Ready to Get Panted?</p>
+          <h2
+            className="font-barlow-cond font-bold mb-4"
+            style={{ fontSize: "clamp(32px, 4vw, 52px)", color: "var(--hp-ink)" }}
           >
-            Shop Collection
-          </Link>
-          <Link
-            href="/size-guide"
-            className="font-barlow-cond font-bold uppercase inline-block transition-all hover:bg-[#1A1A1A] hover:text-white"
-            style={{ fontSize: "13px", letterSpacing: "0.15em", padding: "15px 47px", border: "1px solid #1A1A1A", color: "#1A1A1A" }}
-          >
-            Find Your Size
-          </Link>
+            Step into your presence.
+          </h2>
+          <p className="hp-body mx-auto mb-8">
+            Explore elevated trousers designed to make everyday dressing feel intentional.
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-4">
+            <Link href="/collections" className="btn-hp-primary">
+              Shop Collection
+            </Link>
+            <Link href="/size-guide" className="btn-hp-outline">
+              Find Your Size
+            </Link>
+          </div>
         </div>
       </section>
 

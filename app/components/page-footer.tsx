@@ -83,7 +83,7 @@ export function PageFooter() {
           <div className="max-w-xs">
             <Link
               href="/"
-              className="font-playfair font-bold tracking-[0.18em] uppercase inline-block"
+              className="font-poppins font-bold tracking-[0.18em] uppercase inline-block"
               style={{ fontSize: "22px" }}
             >
               <span style={{ color: "#1A1A1A" }}>Get</span>
@@ -200,7 +200,7 @@ export function PageFooter() {
         style={{ height: "140px" }}
       >
         <p
-          className="font-playfair font-bold uppercase text-center leading-none"
+          className="font-poppins font-bold uppercase text-center leading-none"
           style={{
             fontSize: "clamp(64px, 18vw, 180px)",
             letterSpacing: "0.12em",

@@ -46,7 +46,7 @@ export function Navbar() {
           {/* Logo */}
           <Link
             href="/"
-            className="font-playfair font-bold tracking-[0.18em] uppercase"
+            className="font-poppins font-bold tracking-[0.18em] uppercase"
             style={{ fontSize: "20px", fontWeight: 700 }}
           >
             <span style={{ color: "#1A1A1A" }}>Get</span>

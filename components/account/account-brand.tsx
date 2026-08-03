@@ -22,13 +22,13 @@ export function AccountBrand({
           className="account-brand-logo"
           priority
         />
-        <p className="account-brand-wordmark font-playfair">
+        <p className="account-brand-wordmark font-poppins">
           <span className="account-brand-wordmark-dark">Get</span>
           <span className="account-brand-wordmark-accent">Panted</span>
         </p>
         <span className="account-brand-tag font-barlow-cond">{tag}</span>
         <div className="account-brand-rule" />
-        <h2 className="account-brand-headline font-playfair">{headline}</h2>
+        <h2 className="account-brand-headline font-poppins">{headline}</h2>
         <p className="account-brand-subline font-barlow">{subline}</p>
       </div>
     </aside>

@@ -28,7 +28,7 @@ export function AccountHero({
           </Link>
         )}
         <p className="account-eyebrow font-barlow-cond">{eyebrow}</p>
-        <h1 className="account-hero-title font-playfair">{title}</h1>
+        <h1 className="account-hero-title font-poppins">{title}</h1>
         {meta && <p className="account-hero-meta font-barlow">{meta}</p>}
         {subtitle && <p className="account-hero-subtitle font-barlow">{subtitle}</p>}
         {description && <p className="account-hero-description font-barlow">{description}</p>}

@@ -14,7 +14,7 @@ function AdminLoginBrand() {
         className="admin-login-logo"
         priority
       />
-      <p className="admin-login-wordmark font-playfair" style={{ margin: 0 }}>
+      <p className="admin-login-wordmark font-poppins" style={{ margin: 0 }}>
         <span className="admin-login-wordmark-dark">Get</span>
         <span className="admin-login-wordmark-accent">Panted</span>
       </p>

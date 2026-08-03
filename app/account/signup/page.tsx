@@ -70,7 +70,7 @@ export default function AccountSignupPage() {
         />
         <section className="account-auth-form-wrap">
           <div className="account-card">
-            <h1 className="account-card-title font-playfair">Create account</h1>
+            <h1 className="account-card-title font-poppins">Create account</h1>
             <p className="account-card-lead">
               Join GetPanted to manage orders and your wishlist.
             </p>

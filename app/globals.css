@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@400&display=swap');
 @import "tailwindcss";
 
 /* Default = dark. Light: `html[data-theme="light"]` (set by ThemeProvider). */
@@ -101,12 +101,14 @@ body {
 [data-reveal][data-delay="5"] { transition-delay: 440ms; }
 
 /* ── Global font utility classes ─────────────────────────────────────────── */
-.font-poppins     { font-family: 'Poppins', sans-serif !important; }
+.font-playfair    { font-family: 'Playfair Display', serif; }
 .font-barlow-cond { font-family: 'Barlow Condensed', sans-serif; }
 .font-barlow      { font-family: 'Barlow', sans-serif; }
 
 /* ── Site-wide headline style ─────────────────────────────────────────────
-   Barlow Condensed for headlines · Poppins for brand wordmark · Barlow body.
+   Barlow Condensed for headlines (agreed brand system with Playfair logo +
+   Barlow body). Weight/tracking stay overridable so hero and section titles
+   can use 700–900 as designed.
 ─────────────────────────────────────────────────────────────────────────── */
 h1, h2, h3, h4 {
   font-family: 'Barlow Condensed', sans-serif !important;

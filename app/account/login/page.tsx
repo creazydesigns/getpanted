@@ -42,7 +42,7 @@ function LoginForm() {
 
   return (
     <div className="account-card">
-      <h1 className="account-card-title font-poppins">Sign in</h1>
+      <h1 className="account-card-title font-playfair">Sign in</h1>
       <p className="account-card-lead">
         Track orders, save your wishlist, and checkout faster.
       </p>

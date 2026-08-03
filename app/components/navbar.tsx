@@ -186,7 +186,6 @@ export function Navbar() {
             style={{
               width: "min(80vw, 300px)",
               background: "#FFFFFF",
-              borderLeft: "1px solid #E8E8E8",
             }}
           >
             <nav>
@@ -201,7 +200,6 @@ export function Navbar() {
                         fontWeight: 800,
                         letterSpacing: "0.04em",
                         lineHeight: 1.1,
-                        borderBottom: "1px solid #F0F0F0",
                         color: pathname === item.href ? "#5C2D8F" : "#1A1A1A",
                       }}
                     >
@@ -218,7 +216,6 @@ export function Navbar() {
                       fontWeight: 800,
                       letterSpacing: "0.04em",
                       lineHeight: 1.1,
-                      borderBottom: "1px solid #F0F0F0",
                       color: pathname?.startsWith("/account") ? "#5C2D8F" : "#1A1A1A",
                     }}
                   >
@@ -230,8 +227,13 @@ export function Navbar() {
             <div className="mt-auto">
               <Link
                 href="/collections"
-                className="block w-full text-center text-white font-barlow-cond font-bold text-[11px] tracking-[0.16em] uppercase py-3 transition-opacity duration-200 hover:opacity-80"
-                style={{ background: "#5C2D8F" }}
+                className="inline-flex w-auto min-w-[140px] justify-center text-white font-barlow-cond font-bold uppercase transition-opacity duration-200 hover:opacity-80"
+                style={{
+                  background: "#5C2D8F",
+                  fontSize: "10px",
+                  letterSpacing: "0.14em",
+                  padding: "10px 18px",
+                }}
               >
                 Shop Now
               </Link>

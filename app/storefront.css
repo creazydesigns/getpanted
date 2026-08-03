@@ -65,7 +65,7 @@
 }
 .hp-hero-title {
   font-family: "Barlow Condensed", sans-serif;
-  font-weight: 700 !important;
+  font-weight: 700;
   /* Sized so "DRESS THE POWER." stays one line on ~360px screens */
   font-size: clamp(32px, 8.4vw, 56px);
   line-height: 0.95;
@@ -105,7 +105,7 @@
     max-width: none;
     width: 100%;
     font-size: clamp(56px, 6.5vw, 96px);
-    font-weight: 800 !important;
+    font-weight: 800;
     line-height: 0.92;
     letter-spacing: -0.03em;
     text-align: left;
@@ -181,7 +181,7 @@
   max-width: 92vw;
   text-align: center;
   font-family: "Barlow Condensed", sans-serif;
-  font-weight: 900 !important;
+  font-weight: 900;
   font-size: clamp(48px, 11vw, 128px);
   line-height: 0.88;
   letter-spacing: -0.03em;

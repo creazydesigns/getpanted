@@ -106,13 +106,13 @@ body {
 .font-barlow      { font-family: 'Barlow', sans-serif; }
 
 /* ── Site-wide headline style ─────────────────────────────────────────────
-   Barlow Condensed for headlines (agreed brand system with Playfair logo +
-   Barlow body). Weight/tracking stay overridable so hero and section titles
-   can use 700–900 as designed.
+   Applies Barlow Condensed 600 uppercase to every h1–h4 across all pages.
+   !important ensures it wins over font-cormorant / font-playfair utility
+   classes without needing to touch individual page files.
 ─────────────────────────────────────────────────────────────────────────── */
 h1, h2, h3, h4 {
   font-family: 'Barlow Condensed', sans-serif !important;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: -0.02em;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: -0.01em !important;
 }

@@ -5,6 +5,7 @@ import Link from "next/link";
 import "./homepage.css";
 import { useScrollReveal } from "./hooks/use-scroll-reveal";
 import { PageFooter } from "./components/page-footer";
+import { HeroVisual } from "./components/hero-visual";
 import { ProductCard } from "./components/product-card";
 import { useSiteContent } from "@/hooks/use-site-content";
 import { useProducts } from "@/hooks/use-products";
@@ -179,29 +180,7 @@ export default function HomePage() {
           </div>
         </div>
 
-        <div className="hp-hero-visual">
-          <div className="hp-hero-media">
-            <Image
-              src="/images/gp-hero-full.png"
-              alt="Model in GetPanted full-length wide-leg trousers"
-              fill
-              priority
-              sizes="(max-width: 900px) 100vw, 55vw"
-              quality={90}
-              className="hp-hero-img"
-            />
-            {/* Anchored to the photo frame so tags sit on the figure, not the crop box */}
-            <Link href="/collections" className="hp-look-tag hp-look-tag--waist">
-              Pleated Waist
-            </Link>
-            <Link href="/collections" className="hp-look-tag hp-look-tag--leg">
-              Wide-Leg Trouser
-            </Link>
-            <Link href="/collections" className="hp-look-tag hp-look-tag--hem">
-              Full-Length Fit
-            </Link>
-          </div>
-        </div>
+        <HeroVisual />
       </section>
 
       {/* ── PRESENCE BANNER ──────────────────────────────────────────────── */}

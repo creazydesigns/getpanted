@@ -34,6 +34,32 @@
   inset: 0;
 }
 
+.hp-hero-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 1.25s ease-in-out;
+  pointer-events: none;
+}
+
+.hp-hero-slide.is-active {
+  opacity: 1;
+}
+
+.hp-look-tags {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1.25s ease-in-out;
+}
+
+.hp-look-tags.is-active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
 .hp-hero-img {
   object-fit: contain !important;
   object-position: center center !important;
@@ -135,8 +161,8 @@
 }
 @media (max-width: 899px) {
   /*
-    Full-length cutout PNG (2052×6233). Frame matches photo aspect so
-    head-to-toe fills the width; look tags share this coordinate space.
+    Full-length cutout — frame matches original photo aspect so
+    head-to-toe fills the width like the first model.
   */
   .hp-hero-visual {
     min-height: calc(100vw * 6233 / 2052);
@@ -155,6 +181,14 @@
     min-height: 0;
     height: 100%;
     align-self: stretch;
+  }
+  .hp-hero-media {
+    inset: 0;
+    /* Right edge lines up with navbar icons; full height preserved */
+    right: calc(max(0px, (100vw - 1400px) / 2) + 3rem);
+  }
+  .hp-hero-img {
+    object-position: center center !important;
   }
 }
 

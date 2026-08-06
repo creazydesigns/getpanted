@@ -98,7 +98,8 @@
   .hp-hero-copy {
     align-items: flex-start;
     text-align: left;
-    padding: 64px clamp(32px, 4vw, 64px) 64px clamp(40px, 5vw, 72px);
+    /* Match navbar: max-w-[1400px] + md:px-12 (3rem) */
+    padding: 64px clamp(32px, 4vw, 64px) 64px calc(max(0px, (100vw - 1400px) / 2) + 3rem);
     max-width: none;
   }
   .hp-hero-title {

@@ -161,11 +161,13 @@
 }
 @media (max-width: 899px) {
   /*
-    Full-length cutout — frame matches original photo aspect so
-    head-to-toe fills the width like the first model.
+    Cap height so the full figure fits without a long scroll.
+    Desktop layout is unchanged (900px+ rules below).
   */
   .hp-hero-visual {
-    min-height: calc(100vw * 6233 / 2052);
+    min-height: 0;
+    height: min(68dvh, 520px);
+    max-height: 68dvh;
   }
   .hp-hero-media {
     inset: 0;
@@ -173,7 +175,11 @@
   }
   .hp-hero-img {
     object-fit: contain !important;
-    object-position: center center !important;
+    object-position: center bottom !important;
+  }
+  /* Tags were mapped to the tall full-bleed crop; hide on the capped frame */
+  .hp-look-tags {
+    display: none;
   }
 }
 @media (min-width: 900px) {

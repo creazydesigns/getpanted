@@ -270,7 +270,7 @@ export default function HomePage() {
             ) : (
               featuredProducts.map((p, i) => (
                 <div key={p.id} data-reveal="up" data-delay={String((i % 4) + 1)}>
-                  <ProductCard product={p} />
+                  <ProductCard product={p} quickAdd />
                 </div>
               ))
             )}

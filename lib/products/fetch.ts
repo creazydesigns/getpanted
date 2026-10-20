@@ -1,11 +1,6 @@
-import { CATALOG } from "@/lib/catalog";
 import { supabaseAdmin } from "@/lib/supabase";
-import { catalogToStoreProduct, normalizeStoreProduct } from "./normalize";
+import { normalizeStoreProduct } from "./normalize";
 import type { StoreProduct } from "./types";
-
-function staticFallback(): StoreProduct[] {
-  return CATALOG.map(catalogToStoreProduct);
-}
 
 function isStorefrontActive(row: Record<string, unknown>): boolean {
   const status = String(row.status ?? "active").toLowerCase();
@@ -20,16 +15,12 @@ export async function fetchStoreProducts(): Promise<StoreProduct[]> {
 
   if (error) {
     console.error("[products/fetch]", error.message);
-    return staticFallback();
+    return [];
   }
 
-  const active = (data ?? []).filter((row) => isStorefrontActive(row as Record<string, unknown>));
-
-  if (!active.length) {
-    return staticFallback();
-  }
-
-  return active.map((row) => normalizeStoreProduct(row as Record<string, unknown>));
+  return (data ?? [])
+    .filter((row) => isStorefrontActive(row as Record<string, unknown>))
+    .map((row) => normalizeStoreProduct(row as Record<string, unknown>));
 }
 
 export async function fetchStoreProductById(idOrSlug: string): Promise<StoreProduct | null> {
@@ -49,8 +40,7 @@ export async function fetchStoreProductById(idOrSlug: string): Promise<StoreProd
     return normalizeStoreProduct(data as Record<string, unknown>);
   }
 
-  const fallback = staticFallback().find((p) => p.id === idOrSlug);
-  return fallback ?? null;
+  return null;
 }
 
 export async function fetchStoreProductCatalog(): Promise<StoreProduct[]> {

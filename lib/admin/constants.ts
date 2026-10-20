@@ -24,7 +24,21 @@ export const PRODUCT_CATEGORIES = [
   { value: "coord", label: "Co-ord" },
 ] as const;
 
-export const SIZE_OPTIONS = ["XS", "S", "M", "L", "XL", "XXL", "2XL", "3XL"] as const;
+export const SIZE_OPTIONS = [
+  "XS",
+  "S",
+  "M",
+  "L",
+  "XL",
+  "XXL",
+  "2XL",
+  "3XL",
+  "8",
+  "10",
+  "12",
+  "14",
+  "16",
+] as const;
 
 export type OrderStatus = (typeof ORDER_STATUSES)[number];
 export type BespokeStatus = (typeof BESPOKE_STATUSES)[number];

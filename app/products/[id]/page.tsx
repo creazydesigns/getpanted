@@ -19,6 +19,7 @@ export default function ProductDetailPage() {
 
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
+  const [activeImage, setActiveImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
 
@@ -31,7 +32,8 @@ export default function ProductDetailPage() {
 
   useEffect(() => {
     if (product && product.colors.length > 0) setSelectedColor(product.colors[0]);
-    if (product && product.sizes.length > 0) setSelectedSize(product.sizes[2] ?? product.sizes[0]);
+    if (product && product.sizes.length > 0) setSelectedSize(product.sizes[0]);
+    setActiveImage(0);
   }, [product]);
 
   if (loading) {
@@ -95,25 +97,56 @@ export default function ProductDetailPage() {
 
           <div className="grid md:grid-cols-2 gap-10 lg:gap-16 mb-20 md:mb-28">
             {/* Gallery */}
-            <div className="hp-product-media">
-              {product.badge && (
-                <span
-                  className="absolute top-4 left-4 z-10 font-barlow-cond font-bold uppercase text-white px-2.5 py-1"
-                  style={{ fontSize: "10px", letterSpacing: "0.16em", background: "var(--hp-accent)" }}
-                >
-                  {product.badge}
-                </span>
-              )}
-              {product.image ? (
-                <Image
-                  src={product.image}
-                  alt={product.name}
-                  fill
-                  className="object-cover object-top"
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                />
-              ) : (
-                <div className="hp-placeholder absolute inset-0">Product</div>
+            <div>
+              <div className="hp-product-media">
+                {product.badge && (
+                  <span
+                    className="absolute top-4 left-4 z-10 font-barlow-cond font-bold uppercase text-white px-2.5 py-1"
+                    style={{ fontSize: "10px", letterSpacing: "0.16em", background: "var(--hp-accent)" }}
+                  >
+                    {product.badge}
+                  </span>
+                )}
+                {product.images[activeImage] || product.image ? (
+                  <Image
+                    src={product.images[activeImage] || product.image}
+                    alt={product.name}
+                    fill
+                    className="object-contain object-center"
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    priority
+                  />
+                ) : (
+                  <div className="hp-placeholder absolute inset-0">Product</div>
+                )}
+              </div>
+              {product.images.length > 1 && (
+                <div className="mt-3 grid grid-cols-3 gap-2">
+                  {product.images.map((src, i) => (
+                    <button
+                      key={src}
+                      type="button"
+                      onClick={() => setActiveImage(i)}
+                      aria-label={`View image ${i + 1}`}
+                      className="relative aspect-[3/4] overflow-hidden"
+                      style={{
+                        border:
+                          activeImage === i
+                            ? "2px solid var(--hp-accent)"
+                            : "1px solid var(--hp-border)",
+                        background: "var(--hp-soft)",
+                      }}
+                    >
+                      <Image
+                        src={src}
+                        alt=""
+                        fill
+                        className="object-contain object-center"
+                        sizes="120px"
+                      />
+                    </button>
+                  ))}
+                </div>
               )}
             </div>
 

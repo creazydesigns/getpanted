@@ -10,24 +10,36 @@ const COLOR_FALLBACKS = ["#1A1A1A", "#5C2D8F", "#C4B5A0", "#E8E8E8"];
 
 type ProductCardProps = {
   product: StoreProduct;
-  /** Show hover size tray + add to bag (collections) */
+  /** Show available sizes + add to bag */
   quickAdd?: boolean;
 };
 
 export function ProductCard({ product, quickAdd = false }: ProductCardProps) {
-  const [hovered, setHovered] = useState(false);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
-  const { addToCart, isWishlisted, toggleWishlist } = useShop();
+  const [sizeHint, setSizeHint] = useState(false);
+  const { addToCart, openMiniCart, isWishlisted, toggleWishlist } = useShop();
   const wishlisted = isWishlisted(product.id);
   const productHref = `/products/${product.id}`;
   const swatches = (product.colors?.length ? product.colors : COLOR_FALLBACKS).slice(0, 4);
 
+  const handleAddToCart = () => {
+    if (!selectedSize) {
+      setSizeHint(true);
+      return;
+    }
+    setSizeHint(false);
+    addToCart({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.image,
+      size: selectedSize,
+    });
+    openMiniCart();
+  };
+
   return (
-    <div
-      className="group"
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-    >
+    <div className="group">
       <div className="hp-product-media">
         <Link href={productHref} className="absolute inset-0 z-[1]" aria-label={`View ${product.name}`} />
         {product.image ? (
@@ -36,7 +48,7 @@ export function ProductCard({ product, quickAdd = false }: ProductCardProps) {
             alt={product.name}
             fill
             sizes="(max-width: 768px) 50vw, 25vw"
-            className="object-cover object-top pointer-events-none"
+            className="object-contain object-center pointer-events-none"
           />
         ) : (
           <div className="hp-placeholder absolute inset-0 pointer-events-none">Product</div>
@@ -78,58 +90,6 @@ export function ProductCard({ product, quickAdd = false }: ProductCardProps) {
             <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z" />
           </svg>
         </button>
-
-        {quickAdd && (
-          <div
-            className="absolute bottom-0 left-0 right-0 z-[2] px-4 py-4 transition-transform duration-300"
-            style={{
-              background: "rgba(10,10,10,0.94)",
-              transform: hovered ? "translateY(0)" : "translateY(100%)",
-              pointerEvents: hovered ? "auto" : "none",
-            }}
-          >
-            <div className="flex gap-1.5 flex-wrap mb-3">
-              {product.sizes.slice(0, 5).map((s) => (
-                <button
-                  key={s}
-                  type="button"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    setSelectedSize(s === selectedSize ? null : s);
-                  }}
-                  className="font-barlow-cond font-bold uppercase px-2 py-1 transition-colors"
-                  style={{
-                    fontSize: "9px",
-                    letterSpacing: "0.1em",
-                    border: `1px solid ${selectedSize === s ? "#8B52CC" : "rgba(255,255,255,0.2)"}`,
-                    color: selectedSize === s ? "#8B52CC" : "rgba(255,255,255,0.5)",
-                  }}
-                >
-                  {s}
-                </button>
-              ))}
-            </div>
-            <button
-              type="button"
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                addToCart({
-                  id: product.id,
-                  name: product.name,
-                  price: product.price,
-                  image: product.image,
-                  ...(selectedSize ? { size: selectedSize } : {}),
-                });
-              }}
-              className="w-full font-barlow-cond font-bold uppercase text-white transition-opacity hover:opacity-80"
-              style={{ fontSize: "11px", letterSpacing: "0.14em", padding: "10px", background: "#5C2D8F" }}
-            >
-              {selectedSize ? `Add ${selectedSize} to Bag` : "Add to Bag"}
-            </button>
-          </div>
-        )}
       </div>
 
       <div className="pt-4 pb-2">
@@ -147,6 +107,7 @@ export function ProductCard({ product, quickAdd = false }: ProductCardProps) {
             {product.price}
           </p>
         </Link>
+
         <div className="flex gap-1.5 mt-3">
           {swatches.map((c, i) => (
             <span
@@ -156,6 +117,56 @@ export function ProductCard({ product, quickAdd = false }: ProductCardProps) {
             />
           ))}
         </div>
+
+        {quickAdd && product.sizes.length > 0 && (
+          <div className="mt-4">
+            <p
+              className="font-barlow-cond font-bold uppercase mb-2"
+              style={{ fontSize: "10px", letterSpacing: "0.14em", color: "#6B6B6B" }}
+            >
+              Available sizes
+            </p>
+            <div className="flex flex-wrap gap-1.5 mb-3">
+              {product.sizes.map((s) => (
+                <button
+                  key={s}
+                  type="button"
+                  onClick={() => {
+                    setSelectedSize(s === selectedSize ? null : s);
+                    setSizeHint(false);
+                  }}
+                  className="font-barlow-cond font-bold uppercase px-2.5 py-1.5 transition-colors"
+                  style={{
+                    fontSize: "11px",
+                    letterSpacing: "0.08em",
+                    border: `1px solid ${selectedSize === s ? "#5C2D8F" : "#E8E8E8"}`,
+                    color: selectedSize === s ? "#5C2D8F" : "#1A1A1A",
+                    background: selectedSize === s ? "rgba(92,45,143,0.06)" : "#FFFFFF",
+                  }}
+                >
+                  {s}
+                </button>
+              ))}
+            </div>
+            {sizeHint && (
+              <p className="font-barlow mb-2" style={{ fontSize: "11px", color: "#E53935" }}>
+                Please select a size
+              </p>
+            )}
+            <button
+              type="button"
+              onClick={handleAddToCart}
+              className="btn-hp-dark w-full"
+              style={{
+                fontSize: "11px",
+                letterSpacing: "0.14em",
+                padding: "11px 12px",
+              }}
+            >
+              {selectedSize ? `Add size ${selectedSize} to bag` : "Add to bag"}
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

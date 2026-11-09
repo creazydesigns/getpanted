@@ -2,7 +2,8 @@
 export const SHIPPING_ORIGIN = {
   lat: Number(process.env.SHIPPING_ORIGIN_LAT ?? "6.609549"),
   lng: Number(process.env.SHIPPING_ORIGIN_LNG ?? "3.2672941"),
-  label: process.env.SHIPPING_ORIGIN_LABEL ?? "Ipaja, Lagos, Nigeria",
+  // Keep this generic in API responses — do not publish the street/area publicly.
+  label: process.env.SHIPPING_ORIGIN_LABEL ?? "Lagos fulfilment hub",
 } as const;
 
 /** Distance bands from origin (km → fee in Naira). Always charged — no free shipping. */

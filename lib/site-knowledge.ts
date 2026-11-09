@@ -60,8 +60,9 @@ ${sizes}
 
 Shipping & delivery
 - Shipping is always charged (no free shipping threshold).
-- Fee is calculated at checkout from the delivery address (distance bands from the Ipaja, Lagos office).
+- Fee is calculated at checkout from the delivery address using distance-based bands from our Lagos hub.
 - Typical Lagos metro: about ₦2,500–₦5,000; farther cities cost more based on distance.
+- Do not share the exact office/warehouse address with customers.
 - Estimated delivery after dispatch: 5–7 business days (from order confirmation emails).
 - Shipping and delivery questions: contact page or WhatsApp.
 

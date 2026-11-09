@@ -1,8 +1,8 @@
-/** GetPanted fulfilment origin — override via env for warehouse moves. */
+/** GetPanted office / fulfilment origin (Ipaja) — override via env if needed. */
 export const SHIPPING_ORIGIN = {
-  lat: Number(process.env.SHIPPING_ORIGIN_LAT ?? "6.4541"),
-  lng: Number(process.env.SHIPPING_ORIGIN_LNG ?? "3.3947"),
-  label: process.env.SHIPPING_ORIGIN_LABEL ?? "Lagos Island, Lagos, Nigeria",
+  lat: Number(process.env.SHIPPING_ORIGIN_LAT ?? "6.609549"),
+  lng: Number(process.env.SHIPPING_ORIGIN_LNG ?? "3.2672941"),
+  label: process.env.SHIPPING_ORIGIN_LABEL ?? "Ipaja, Lagos, Nigeria",
 } as const;
 
 /** Distance bands from origin (km → fee in Naira). Always charged — no free shipping. */

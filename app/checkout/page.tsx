@@ -315,7 +315,7 @@ export default function CheckoutPage() {
                 </div>
                 <p className="hp-body-sm" style={{ fontSize: 12 }}>
                   {quoting
-                    ? "Calculating delivery from Lagos…"
+                    ? "Calculating delivery from Ipaja…"
                     : quote
                       ? `Delivery: ${quote.label}${
                           quote.distanceKm != null ? ` · ~${quote.distanceKm} km` : ""
@@ -438,7 +438,7 @@ export default function CheckoutPage() {
               {quote && (
                 <p style={{ fontSize: "11px", color: "var(--hp-muted)" }}>
                   {quote.label}
-                  {quote.distanceKm != null ? ` · ~${quote.distanceKm} km from Lagos` : ""}
+                  {quote.distanceKm != null ? ` · ~${quote.distanceKm} km from Ipaja` : ""}
                 </p>
               )}
             </div>

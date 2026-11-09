@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useShop } from "../context/shop-context";
-import { calcShippingNaira } from "@/lib/cart/shipping";
+import { cartShippingPreviewLabel } from "@/lib/cart/shipping";
 import { PageFooter } from "../components/page-footer";
 import { StorefrontHeader } from "../components/storefront-header";
 import "../storefront.css";
@@ -14,8 +14,7 @@ function formatNaira(value: number) {
 
 export default function CartPage() {
   const { cartItems, cartCount, cartSubtotal, removeFromCart, updateCartQuantity } = useShop();
-  const shipping = calcShippingNaira(cartItems, cartSubtotal, cartCount);
-  const total = cartSubtotal + shipping;
+  const shippingLabel = cartShippingPreviewLabel();
 
   return (
     <main className="hp-page font-barlow overflow-x-hidden" style={{ minHeight: "100vh" }}>
@@ -160,16 +159,19 @@ export default function CartPage() {
                   </div>
                   <div className="flex justify-between">
                     <span>Shipping</span>
-                    <span>{shipping === 0 ? "Free" : formatNaira(shipping)}</span>
+                    <span>{shippingLabel}</span>
                   </div>
                 </div>
                 <div
                   className="flex justify-between mt-5 pt-5 font-barlow-cond font-bold"
                   style={{ borderTop: "1px solid var(--hp-border)", fontSize: "16px" }}
                 >
-                  <span style={{ color: "var(--hp-ink)" }}>Total</span>
-                  <span style={{ color: "var(--hp-accent)" }}>{formatNaira(total)}</span>
+                  <span style={{ color: "var(--hp-ink)" }}>Subtotal</span>
+                  <span style={{ color: "var(--hp-accent)" }}>{formatNaira(cartSubtotal)}</span>
                 </div>
+                <p className="hp-body-sm mt-3" style={{ fontSize: 12 }}>
+                  Delivery is calculated from your address at checkout. No free shipping.
+                </p>
                 <Link href="/checkout" className="btn-hp-primary w-full mt-6">
                   Proceed to Checkout
                 </Link>

@@ -7,6 +7,7 @@ import {
   nairaToKobo,
   siteUrl,
 } from "@/lib/paystack";
+import { quoteShipping } from "@/lib/shipping/quote";
 
 export async function POST(req: NextRequest) {
   try {
@@ -27,6 +28,32 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
+    const addr = shipping_address ?? {};
+    const serverQuote = await quoteShipping({
+      street: addr.street,
+      city: addr.city,
+      state: addr.state,
+      country: addr.country,
+    });
+
+    const itemsSubtotal = Number(subtotal);
+    const expectedTotal = itemsSubtotal + serverQuote.amount;
+    if (Math.abs(Number(shipping_amount) - serverQuote.amount) > 1) {
+      return NextResponse.json(
+        {
+          error: "Shipping changed. Refresh checkout and try again.",
+          quote: serverQuote,
+        },
+        { status: 409 }
+      );
+    }
+    if (Math.abs(Number(total_amount) - expectedTotal) > 1) {
+      return NextResponse.json(
+        { error: "Order total mismatch. Refresh checkout and try again." },
+        { status: 409 }
+      );
+    }
+
     const supabase = await createClient();
     const {
       data: { user },
@@ -39,10 +66,13 @@ export async function POST(req: NextRequest) {
         customer_name,
         customer_email,
         customer_phone: customer_phone ?? "",
-        shipping_address: shipping_address ?? {},
+        shipping_address: {
+          ...addr,
+          shipping_quote: serverQuote,
+        },
         items,
-        total_amount,
-        shipping_amount: shipping_amount ?? 0,
+        total_amount: expectedTotal,
+        shipping_amount: serverQuote.amount,
         customer_notes: customer_notes ?? null,
         status: "pending",
         payment_status: "pending",
@@ -64,13 +94,15 @@ export async function POST(req: NextRequest) {
 
     const paystack = await initializeTransaction({
       email: customer_email,
-      amountKobo: nairaToKobo(Number(total_amount)),
+      amountKobo: nairaToKobo(expectedTotal),
       reference,
       callbackUrl: `${siteUrl()}/checkout/complete`,
       metadata: {
         order_id: order.id,
         customer_name,
-        subtotal,
+        subtotal: itemsSubtotal,
+        shipping_amount: serverQuote.amount,
+        shipping_label: serverQuote.label,
       },
     });
 
@@ -88,6 +120,12 @@ export async function POST(req: NextRequest) {
     });
   } catch (err) {
     console.error("[checkout/pay]", err);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    const message = err instanceof Error ? err.message : "Internal server error";
+    const isConfig =
+      /PAYSTACK_SECRET_KEY|is not configured|SUPABASE/i.test(message);
+    return NextResponse.json(
+      { error: isConfig ? "Payment is not configured on this server" : "Internal server error" },
+      { status: 500 }
+    );
   }
 }

@@ -3,7 +3,6 @@
 import { createContext, useContext, useMemo, useState } from "react";
 import { useCartStore, selectCartCount, selectCartSubtotal } from "../../store/cartStore";
 import type { CartItem as ZustandCartItem } from "../../store/cartStore";
-import { calcShippingNaira } from "@/lib/cart/shipping";
 
 // ── Legacy types (kept for backward-compat with existing components) ───────────
 export interface ShopProduct {
@@ -176,8 +175,9 @@ export function ShopProvider({ children }: { children: React.ReactNode }) {
   // ── Place order (local, legacy) ────────────────────────────────────────────
   const placeOrder = (customer: CheckoutDetails): OrderRecord => {
     const subtotal = cartSubtotal;
-    const shipping = calcShippingNaira(cartItems, subtotal, cartCount);
-    const total    = subtotal + shipping;
+    // Legacy local placeOrder — shipping is always quoted at real checkout.
+    const shipping = 0;
+    const total = subtotal;
     const order: OrderRecord = {
       id: `GP-${Date.now().toString().slice(-8)}`,
       items: cartItems,

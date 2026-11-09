@@ -1,10 +1,9 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useCartStore, selectCartCount, selectCartSubtotal } from "@/store/cartStore";
-import { calcShippingNaira } from "@/lib/cart/shipping";
 import { useAuth } from "@/app/context/auth-context";
 import { PageFooter } from "../components/page-footer";
 import { StorefrontHeader } from "../components/storefront-header";
@@ -14,13 +13,19 @@ function formatNaira(value: number) {
   return `₦${value.toLocaleString()}`;
 }
 
+type ShippingQuote = {
+  amount: number;
+  label: string;
+  method: string;
+  distanceKm: number | null;
+  destination: string;
+};
+
 export default function CheckoutPage() {
   const { user, profile } = useAuth();
   const items = useCartStore((s) => s.items);
   const cartCount = useCartStore(selectCartCount);
   const cartSubtotal = useCartStore(selectCartSubtotal);
-  const shipping = calcShippingNaira(items, cartSubtotal, cartCount);
-  const total = cartSubtotal + shipping;
 
   const defaultFirst =
     profile?.first_name ?? (user?.user_metadata?.first_name as string | undefined) ?? "";
@@ -29,11 +34,58 @@ export default function CheckoutPage() {
   const defaultEmail = user?.email ?? "";
   const defaultPhone = profile?.phone ?? "";
 
+  const [street, setStreet] = useState("");
+  const [city, setCity] = useState("");
+  const [state, setState] = useState("");
+  const [country, setCountry] = useState("Nigeria");
+
+  const [quote, setQuote] = useState<ShippingQuote | null>(null);
+  const [quoting, setQuoting] = useState(false);
+  const [quoteError, setQuoteError] = useState<string | null>(null);
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const shipping = quote?.amount ?? 0;
+  const total = cartSubtotal + shipping;
+
+  useEffect(() => {
+    if (!city.trim() && !state.trim() && !street.trim()) {
+      setQuote(null);
+      setQuoteError(null);
+      return;
+    }
+
+    const handle = window.setTimeout(async () => {
+      setQuoting(true);
+      setQuoteError(null);
+      try {
+        const res = await fetch("/api/shipping/quote", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ street, city, state, country }),
+        });
+        const json = (await res.json()) as { quote?: ShippingQuote; error?: string };
+        if (!res.ok || !json.quote) throw new Error(json.error ?? "Could not calculate shipping");
+        setQuote(json.quote);
+      } catch (err) {
+        setQuote(null);
+        setQuoteError(err instanceof Error ? err.message : "Could not calculate shipping");
+      } finally {
+        setQuoting(false);
+      }
+    }, 550);
+
+    return () => window.clearTimeout(handle);
+  }, [street, city, state, country]);
+
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!quote) {
+      setError("Enter a delivery address so we can calculate shipping before payment.");
+      return;
+    }
+
     setLoading(true);
     setError(null);
 
@@ -42,10 +94,6 @@ export default function CheckoutPage() {
     const lastName = String(data.get("lastName") ?? "");
     const email = String(data.get("email") ?? "");
     const phone = String(data.get("phone") ?? "");
-    const street = String(data.get("street") ?? "");
-    const city = String(data.get("city") ?? "");
-    const state = String(data.get("state") ?? "");
-    const country = String(data.get("country") ?? "");
     const notes = String(data.get("notes") ?? "");
 
     const orderItems = items.map((i) => ({
@@ -68,9 +116,10 @@ export default function CheckoutPage() {
           shipping_address: { street, city, state, country },
           items: orderItems,
           subtotal: cartSubtotal,
-          shipping_amount: shipping,
-          total_amount: total,
+          shipping_amount: quote.amount,
+          total_amount: cartSubtotal + quote.amount,
           customer_notes: notes || null,
+          shipping_quote: quote,
         }),
       });
 
@@ -216,6 +265,8 @@ export default function CheckoutPage() {
                     name="street"
                     className="hp-input"
                     placeholder="Street address"
+                    value={street}
+                    onChange={(e) => setStreet(e.target.value)}
                   />
                 </div>
                 <div className="grid gap-4 md:grid-cols-2">
@@ -223,13 +274,29 @@ export default function CheckoutPage() {
                     <label className="hp-label" htmlFor="city">
                       City
                     </label>
-                    <input required id="city" name="city" className="hp-input" placeholder="City" />
+                    <input
+                      required
+                      id="city"
+                      name="city"
+                      className="hp-input"
+                      placeholder="City"
+                      value={city}
+                      onChange={(e) => setCity(e.target.value)}
+                    />
                   </div>
                   <div>
                     <label className="hp-label" htmlFor="state">
                       State
                     </label>
-                    <input required id="state" name="state" className="hp-input" placeholder="State" />
+                    <input
+                      required
+                      id="state"
+                      name="state"
+                      className="hp-input"
+                      placeholder="State"
+                      value={state}
+                      onChange={(e) => setState(e.target.value)}
+                    />
                   </div>
                 </div>
                 <div>
@@ -242,9 +309,21 @@ export default function CheckoutPage() {
                     name="country"
                     className="hp-input"
                     placeholder="Country"
-                    defaultValue="Nigeria"
+                    value={country}
+                    onChange={(e) => setCountry(e.target.value)}
                   />
                 </div>
+                <p className="hp-body-sm" style={{ fontSize: 12 }}>
+                  {quoting
+                    ? "Calculating delivery from Lagos…"
+                    : quote
+                      ? `Delivery: ${quote.label}${
+                          quote.distanceKm != null ? ` · ~${quote.distanceKm} km` : ""
+                        } · ${formatNaira(quote.amount)}`
+                      : quoteError
+                        ? quoteError
+                        : "Shipping updates from your address (distance-based)."}
+                </p>
               </div>
             </fieldset>
 
@@ -278,8 +357,18 @@ export default function CheckoutPage() {
               </p>
             )}
 
-            <button type="submit" disabled={loading} className="btn-hp-primary w-full disabled:opacity-50">
-              {loading ? "Redirecting to Paystack…" : `Pay ${formatNaira(total)} with Paystack`}
+            <button
+              type="submit"
+              disabled={loading || quoting || !quote}
+              className="btn-hp-primary w-full disabled:opacity-50"
+            >
+              {loading
+                ? "Redirecting to Paystack…"
+                : quoting
+                  ? "Calculating shipping…"
+                  : !quote
+                    ? "Enter address to continue"
+                    : `Pay ${formatNaira(total)} with Paystack`}
             </button>
             <p className="hp-body-sm text-center">
               Secure payment via Paystack. Card, bank transfer, and USSD accepted.
@@ -339,15 +428,18 @@ export default function CheckoutPage() {
               <div className="flex justify-between">
                 <span>Shipping</span>
                 <span>
-                  {shipping === 0 ? (
-                    <span style={{ color: "#4CAF50" }}>Free</span>
-                  ) : (
-                    formatNaira(shipping)
-                  )}
+                  {quoting
+                    ? "…"
+                    : quote
+                      ? formatNaira(quote.amount)
+                      : "Enter address"}
                 </span>
               </div>
-              {shipping > 0 && (
-                <p style={{ fontSize: "11px" }}>Free shipping on orders above ₦50,000</p>
+              {quote && (
+                <p style={{ fontSize: "11px", color: "var(--hp-muted)" }}>
+                  {quote.label}
+                  {quote.distanceKm != null ? ` · ~${quote.distanceKm} km from Lagos` : ""}
+                </p>
               )}
             </div>
 
@@ -356,7 +448,9 @@ export default function CheckoutPage() {
               style={{ borderTop: "1px solid var(--hp-border)", fontSize: "17px" }}
             >
               <span style={{ color: "var(--hp-ink)" }}>Total</span>
-              <span style={{ color: "var(--hp-accent)" }}>{formatNaira(total)}</span>
+              <span style={{ color: "var(--hp-accent)" }}>
+                {quote ? formatNaira(total) : "—"}
+              </span>
             </div>
           </aside>
         </div>

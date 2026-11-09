@@ -59,8 +59,9 @@ ${sizes}
 - Some products include 3XL (e.g. Onyx Statement, Blush Ultra Wide).
 
 Shipping & delivery
-- Free shipping on orders of ₦50,000 and above.
-- Standard shipping fee: ₦3,500 for orders below ₦50,000.
+- Shipping is always charged (no free shipping threshold).
+- Fee is calculated at checkout from the delivery address (distance bands from Lagos).
+- Typical Lagos metro: about ₦2,500–₦5,000; farther cities cost more based on distance.
 - Estimated delivery after dispatch: 5–7 business days (from order confirmation emails).
 - Shipping and delivery questions: contact page or WhatsApp.
 

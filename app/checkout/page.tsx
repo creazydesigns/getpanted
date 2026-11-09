@@ -4,6 +4,7 @@ import { FormEvent, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useCartStore, selectCartCount, selectCartSubtotal } from "@/store/cartStore";
+import { calcShippingNaira } from "@/lib/cart/shipping";
 import { useAuth } from "@/app/context/auth-context";
 import { PageFooter } from "../components/page-footer";
 import { StorefrontHeader } from "../components/storefront-header";
@@ -18,11 +19,7 @@ export default function CheckoutPage() {
   const items = useCartStore((s) => s.items);
   const cartCount = useCartStore(selectCartCount);
   const cartSubtotal = useCartStore(selectCartSubtotal);
-  // Free shipping for Paystack live-test carts so the charge stays ₦200
-  const isPaystackTestCart =
-    items.length > 0 && items.every((i) => i.name.startsWith("Paystack Live Test"));
-  const shipping =
-    isPaystackTestCart || cartSubtotal >= 50000 ? 0 : cartCount > 0 ? 3500 : 0;
+  const shipping = calcShippingNaira(items, cartSubtotal, cartCount);
   const total = cartSubtotal + shipping;
 
   const defaultFirst =

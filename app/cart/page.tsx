@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useShop } from "../context/shop-context";
+import { calcShippingNaira } from "@/lib/cart/shipping";
 import { PageFooter } from "../components/page-footer";
 import { StorefrontHeader } from "../components/storefront-header";
 import "../storefront.css";
@@ -13,7 +14,7 @@ function formatNaira(value: number) {
 
 export default function CartPage() {
   const { cartItems, cartCount, cartSubtotal, removeFromCart, updateCartQuantity } = useShop();
-  const shipping = cartCount > 0 ? 3500 : 0;
+  const shipping = calcShippingNaira(cartItems, cartSubtotal, cartCount);
   const total = cartSubtotal + shipping;
 
   return (
@@ -159,7 +160,7 @@ export default function CartPage() {
                   </div>
                   <div className="flex justify-between">
                     <span>Shipping</span>
-                    <span>{formatNaira(shipping)}</span>
+                    <span>{shipping === 0 ? "Free" : formatNaira(shipping)}</span>
                   </div>
                 </div>
                 <div

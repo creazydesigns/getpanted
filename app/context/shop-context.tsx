@@ -3,6 +3,7 @@
 import { createContext, useContext, useMemo, useState } from "react";
 import { useCartStore, selectCartCount, selectCartSubtotal } from "../../store/cartStore";
 import type { CartItem as ZustandCartItem } from "../../store/cartStore";
+import { calcShippingNaira } from "@/lib/cart/shipping";
 
 // ── Legacy types (kept for backward-compat with existing components) ───────────
 export interface ShopProduct {
@@ -58,9 +59,9 @@ function legacyToZustand(product: ShopProduct, quantity: number): ZustandCartIte
 }
 
 function zustandToLegacy(item: ZustandCartItem): CartItem {
-  const numericId = Number(item.id);
+  // Keep the original id string (UUIDs must not be coerced with Number()).
   return {
-    id: Number.isNaN(numericId) ? 0 : numericId,
+    id: item.id,
     name: item.name,
     price: item.price,
     image: item.image,
@@ -175,7 +176,7 @@ export function ShopProvider({ children }: { children: React.ReactNode }) {
   // ── Place order (local, legacy) ────────────────────────────────────────────
   const placeOrder = (customer: CheckoutDetails): OrderRecord => {
     const subtotal = cartSubtotal;
-    const shipping = subtotal > 50000 ? 0 : 3500;
+    const shipping = calcShippingNaira(cartItems, subtotal, cartCount);
     const total    = subtotal + shipping;
     const order: OrderRecord = {
       id: `GP-${Date.now().toString().slice(-8)}`,

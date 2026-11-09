@@ -18,7 +18,11 @@ export default function CheckoutPage() {
   const items = useCartStore((s) => s.items);
   const cartCount = useCartStore(selectCartCount);
   const cartSubtotal = useCartStore(selectCartSubtotal);
-  const shipping = cartSubtotal >= 50000 ? 0 : cartCount > 0 ? 3500 : 0;
+  // Free shipping for Paystack live-test carts so the charge stays ₦200
+  const isPaystackTestCart =
+    items.length > 0 && items.every((i) => i.name.startsWith("Paystack Live Test"));
+  const shipping =
+    isPaystackTestCart || cartSubtotal >= 50000 ? 0 : cartCount > 0 ? 3500 : 0;
   const total = cartSubtotal + shipping;
 
   const defaultFirst =

@@ -61,6 +61,7 @@ Useful columns: `email`, `first_name` (full name from the form), `whatsapp`, `su
 | `migrations/005_customer_accounts.sql` | Customer profiles, wishlist, Paystack order fields |
 | `migrations/006_support_tickets.sql` | Client area support tickets |
 | `migrations/007_welcome_email_sent.sql` | Account welcome email tracking |
+| `migrations/008_executive_edit_orders.sql` | Executive Edit pre-orders |
 | `waitlist_setup.sql` | Subscribers table only (includes source + whatsapp) |
 
 ## Customer accounts & checkout

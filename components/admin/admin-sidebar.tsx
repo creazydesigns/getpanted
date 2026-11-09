@@ -12,6 +12,7 @@ const NAV = [
   { href: "/admin/orders", label: "Orders", badge: "orders" as const },
   { href: "/admin/products", label: "Products" },
   { href: "/admin/bespoke", label: "Bespoke Orders", badge: "bespoke" as const },
+  { href: "/admin/executive-edit", label: "Executive Edit" },
   { href: "/admin/customers", label: "Customers" },
   { href: "/admin/newsletter", label: "Newsletter" },
   { href: "/admin/content", label: "Site Content" },

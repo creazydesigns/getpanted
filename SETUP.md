@@ -45,8 +45,9 @@ In **SQL Editor**, run each file from `supabase/migrations/` **one at a time**, 
 | 5 | `005_customer_accounts.sql` | Client profiles, wishlist, Paystack fields |
 | 6 | `006_support_tickets.sql` | Support ticket form storage |
 | 7 | `007_welcome_email_sent.sql` | Account welcome email tracking |
+| 8 | `008_executive_edit_orders.sql` | Executive Edit pre-orders |
 
-If you only need the waitlist first, you can run `waitlist_setup.sql` instead of 001–003, then run 004–007 when ready for the full shop.
+If you only need the waitlist first, you can run `waitlist_setup.sql` instead of 001–003, then run 004–007 when ready for the full shop. For The Executive Edit landing/checkout, also run `008`.
 
 ### Copy API keys
 

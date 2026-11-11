@@ -190,7 +190,7 @@ export default function ExecutiveEditPage() {
                     src={style.image}
                     alt={style.name}
                     fill
-                    className="object-contain object-center"
+                    className="object-cover object-center"
                     sizes="(max-width: 768px) 50vw, 33vw"
                   />
                 </div>

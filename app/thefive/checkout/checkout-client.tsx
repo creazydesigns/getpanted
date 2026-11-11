@@ -223,7 +223,10 @@ export function ExecutiveEditCheckoutClient({ initialPackage }: Props) {
         </div>
 
         <p className="ee-body" style={{ marginBottom: 12, fontSize: 14 }}>
-          Editing slot {activeSlot + 1}. Select a colourway, then a size.
+          Editing slot {activeSlot + 1}. Select a colourway, then a size.{" "}
+          <Link href="/thefive#size-chart" style={{ textDecoration: "underline" }}>
+            View size chart
+          </Link>
         </p>
 
         <div className="ee-style-grid">

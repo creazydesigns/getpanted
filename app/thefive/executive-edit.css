@@ -667,6 +667,113 @@
   margin-bottom: 0.3rem;
 }
 
+/* —— Size chart —— */
+.ee-section-size {
+  background:
+    linear-gradient(180deg, rgba(255, 253, 249, 0.7), transparent 40%),
+    var(--ee-cream);
+}
+
+.ee-size-chart {
+  border: 1px solid var(--ee-border);
+  background: var(--ee-white);
+  padding: 1.25rem 1rem 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .ee-size-chart {
+    padding: 1.75rem 1.5rem 1.85rem;
+  }
+}
+
+.ee-size-table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.ee-size-table {
+  width: 100%;
+  min-width: 640px;
+  border-collapse: collapse;
+  font-family: "Barlow Condensed", sans-serif;
+}
+
+.ee-size-table th,
+.ee-size-table td {
+  padding: 0.85rem 0.65rem;
+  text-align: center;
+  border-bottom: 1px solid var(--ee-border);
+  white-space: nowrap;
+}
+
+.ee-size-table th {
+  text-align: left;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ee-chocolate);
+  background: rgba(196, 177, 147, 0.18);
+  font-weight: 700;
+}
+
+.ee-size-table td {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ee-ink);
+}
+
+.ee-size-table tr:first-child td {
+  color: var(--ee-chocolate);
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.ee-size-table tr:last-child th,
+.ee-size-table tr:last-child td {
+  border-bottom: none;
+}
+
+.ee-size-length {
+  margin: 1.25rem 0 0;
+  padding: 0.9rem 1rem;
+  text-align: center;
+  border: 1px solid rgba(176, 141, 58, 0.45);
+  background: rgba(176, 141, 58, 0.1);
+  font-family: "Barlow Condensed", sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ee-chocolate);
+}
+
+.ee-size-meta {
+  display: grid;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .ee-size-meta {
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+}
+
+.ee-size-measure {
+  margin-top: 0.75rem;
+}
+
+.ee-size-measure strong {
+  display: block;
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ee-chocolate);
+  margin-bottom: 0.3rem;
+}
+
 /* —— Steps —— */
 .ee-section-how {
   background:

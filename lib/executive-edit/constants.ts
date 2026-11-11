@@ -29,6 +29,40 @@ export const EE_CONTACT = {
   instagramHandle: "@getpanted",
 } as const;
 
+/** Shared UK numeric sizes for The Five straight colourways. */
+export const EE_STRAIGHT_SIZES = ["6", "8", "10", "12", "14", "16", "18", "20", "22"] as const;
+
+export const EE_SIZE_CHART = {
+  intro:
+    "Our trousers are designed for a comfortable yet flattering fit. Use this guide to find your perfect size.",
+  lengthInches: 45,
+  rows: [
+    {
+      label: "UK Size",
+      values: ["6", "8", "10", "12", "14", "16", "18", "20", "22"],
+    },
+    {
+      label: "Waist (inches)",
+      values: ["26", "28", "30", "32–33", "35", "36–36.5", "38", "42–42.5", "44"],
+    },
+    {
+      label: "Hips (inches)",
+      values: ["35", "37–38", "40", "42–43", "45", "48–48.5", "50", "52", "56"],
+    },
+  ],
+  howToMeasure: [
+    {
+      title: "Waist",
+      body: "Measure around the narrowest part of your waist, usually just above the belly button.",
+    },
+    {
+      title: "Hips",
+      body: "Measure around the fullest part of your hips and buttocks.",
+    },
+  ],
+  note: "All measurements are in inches. There may be a 0.5–1 inch difference due to manual measurement. If you need help choosing your size, message us before you order.",
+} as const;
+
 /** Classic + Signature share the live Straight Pants colourways for now. */
 export const EE_STRAIGHT_STYLES: ExecutiveStyleOption[] = [
   {
@@ -38,7 +72,7 @@ export const EE_STRAIGHT_STYLES: ExecutiveStyleOption[] = [
     colorHex: "#C8B89A",
     silhouette: "straight",
     image: "/images/beige-luxe.png",
-    sizes: ["8", "12"],
+    sizes: [...EE_STRAIGHT_SIZES],
     available: true,
   },
   {
@@ -48,7 +82,7 @@ export const EE_STRAIGHT_STYLES: ExecutiveStyleOption[] = [
     colorHex: "#4A2F1F",
     silhouette: "straight",
     image: "/images/coffee-luxe.png",
-    sizes: ["10", "12"],
+    sizes: [...EE_STRAIGHT_SIZES],
     available: true,
   },
   {
@@ -58,7 +92,7 @@ export const EE_STRAIGHT_STYLES: ExecutiveStyleOption[] = [
     colorHex: "#F5F5F5",
     silhouette: "straight",
     image: "/images/white-luxe.png",
-    sizes: ["8", "10", "16"],
+    sizes: [...EE_STRAIGHT_SIZES],
     available: true,
   },
   {
@@ -68,7 +102,7 @@ export const EE_STRAIGHT_STYLES: ExecutiveStyleOption[] = [
     colorHex: "#4B5320",
     silhouette: "straight",
     image: "/images/army-luxe.png",
-    sizes: ["10", "14", "16"],
+    sizes: [...EE_STRAIGHT_SIZES],
     available: true,
   },
   {
@@ -78,7 +112,7 @@ export const EE_STRAIGHT_STYLES: ExecutiveStyleOption[] = [
     colorHex: "#1A1A1A",
     silhouette: "straight",
     image: "/images/black-luxe.png",
-    sizes: ["12", "14"],
+    sizes: [...EE_STRAIGHT_SIZES],
     available: true,
   },
 ];
@@ -174,7 +208,7 @@ export const EE_FAQS: { q: string; a: string }[] = [
   },
   {
     q: "How do I choose my size?",
-    a: "Use our size guide and the available sizes listed for each colour. If you need help, message us on WhatsApp before you order.",
+    a: "Use the size chart on this page. Compare your waist and hip measurements in inches with the UK sizes listed. All trousers are 45 inches long. If you need help, message us before you order.",
   },
   {
     q: "When will I receive my order?",

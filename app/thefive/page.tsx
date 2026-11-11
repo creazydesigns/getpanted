@@ -6,6 +6,7 @@ import {
   EE_HERO_IMAGE_MOBILE,
   EE_PACKAGES,
   EE_PREORDER,
+  EE_SIZE_CHART,
   EE_STRAIGHT_STYLES,
 } from "@/lib/executive-edit/constants";
 import "./executive-edit.css";
@@ -203,6 +204,57 @@ export default function ExecutiveEditPage() {
                 </figcaption>
               </figure>
             ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="ee-section ee-section-size" id="size-chart">
+        <div className="ee-wrap">
+          <div className="ee-section-head ee-reveal">
+            <p className="ee-eyebrow">Fit guide</p>
+            <h2 className="ee-h2">Size chart</h2>
+            <p className="ee-lead">{EE_SIZE_CHART.intro}</p>
+          </div>
+
+          <div className="ee-size-chart ee-reveal">
+            <div className="ee-size-table-wrap">
+              <table className="ee-size-table">
+                <tbody>
+                  {EE_SIZE_CHART.rows.map((row) => (
+                    <tr key={row.label}>
+                      <th scope="row">{row.label}</th>
+                      {row.values.map((value) => (
+                        <td key={`${row.label}-${value}`}>{value}</td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            <p className="ee-size-length">
+              All trousers have the same length: {EE_SIZE_CHART.lengthInches} inches
+            </p>
+
+            <div className="ee-size-meta">
+              <div>
+                <p className="ee-eyebrow">How to measure</p>
+                {EE_SIZE_CHART.howToMeasure.map((item) => (
+                  <div key={item.title} className="ee-size-measure">
+                    <strong>{item.title}</strong>
+                    <p className="ee-body" style={{ fontSize: 14 }}>
+                      {item.body}
+                    </p>
+                  </div>
+                ))}
+              </div>
+              <div>
+                <p className="ee-eyebrow">Please note</p>
+                <p className="ee-body" style={{ fontSize: 14 }}>
+                  {EE_SIZE_CHART.note}
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </section>

@@ -3,8 +3,7 @@
 import { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { PageFooter } from "@/app/components/page-footer";
-import { EE_CONTACT, EE_PREORDER, formatNaira } from "@/lib/executive-edit/constants";
+import { EE_PREORDER, formatNaira } from "@/lib/executive-edit/constants";
 import "../executive-edit.css";
 import "@/app/storefront.css";
 
@@ -58,7 +57,7 @@ function CompleteInner() {
       {status === "success" && order && (
         <>
           <p className="ee-eyebrow">Confirmed</p>
-          <h1 className="ee-h2">Your Executive Edit is secured</h1>
+          <h1 className="ee-h2">Your curated collection is secured</h1>
           <p className="ee-body" style={{ marginTop: 12 }}>
             Thank you, {order.customer_name.split(" ")[0]}. Full payment received. We will update
             you by email as production progresses. Delivery from the {EE_PREORDER.deliveryLabel}.
@@ -89,15 +88,12 @@ function CompleteInner() {
               </div>
             ))}
           </div>
-          <p className="ee-body" style={{ fontSize: 14, marginTop: 16 }}>
-            Questions?{" "}
-            <a href={EE_CONTACT.whatsapp} target="_blank" rel="noopener noreferrer">
-              WhatsApp
-            </a>{" "}
-            or Instagram {EE_CONTACT.instagramHandle}.
-          </p>
-          <Link href="/executive-edit" className="btn-hp-dark" style={{ display: "inline-block", marginTop: 24 }}>
-            Back to The Executive Edit
+          <Link
+            href="/executive-edit/checkout"
+            className="btn-hp-dark"
+            style={{ display: "inline-block", marginTop: 24 }}
+          >
+            Place another pre-order
           </Link>
         </>
       )}
@@ -107,21 +103,13 @@ function CompleteInner() {
           <p className="ee-eyebrow">Payment</p>
           <h1 className="ee-h2">We could not confirm payment</h1>
           <p className="ee-body" style={{ marginTop: 12 }}>
-            If you were charged, contact us on WhatsApp with your Paystack receipt and we will
-            sort it out.
+            If you were charged, return to checkout with your payment reference or try the payment
+            again. Your order is saved once Paystack confirms success.
           </p>
           <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 24 }}>
             <Link href="/executive-edit/checkout" className="btn-hp-dark">
               Return to checkout
             </Link>
-            <a
-              href={EE_CONTACT.whatsapp}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-hp-outline"
-            >
-              WhatsApp us
-            </a>
           </div>
         </>
       )}
@@ -141,7 +129,6 @@ export default function ExecutiveEditCompletePage() {
       >
         <CompleteInner />
       </Suspense>
-      <PageFooter />
     </main>
   );
 }

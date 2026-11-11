@@ -7,7 +7,21 @@ export function paystackSecret(): string {
 }
 
 export function siteUrl(): string {
-  return process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+  const configured = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ?? "";
+  const isLocal =
+    !configured ||
+    configured.includes("localhost") ||
+    configured.includes("127.0.0.1");
+
+  // On Vercel production, never send Paystack back to a local callback URL.
+  if (process.env.VERCEL_ENV === "production") {
+    if (configured && !isLocal) return configured;
+    return "https://getpanted.com";
+  }
+
+  if (configured) return configured;
+  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
+  return "http://localhost:3000";
 }
 
 export function nairaToKobo(amount: number): number {
@@ -52,6 +66,7 @@ export async function initializeTransaction(params: {
     body: JSON.stringify({
       email: params.email,
       amount: params.amountKobo,
+      currency: "NGN",
       reference: params.reference,
       metadata: params.metadata,
       callback_url: params.callbackUrl,

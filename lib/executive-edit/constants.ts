@@ -12,7 +12,8 @@ export type ExecutiveStyleOption = {
   available: boolean;
 };
 
-export const EE_HERO_IMAGE = "/images/getpanted-executive.jpeg";
+export const EE_HERO_IMAGE = "/images/luxe-hero.png";
+export const EE_HERO_IMAGE_MOBILE = "/images/luxe-hero2.png";
 
 export const EE_PREORDER = {
   windowLabel: "1–15 November 2026",

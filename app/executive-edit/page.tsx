@@ -1,10 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
-import { PageFooter } from "@/app/components/page-footer";
 import {
-  EE_CONTACT,
   EE_FAQS,
   EE_HERO_IMAGE,
+  EE_HERO_IMAGE_MOBILE,
   EE_PACKAGES,
   EE_PREORDER,
   EE_STRAIGHT_STYLES,
@@ -48,33 +47,36 @@ const GALLERY_CAPTIONS = [
 export default function ExecutiveEditPage() {
   return (
     <main className="ee-page font-barlow overflow-x-hidden min-h-screen">
-      <section className="ee-hero-bleed" id="top">
-        <Image
-          src={EE_HERO_IMAGE}
-          alt="GetPanted curated collection"
-          fill
-          priority
-          className="ee-hero-bleed-img object-cover"
-          sizes="100vw"
-          style={{ zIndex: 0 }}
-        />
-        <div className="ee-hero-veil" aria-hidden />
-        <div className="ee-hero-grain" aria-hidden />
-        <div className="ee-hero-copy ee-reveal">
+      <section className="ee-hero-bleed" id="top" aria-label="GetPanted curated collection">
+        <div className="ee-hero-media ee-hero-media-desktop">
+          <Image
+            src={EE_HERO_IMAGE}
+            alt="GetPanted curated collection"
+            fill
+            priority
+            className="ee-hero-bleed-img object-cover"
+            sizes="100vw"
+          />
+        </div>
+        <div className="ee-hero-media ee-hero-media-mobile">
+          <Image
+            src={EE_HERO_IMAGE_MOBILE}
+            alt="GetPanted curated collection"
+            fill
+            priority
+            className="ee-hero-bleed-img object-cover"
+            sizes="100vw"
+          />
+        </div>
+        <div className="ee-hero-veil ee-hero-veil-subtle" aria-hidden />
+        <div className="ee-hero-copy ee-hero-copy-headlines ee-reveal">
           <p className="ee-brand">GetPanted</p>
           <h1 className="ee-h1 ee-h1-on-dark">Five trousers. One intentional wardrobe.</h1>
-          <p className="ee-lead ee-lead-on-dark">
-            A curated pre-order collection for professional women who want fewer pieces and more ways
-            to wear them. You choose the colours and sizes. Delivery is included.
-          </p>
-          <div className="ee-hero-actions">
-            <a href="#boxes" className="ee-btn-primary">
-              Choose your collection
+          <div className="ee-hero-cta">
+            <a href="#boxes" className="ee-btn-hero">
+              Order Now
             </a>
           </div>
-          <p className="ee-hero-meta ee-hero-meta-on-dark">
-            Pre-order {EE_PREORDER.windowLabel} · Delivery from {EE_PREORDER.deliveryLabel}
-          </p>
         </div>
       </section>
 
@@ -218,17 +220,6 @@ export default function ExecutiveEditPage() {
               </details>
             ))}
           </div>
-          <p className="ee-body" style={{ marginTop: "1.75rem", fontSize: 14 }}>
-            Questions?{" "}
-            <a href={EE_CONTACT.whatsapp} target="_blank" rel="noopener noreferrer">
-              WhatsApp
-            </a>{" "}
-            or{" "}
-            <a href={EE_CONTACT.instagram} target="_blank" rel="noopener noreferrer">
-              Instagram {EE_CONTACT.instagramHandle}
-            </a>
-            . We use your details only for fulfilment and updates.
-          </p>
         </div>
       </section>
 
@@ -255,8 +246,6 @@ export default function ExecutiveEditPage() {
           </p>
         </div>
       </section>
-
-      <PageFooter />
     </main>
   );
 }

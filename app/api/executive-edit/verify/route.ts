@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase";
-import { verifyTransaction } from "@/lib/paystack";
+import { nairaToKobo, verifyTransaction } from "@/lib/paystack";
 
 export async function POST(req: NextRequest) {
   try {
     const { reference } = await req.json();
-    if (!reference) {
+    if (!reference || typeof reference !== "string") {
       return NextResponse.json({ error: "Missing reference" }, { status: 400 });
     }
 
@@ -24,11 +24,22 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Order not found" }, { status: 404 });
     }
 
+    const paidKobo = Number(verified.data?.amount ?? 0);
+    const expectedKobo = nairaToKobo(Number(order.amount));
+    if (paidKobo !== expectedKobo) {
+      console.error("[executive-edit/verify] amount mismatch", {
+        reference,
+        paidKobo,
+        expectedKobo,
+      });
+      return NextResponse.json({ error: "Payment amount mismatch" }, { status: 400 });
+    }
+
     if (order.payment_status === "paid") {
       return NextResponse.json({ success: true, order, alreadyPaid: true });
     }
 
-    await supabaseAdmin
+    const { data: updated, error: updateError } = await supabaseAdmin
       .from("executive_edit_orders")
       .update({
         payment_status: "paid",
@@ -36,9 +47,15 @@ export async function POST(req: NextRequest) {
         payment_reference: reference,
         updated_at: new Date().toISOString(),
       })
-      .eq("id", order.id);
+      .eq("id", order.id)
+      .select("*")
+      .single();
 
-    const updated = { ...order, payment_status: "paid", status: "confirmed" };
+    if (updateError || !updated) {
+      console.error("[executive-edit/verify] update failed", updateError);
+      return NextResponse.json({ error: "Could not confirm order" }, { status: 500 });
+    }
+
     return NextResponse.json({ success: true, order: updated });
   } catch (err) {
     console.error("[executive-edit/verify]", err);

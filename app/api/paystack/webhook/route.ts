@@ -22,10 +22,23 @@ export async function POST(req: NextRequest) {
   };
 
   if (event.event === "charge.success" && event.data?.reference) {
+    const reference = event.data.reference;
+
     await supabaseAdmin
       .from("orders")
       .update({ payment_status: "paid", status: "processing" })
-      .eq("paystack_reference", event.data.reference)
+      .eq("paystack_reference", reference)
+      .eq("payment_status", "pending");
+
+    await supabaseAdmin
+      .from("executive_edit_orders")
+      .update({
+        payment_status: "paid",
+        status: "confirmed",
+        payment_reference: reference,
+        updated_at: new Date().toISOString(),
+      })
+      .eq("paystack_reference", reference)
       .eq("payment_status", "pending");
   }
 

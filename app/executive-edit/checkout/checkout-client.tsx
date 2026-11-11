@@ -112,7 +112,7 @@ export function ExecutiveEditCheckoutClient({ initialPackage }: Props) {
     <div className="ee-checkout">
       <p className="ee-eyebrow">Pre-order</p>
       <h1 className="ee-h2" style={{ marginBottom: "0.5rem" }}>
-        Build your Executive Edit
+        Build your curated collection
       </h1>
       <p className="ee-body" style={{ marginBottom: "1.5rem" }}>
         Choose your package, pick five pieces with sizes, then complete full payment. Delivery is

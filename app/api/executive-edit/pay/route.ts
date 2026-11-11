@@ -42,6 +42,16 @@ export async function POST(req: NextRequest) {
     if (!customer_name || !customer_email || !customer_phone) {
       return NextResponse.json({ error: "Missing customer details" }, { status: 400 });
     }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(customer_email)) {
+      return NextResponse.json({ error: "Enter a valid email address" }, { status: 400 });
+    }
+    if (
+      !shipping_address?.street?.trim() ||
+      !shipping_address?.city?.trim() ||
+      !shipping_address?.state?.trim()
+    ) {
+      return NextResponse.json({ error: "Delivery address is required" }, { status: 400 });
+    }
     if (!Array.isArray(selections) || selections.length !== EE_SELECTION_COUNT) {
       return NextResponse.json({ error: `Select exactly ${EE_SELECTION_COUNT} pieces` }, { status: 400 });
     }
@@ -108,25 +118,33 @@ export async function POST(req: NextRequest) {
 
     const reference = makePaystackReference(order.id);
 
-    await supabaseAdmin
+    const { error: refError } = await supabaseAdmin
       .from("executive_edit_orders")
       .update({ paystack_reference: reference, payment_reference: reference })
       .eq("id", order.id);
 
+    if (refError) {
+      console.error("[executive-edit/pay] reference update", refError);
+      return NextResponse.json({ error: "Could not prepare payment" }, { status: 500 });
+    }
+
+    const callbackUrl = `${siteUrl()}/executive-edit/complete`;
     const paystack = await initializeTransaction({
       email: customer_email,
       amountKobo: nairaToKobo(pkg.price),
       reference,
-      callbackUrl: `${siteUrl()}/executive-edit/complete`,
+      callbackUrl,
       metadata: {
         order_id: order.id,
         type: "executive_edit",
         package: packageId,
         customer_name,
+        cancel_action: `${siteUrl()}/executive-edit/checkout?package=${packageId}`,
       },
     });
 
     if (!paystack.status || !paystack.data?.authorization_url) {
+      console.error("[executive-edit/pay] paystack init", paystack);
       return NextResponse.json(
         { error: paystack.message ?? "Payment initialization failed" },
         { status: 502 }

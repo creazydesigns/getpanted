@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { FormEvent, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useState } from "react";
 import {
   EE_SELECTION_COUNT,
   type ExecutivePackageId,
@@ -19,6 +19,11 @@ export type SelectionSlot = {
   image: string;
 };
 
+type ShippingQuote = {
+  amount: number;
+  label: string;
+};
+
 type Props = {
   initialPackage: ExecutivePackageId;
 };
@@ -31,11 +36,50 @@ export function ExecutiveEditCheckoutClient({ initialPackage }: Props) {
     Array.from({ length: EE_SELECTION_COUNT }, () => null)
   );
   const [activeSlot, setActiveSlot] = useState(0);
+  const [street, setStreet] = useState("");
+  const [city, setCity] = useState("");
+  const [state, setState] = useState("");
+  const [country, setCountry] = useState("Nigeria");
+  const [quote, setQuote] = useState<ShippingQuote | null>(null);
+  const [quoting, setQuoting] = useState(false);
+  const [quoteError, setQuoteError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const filled = useMemo(() => slots.filter(Boolean).length, [slots]);
   const ready = filled === EE_SELECTION_COUNT && slots.every((s) => s?.size);
+  const shipping = quote?.amount ?? 0;
+  const total = pkg.price + shipping;
+
+  useEffect(() => {
+    if (!city.trim() && !state.trim() && !street.trim()) {
+      setQuote(null);
+      setQuoteError(null);
+      return;
+    }
+
+    const handle = window.setTimeout(async () => {
+      setQuoting(true);
+      setQuoteError(null);
+      try {
+        const res = await fetch("/api/shipping/quote", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ street, city, state, country }),
+        });
+        const json = (await res.json()) as { quote?: ShippingQuote; error?: string };
+        if (!res.ok || !json.quote) throw new Error(json.error ?? "Could not calculate shipping");
+        setQuote(json.quote);
+      } catch (err) {
+        setQuote(null);
+        setQuoteError(err instanceof Error ? err.message : "Could not calculate shipping");
+      } finally {
+        setQuoting(false);
+      }
+    }, 550);
+
+    return () => window.clearTimeout(handle);
+  }, [street, city, state, country]);
 
   const pickStyle = (style: ExecutiveStyleOption) => {
     if (!style.available) return;
@@ -68,6 +112,10 @@ export function ExecutiveEditCheckoutClient({ initialPackage }: Props) {
       setError("Please select five styles and a size for each.");
       return;
     }
+    if (!quote) {
+      setError("Enter a delivery address so we can calculate shipping before payment.");
+      return;
+    }
     setLoading(true);
     setError(null);
 
@@ -78,14 +126,18 @@ export function ExecutiveEditCheckoutClient({ initialPackage }: Props) {
       customer_email: String(data.get("email") ?? "").trim(),
       customer_phone: String(data.get("phone") ?? "").trim(),
       shipping_address: {
-        street: String(data.get("street") ?? ""),
-        city: String(data.get("city") ?? ""),
-        state: String(data.get("state") ?? ""),
-        country: String(data.get("country") ?? "Nigeria"),
+        street,
+        city,
+        state,
+        country,
+        shipping_amount: quote.amount,
+        shipping_label: quote.label,
+        package_amount: pkg.price,
       },
       selections: slots.filter(Boolean),
       customer_notes: String(data.get("notes") ?? "") || null,
-      amount: pkg.price,
+      amount: total,
+      shipping_amount: quote.amount,
     };
 
     try {
@@ -116,7 +168,7 @@ export function ExecutiveEditCheckoutClient({ initialPackage }: Props) {
       </h1>
       <p className="ee-body" style={{ marginBottom: "1.5rem" }}>
         Choose your package, pick five pieces with sizes, then complete full payment. Delivery is
-        included.
+        calculated at checkout from your address.
       </p>
 
       <div className="ee-panel">
@@ -251,21 +303,49 @@ export function ExecutiveEditCheckoutClient({ initialPackage }: Props) {
         </div>
         <div className="ee-field">
           <label htmlFor="street">Delivery address</label>
-          <input id="street" name="street" required autoComplete="street-address" />
+          <input
+            id="street"
+            name="street"
+            required
+            autoComplete="street-address"
+            value={street}
+            onChange={(e) => setStreet(e.target.value)}
+          />
         </div>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
           <div className="ee-field">
             <label htmlFor="city">City</label>
-            <input id="city" name="city" required autoComplete="address-level2" />
+            <input
+              id="city"
+              name="city"
+              required
+              autoComplete="address-level2"
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
+            />
           </div>
           <div className="ee-field">
             <label htmlFor="state">State</label>
-            <input id="state" name="state" required autoComplete="address-level1" />
+            <input
+              id="state"
+              name="state"
+              required
+              autoComplete="address-level1"
+              value={state}
+              onChange={(e) => setState(e.target.value)}
+            />
           </div>
         </div>
         <div className="ee-field">
           <label htmlFor="country">Country</label>
-          <input id="country" name="country" defaultValue="Nigeria" required autoComplete="country-name" />
+          <input
+            id="country"
+            name="country"
+            required
+            autoComplete="country-name"
+            value={country}
+            onChange={(e) => setCountry(e.target.value)}
+          />
         </div>
         <div className="ee-field">
           <label htmlFor="notes">Notes (optional)</label>
@@ -278,9 +358,12 @@ export function ExecutiveEditCheckoutClient({ initialPackage }: Props) {
           <span>{pkg.priceLabel}</span>
         </div>
         <div className="ee-summary-row">
-          <span>Delivery</span>
-          <span>Included</span>
+          <span>Delivery{quote?.label ? ` · ${quote.label}` : ""}</span>
+          <span>
+            {quoting ? "Calculating…" : quote ? formatNaira(quote.amount) : "Enter address"}
+          </span>
         </div>
+        {quoteError && <p className="ee-error">{quoteError}</p>}
         {slots.map((slot, i) =>
           slot ? (
             <div className="ee-summary-row" key={`${slot.slug}-${i}`}>
@@ -293,7 +376,7 @@ export function ExecutiveEditCheckoutClient({ initialPackage }: Props) {
         )}
         <div className="ee-summary-total">
           <span>Total</span>
-          <span>{formatNaira(pkg.price)}</span>
+          <span>{formatNaira(total)}</span>
         </div>
         <p className="ee-body" style={{ fontSize: 13, marginTop: 12 }}>
           Full payment is required. You will be redirected to Paystack to pay securely. Do not send
@@ -306,9 +389,9 @@ export function ExecutiveEditCheckoutClient({ initialPackage }: Props) {
           type="submit"
           className="btn-hp-dark w-full"
           style={{ marginTop: 16, width: "100%" }}
-          disabled={loading || !ready}
+          disabled={loading || !ready || !quote || quoting}
         >
-          {loading ? "Redirecting to Paystack…" : `Pay ${pkg.priceLabel}`}
+          {loading ? "Redirecting to Paystack…" : `Pay ${formatNaira(total)}`}
         </button>
         <p style={{ marginTop: 12, textAlign: "center" }}>
           <Link href="/thefive" className="ee-body" style={{ fontSize: 13, textDecoration: "underline" }}>

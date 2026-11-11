@@ -333,8 +333,21 @@
 
 .ee-hero-cta {
   display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
+  gap: 0.85rem;
   margin-top: 1.75rem;
+}
+
+.ee-hero-pay-note {
+  margin: 0;
+  font-family: "Barlow", sans-serif;
+  font-weight: 500;
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  color: rgba(255, 253, 249, 0.78);
 }
 
 .ee-btn-hero {

@@ -20,7 +20,7 @@ export const EE_PREORDER = {
   windowStart: "2026-11-01",
   windowEnd: "2026-11-15",
   deliveryLabel: "first week of December 2026",
-  shippingIncluded: true,
+  shippingIncluded: false,
 } as const;
 
 export const EE_CONTACT = {
@@ -133,7 +133,7 @@ export const EE_PACKAGES: Record<
       "Five pairs of straight-leg trousers — you choose the colours",
       "Size selection for each piece",
       "A styling guide to help you get more from your wardrobe",
-      "Delivery included",
+      "Delivery calculated at checkout",
     ],
     cta: "Choose Classic",
     styles: EE_STRAIGHT_STYLES,
@@ -150,7 +150,7 @@ export const EE_PACKAGES: Record<
       "Five pairs of trousers — choose from available straight-leg colourways now; pleated and flared unlock as they launch",
       "Size selection for each piece",
       "A styling guide for more combinations",
-      "Delivery included",
+      "Delivery calculated at checkout",
     ],
     cta: "Choose Signature",
     styles: [...EE_STRAIGHT_STYLES, ...EE_SIGNATURE_EXTRA],
@@ -181,8 +181,12 @@ export const EE_FAQS: { q: string; a: string }[] = [
     a: `Delivery is scheduled to begin in the ${EE_PREORDER.deliveryLabel}. You will receive order confirmation and production updates by email.`,
   },
   {
+    q: "Is delivery included in the package price?",
+    a: "No. Delivery is calculated at checkout based on your delivery address, then added to your total before Paystack payment.",
+  },
+  {
     q: "Why am I paying before delivery?",
-    a: "This is a pre-order for a specially prepared collection. Full payment secures your place in the November production run and confirms your selected styles and sizes.",
+    a: "This is a pre-order for a specially prepared collection. Full payment (package plus delivery) secures your place in the November production run and confirms your selected styles and sizes.",
   },
   {
     q: "What happens if delivery is delayed?",

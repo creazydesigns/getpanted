@@ -74,8 +74,9 @@ export default function ExecutiveEditPage() {
           <h1 className="ee-h1 ee-h1-on-dark">Five trousers. One intentional wardrobe.</h1>
           <div className="ee-hero-cta">
             <a href="#boxes" className="ee-btn-hero">
-              Order Now
+              Pre-Order Now
             </a>
+            <p className="ee-hero-pay-note">Secure Payment through Paystack</p>
           </div>
         </div>
       </section>
@@ -106,8 +107,8 @@ export default function ExecutiveEditPage() {
             <p className="ee-eyebrow">Choose your collection</p>
             <h2 className="ee-h2">Classic or Signature</h2>
             <p className="ee-lead">
-              Both collections include five pieces, your size for each, a styling guide, and
-              delivery.
+              Both collections include five pieces, your size for each, and a styling guide.
+              Delivery is calculated at checkout.
             </p>
           </div>
           <div className="ee-packages">
@@ -242,7 +243,7 @@ export default function ExecutiveEditPage() {
             </Link>
           </div>
           <p className="ee-hero-meta ee-hero-meta-on-dark">
-            Delivery included · Pay securely with Paystack
+            Delivery calculated at checkout · Pay securely with Paystack
           </p>
         </div>
       </section>

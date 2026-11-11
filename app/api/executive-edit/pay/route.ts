@@ -12,6 +12,7 @@ import {
   availableStylesForPackage,
   getPackage,
 } from "@/lib/executive-edit/constants";
+import { quoteShipping } from "@/lib/shipping/quote";
 
 export async function POST(req: NextRequest) {
   try {
@@ -25,15 +26,25 @@ export async function POST(req: NextRequest) {
       selections,
       customer_notes,
       amount,
+      shipping_amount,
     } = body as {
       package: ExecutivePackageId;
       customer_name: string;
       customer_email: string;
       customer_phone: string;
-      shipping_address: Record<string, string>;
+      shipping_address: {
+        street?: string;
+        city?: string;
+        state?: string;
+        country?: string;
+        shipping_amount?: number;
+        shipping_label?: string;
+        package_amount?: number;
+      };
       selections: { slug: string; name: string; colorName: string; size: string; image?: string }[];
       customer_notes?: string | null;
       amount: number;
+      shipping_amount?: number;
     };
 
     if (!packageId || !["classic", "signature"].includes(packageId)) {
@@ -60,8 +71,20 @@ export async function POST(req: NextRequest) {
     }
 
     const pkg = getPackage(packageId);
-    if (Number(amount) !== pkg.price) {
-      return NextResponse.json({ error: "Amount does not match package price" }, { status: 400 });
+    const serverQuote = await quoteShipping({
+      street: shipping_address.street,
+      city: shipping_address.city,
+      state: shipping_address.state,
+      country: shipping_address.country ?? "Nigeria",
+    });
+
+    if (Math.abs(Number(shipping_amount ?? 0) - serverQuote.amount) > 1) {
+      return NextResponse.json({ error: "Shipping quote expired. Refresh and try again." }, { status: 400 });
+    }
+
+    const expectedTotal = pkg.price + serverQuote.amount;
+    if (Math.abs(Number(amount) - expectedTotal) > 1) {
+      return NextResponse.json({ error: "Amount does not match package plus delivery" }, { status: 400 });
     }
 
     const allowed = availableStylesForPackage(packageId);
@@ -91,15 +114,26 @@ export async function POST(req: NextRequest) {
       };
     });
 
+    const storedAddress = {
+      street: shipping_address.street?.trim() ?? "",
+      city: shipping_address.city?.trim() ?? "",
+      state: shipping_address.state?.trim() ?? "",
+      country: (shipping_address.country ?? "Nigeria").trim() || "Nigeria",
+      package_amount: pkg.price,
+      shipping_amount: serverQuote.amount,
+      shipping_label: serverQuote.label,
+      shipping_quote: serverQuote,
+    };
+
     const { data: order, error: insertError } = await supabaseAdmin
       .from("executive_edit_orders")
       .insert({
         package: packageId,
-        amount: pkg.price,
+        amount: expectedTotal,
         customer_name,
         customer_email,
         customer_phone,
-        shipping_address: shipping_address ?? {},
+        shipping_address: storedAddress,
         selections: normalizedSelections,
         customer_notes: customer_notes ?? null,
         status: "pending",
@@ -131,7 +165,7 @@ export async function POST(req: NextRequest) {
     const callbackUrl = `${siteUrl()}/thefive/complete`;
     const paystack = await initializeTransaction({
       email: customer_email,
-      amountKobo: nairaToKobo(pkg.price),
+      amountKobo: nairaToKobo(expectedTotal),
       reference,
       callbackUrl,
       metadata: {
@@ -139,6 +173,8 @@ export async function POST(req: NextRequest) {
         type: "executive_edit",
         package: packageId,
         customer_name,
+        package_amount: pkg.price,
+        shipping_amount: serverQuote.amount,
         cancel_action: `${siteUrl()}/thefive/checkout?package=${packageId}`,
       },
     });
@@ -158,6 +194,7 @@ export async function POST(req: NextRequest) {
     });
   } catch (err) {
     console.error("[executive-edit/pay]", err);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    const message = err instanceof Error ? err.message : "Internal server error";
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

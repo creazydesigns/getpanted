@@ -311,7 +311,7 @@ export function ExecutiveEditCheckoutClient({ initialPackage }: Props) {
           {loading ? "Redirecting to Paystack…" : `Pay ${pkg.priceLabel}`}
         </button>
         <p style={{ marginTop: 12, textAlign: "center" }}>
-          <Link href="/executive-edit" className="ee-body" style={{ fontSize: 13, textDecoration: "underline" }}>
+          <Link href="/thefive" className="ee-body" style={{ fontSize: 13, textDecoration: "underline" }}>
             Back to landing page
           </Link>
         </p>

@@ -128,7 +128,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Could not prepare payment" }, { status: 500 });
     }
 
-    const callbackUrl = `${siteUrl()}/executive-edit/complete`;
+    const callbackUrl = `${siteUrl()}/thefive/complete`;
     const paystack = await initializeTransaction({
       email: customer_email,
       amountKobo: nairaToKobo(pkg.price),
@@ -139,7 +139,7 @@ export async function POST(req: NextRequest) {
         type: "executive_edit",
         package: packageId,
         customer_name,
-        cancel_action: `${siteUrl()}/executive-edit/checkout?package=${packageId}`,
+        cancel_action: `${siteUrl()}/thefive/checkout?package=${packageId}`,
       },
     });
 

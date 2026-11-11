@@ -7,7 +7,7 @@ import { MiniCartDrawer, ToastStack } from "./components/shop-ui";
 import { Navbar } from "./components/navbar";
 import { TaraChatWidget } from "./components/tara-chat";
 
-const LANDING_ROUTES = ["/waitlist", "/executive-edit"];
+const LANDING_ROUTES = ["/waitlist", "/thefive", "/executive-edit"];
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();

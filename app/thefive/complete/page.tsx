@@ -89,7 +89,7 @@ function CompleteInner() {
             ))}
           </div>
           <Link
-            href="/executive-edit/checkout"
+            href="/thefive/checkout"
             className="btn-hp-dark"
             style={{ display: "inline-block", marginTop: 24 }}
           >
@@ -107,7 +107,7 @@ function CompleteInner() {
             again. Your order is saved once Paystack confirms success.
           </p>
           <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 24 }}>
-            <Link href="/executive-edit/checkout" className="btn-hp-dark">
+            <Link href="/thefive/checkout" className="btn-hp-dark">
               Return to checkout
             </Link>
           </div>

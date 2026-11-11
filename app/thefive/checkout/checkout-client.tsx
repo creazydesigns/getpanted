@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { FormEvent, useEffect, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import {
   EE_SELECTION_COUNT,
   type ExecutivePackageId,
@@ -45,11 +45,20 @@ export function ExecutiveEditCheckoutClient({ initialPackage }: Props) {
   const [quoteError, setQuoteError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const formRef = useRef<HTMLFormElement>(null);
 
   const filled = useMemo(() => slots.filter(Boolean).length, [slots]);
   const ready = filled === EE_SELECTION_COUNT && slots.every((s) => s?.size);
   const shipping = quote?.amount ?? 0;
   const total = pkg.price + shipping;
+  const canPay = ready && !!quote && !quoting && !loading;
+  const payHint = !ready
+    ? `Select ${EE_SELECTION_COUNT} colourways and a size for each before paying.`
+    : quoting
+      ? "Calculating delivery…"
+      : !quote
+        ? "Enter your delivery address so we can calculate shipping, then pay."
+        : null;
 
   useEffect(() => {
     if (!city.trim() && !state.trim() && !street.trim()) {
@@ -284,7 +293,7 @@ export function ExecutiveEditCheckoutClient({ initialPackage }: Props) {
         )}
       </div>
 
-      <form className="ee-panel" onSubmit={onSubmit}>
+      <form ref={formRef} className="ee-panel" onSubmit={onSubmit}>
         <h2>3. Your details</h2>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
           <div className="ee-field">
@@ -382,19 +391,23 @@ export function ExecutiveEditCheckoutClient({ initialPackage }: Props) {
           <span>{formatNaira(total)}</span>
         </div>
         <p className="ee-body" style={{ fontSize: 13, marginTop: 12 }}>
-          Full payment is required. You will be redirected to Paystack to pay securely. Do not send
-          card details over WhatsApp or Instagram.
+          Full payment is required. You will be redirected to Paystack to pay securely.
         </p>
 
         {error && <p className="ee-error">{error}</p>}
 
+        {!canPay && (
+          <p className="ee-pay-hint" role="status">
+            {payHint}
+          </p>
+        )}
+
         <button
           type="submit"
-          className="btn-hp-dark w-full"
-          style={{ marginTop: 16, width: "100%" }}
-          disabled={loading || !ready || !quote || quoting}
+          className="ee-btn-pay"
+          disabled={loading || !canPay}
         >
-          {loading ? "Redirecting to Paystack…" : `Pay ${formatNaira(total)}`}
+          {loading ? "Redirecting to Paystack…" : `Pay ${formatNaira(total)} with Paystack`}
         </button>
         <p style={{ marginTop: 12, textAlign: "center" }}>
           <Link href="/thefive" className="ee-body" style={{ fontSize: 13, textDecoration: "underline" }}>
@@ -402,6 +415,32 @@ export function ExecutiveEditCheckoutClient({ initialPackage }: Props) {
           </Link>
         </p>
       </form>
+
+      <div className="ee-pay-bar" aria-label="Payment">
+        <div className="ee-pay-bar-inner">
+          <div className="ee-pay-bar-total">
+            <span>Total</span>
+            <strong>{formatNaira(total)}</strong>
+          </div>
+          <button
+            type="button"
+            className="ee-btn-pay ee-btn-pay-bar"
+            disabled={loading}
+            onClick={() => {
+              const form = formRef.current;
+              if (!form) return;
+              if (!canPay) {
+                setError(payHint);
+                form.scrollIntoView({ behavior: "smooth", block: "end" });
+                return;
+              }
+              form.requestSubmit();
+            }}
+          >
+            {loading ? "Redirecting…" : `Pay ${formatNaira(total)}`}
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

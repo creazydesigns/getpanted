@@ -938,7 +938,112 @@
 .ee-checkout {
   max-width: 720px;
   margin: 0 auto;
-  padding: 2rem 1.25rem 4rem;
+  padding: 2rem 1.25rem 7.5rem;
+}
+
+.ee-btn-pay {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-top: 1rem;
+  padding: 1.05rem 1.25rem;
+  border: 1px solid var(--ee-chocolate);
+  background: var(--ee-chocolate);
+  color: #fffdf9;
+  font-family: "Barlow Condensed", sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s ease, opacity 0.2s ease, transform 0.2s ease;
+}
+
+.ee-btn-pay:hover:not(:disabled) {
+  background: #000;
+  border-color: #000;
+  transform: translateY(-1px);
+}
+
+.ee-btn-pay:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.ee-pay-hint {
+  margin: 0.85rem 0 0;
+  padding: 0.75rem 0.85rem;
+  border: 1px solid rgba(176, 141, 58, 0.4);
+  background: rgba(176, 141, 58, 0.12);
+  color: var(--ee-chocolate);
+  font-family: "Barlow", sans-serif;
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.ee-pay-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 40;
+  padding: 0.75rem 1rem calc(0.75rem + env(safe-area-inset-bottom));
+  background: rgba(255, 253, 249, 0.96);
+  border-top: 1px solid var(--ee-border);
+  box-shadow: 0 -10px 30px rgba(44, 26, 20, 0.08);
+  backdrop-filter: blur(10px);
+}
+
+.ee-pay-bar-inner {
+  max-width: 720px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.85rem;
+  align-items: center;
+}
+
+.ee-pay-bar-total {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.ee-pay-bar-total span {
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ee-muted);
+}
+
+.ee-pay-bar-total strong {
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--ee-chocolate);
+  line-height: 1;
+}
+
+.ee-btn-pay-bar {
+  margin-top: 0;
+  width: auto;
+  min-width: 10.5rem;
+  padding-left: 1.35rem;
+  padding-right: 1.35rem;
+}
+
+@media (max-width: 480px) {
+  .ee-pay-bar-inner {
+    grid-template-columns: 1fr;
+  }
+
+  .ee-btn-pay-bar {
+    width: 100%;
+  }
 }
 
 .ee-panel {

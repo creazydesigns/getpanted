@@ -7,15 +7,9 @@ import { useScrollReveal } from "./hooks/use-scroll-reveal";
 import { PageFooter } from "./components/page-footer";
 import { HeroVisual } from "./components/hero-visual";
 import { ProductCard } from "./components/product-card";
+import { TestimonialSlider } from "./components/testimonial-slider";
 import { useSiteContent } from "@/hooks/use-site-content";
 import { useProducts } from "@/hooks/use-products";
-
-const STYLE_CATEGORIES = [
-  { name: "Minimal", href: "/collections?style=minimal", icon: "pants" },
-  { name: "Statement", href: "/collections?style=statement", icon: "flare" },
-  { name: "Workwear", href: "/collections?style=workwear", icon: "bag" },
-  { name: "Two-Tone", href: "/collections?style=two-tone", icon: "split" },
-] as const;
 
 const TEXT_CATEGORIES = [
   { label: "Collection", href: "/collections" },
@@ -67,41 +61,72 @@ const TESTIMONIALS = [
     name: "Chioma E.",
     role: "Abuja",
   },
+  {
+    quote: "Trousers that move with you — refined, flattering, and made to be noticed.",
+    name: "Amaka T.",
+    role: "Port Harcourt",
+  },
+  {
+    quote:
+      "I used to settle for almost-right trousers. These feel cut for my body and still look sharp after a full day.",
+    name: "Ngozi A.",
+    role: "Lagos",
+  },
+  {
+    quote:
+      "The straight pants are my weekday uniform now. Easy to style, quietly confident, never fussy.",
+    name: "Fatima B.",
+    role: "Kano",
+  },
+  {
+    quote:
+      "I ordered two colours and keep getting compliments. The fabric holds its shape in a way ready-to-wear rarely does.",
+    name: "Ifeoma K.",
+    role: "Enugu",
+  },
+  {
+    quote:
+      "From the waist to the hem, everything sits right. I feel put together without overthinking my outfit.",
+    name: "Zainab M.",
+    role: "Abuja",
+  },
+  {
+    quote:
+      "Finally — trousers that work for meetings and still feel good when I am on my feet all afternoon.",
+    name: "Blessing U.",
+    role: "Benin City",
+  },
+  {
+    quote:
+      "The quality shows as soon as you touch them. Clean finish, intentional details, worth every naira.",
+    name: "Tolu A.",
+    role: "Ibadan",
+  },
+  {
+    quote:
+      "I wear mine with a simple blouse and look done. GetPanted made everyday dressing feel elevated again.",
+    name: "Chidera N.",
+    role: "Lagos",
+  },
+  {
+    quote:
+      "Sizing was clear, delivery was smooth, and the fit matched what I hoped for. That rarely happens online.",
+    name: "Halima S.",
+    role: "Kaduna",
+  },
+  {
+    quote:
+      "Bold enough to stand out, refined enough for the office. Exactly the balance I have been looking for.",
+    name: "Yewande A.",
+    role: "Abeokuta",
+  },
+  {
+    quote:
+      "These trousers made me rethink my whole work wardrobe. Fewer pieces, better presence — that is the difference.",
+    name: "Onyinye D.",
+    role: "Asaba",
+  },
 ];
-
-function CategoryIcon({ type }: { type: string }) {
-  const stroke = "currentColor";
-  if (type === "flare") {
-    return (
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={stroke} strokeWidth="1.4">
-        <path d="M8 3h8l2 18H6L8 3z" />
-        <path d="M9 10h6" />
-      </svg>
-    );
-  }
-  if (type === "bag") {
-    return (
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={stroke} strokeWidth="1.4">
-        <path d="M6 8h12l1 13H5L6 8z" />
-        <path d="M9 8V6a3 3 0 0 1 6 0v2" />
-      </svg>
-    );
-  }
-  if (type === "split") {
-    return (
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={stroke} strokeWidth="1.4">
-        <rect x="4" y="4" width="16" height="16" />
-        <path d="M12 4v16" />
-      </svg>
-    );
-  }
-  return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={stroke} strokeWidth="1.4">
-      <path d="M9 3h6l1 4H8L9 3z" />
-      <path d="M8 7l-2 14h12l-2-14" />
-    </svg>
-  );
-}
 
 function PillarIcon({ type }: { type: string }) {
   const props = { width: 22, height: 22, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 1.4 };
@@ -203,16 +228,6 @@ export default function HomePage() {
       {/* ── CATEGORIES ───────────────────────────────────────────────────── */}
       <section className="hp-section py-14 md:py-20">
         <div className="max-w-[1400px] mx-auto">
-          <div className="hp-cat-grid" data-reveal="up">
-            {STYLE_CATEGORIES.map((cat) => (
-              <Link key={cat.name} href={cat.href} className="hp-cat-tile">
-                <span className="hp-cat-icon">
-                  <CategoryIcon type={cat.icon} />
-                </span>
-                <span className="hp-cat-label">{cat.name}</span>
-              </Link>
-            ))}
-          </div>
           <nav className="hp-cat-row" aria-label="Shop categories">
             {TEXT_CATEGORIES.map((item) => (
               <Link key={item.label} href={item.href}>
@@ -282,12 +297,16 @@ export default function HomePage() {
       <section className="hp-section pb-16 md:pb-24">
         <div className="max-w-[1400px] mx-auto">
           <div className="hp-editorial" data-reveal="fade">
-            <div
-              className="hp-editorial-photo"
-              role="img"
-              aria-label="PRESENCE debut collection — side-buckle trousers"
-            />
-            <p className="hp-editorial-title">PRESENCE</p>
+            <div className="hp-editorial-photo">
+              <Image
+                src="/images/white-fab.png"
+                alt="GetPanted white fabric"
+                fill
+                sizes="100vw"
+                quality={90}
+                className="object-cover"
+              />
+            </div>
             <div className="hp-editorial-panel">
               <p className="hp-eyebrow mb-3">Debut Collection</p>
               <p className="hp-body mb-6">
@@ -328,65 +347,12 @@ export default function HomePage() {
       <section className="hp-section py-16 md:py-24">
         <div className="max-w-[1400px] mx-auto">
           <h2
-            className="font-barlow-cond font-bold text-center mb-12 md:mb-16"
+            className="font-barlow-cond font-bold text-center mb-10 md:mb-14"
             style={{ fontSize: "clamp(24px, 3vw, 36px)", color: "#1A1A1A" }}
           >
-            What Our Clients Are Saying
+            Real People, Real Compliments
           </h2>
-          <div className="hp-quotes">
-            <div className="hp-quote-card" data-reveal="left">
-              <p className="hp-body" style={{ fontSize: "17px", flex: 1 }}>
-                “{TESTIMONIALS[0].quote}”
-              </p>
-              <div className="mt-8 flex items-center gap-3">
-                <div
-                  className="w-10 h-10 rounded-full flex-shrink-0"
-                  style={{ background: "#E8E8E8" }}
-                  aria-hidden
-                />
-                <div>
-                  <p className="font-barlow-cond font-bold uppercase" style={{ fontSize: "12px", letterSpacing: "0.1em" }}>
-                    {TESTIMONIALS[0].name}
-                  </p>
-                  <p className="hp-body-sm">{TESTIMONIALS[0].role}</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="hp-quote-feature" data-reveal="up">
-              <div className="hp-placeholder absolute inset-0">Portrait Placeholder</div>
-              <div className="hp-quote-overlay">
-                <p className="font-barlow" style={{ fontSize: "15px", lineHeight: 1.65 }}>
-                  “Trousers that move with you — refined, flattering, and made to be noticed.”
-                </p>
-                <p
-                  className="font-barlow-cond font-bold uppercase mt-4"
-                  style={{ fontSize: "11px", letterSpacing: "0.14em", opacity: 0.7 }}
-                >
-                  GetPanted Client
-                </p>
-              </div>
-            </div>
-
-            <div className="hp-quote-card" data-reveal="right">
-              <p className="hp-body" style={{ fontSize: "17px", flex: 1 }}>
-                “{TESTIMONIALS[1].quote}”
-              </p>
-              <div className="mt-8 flex items-center gap-3">
-                <div
-                  className="w-10 h-10 rounded-full flex-shrink-0"
-                  style={{ background: "#E8E8E8" }}
-                  aria-hidden
-                />
-                <div>
-                  <p className="font-barlow-cond font-bold uppercase" style={{ fontSize: "12px", letterSpacing: "0.1em" }}>
-                    {TESTIMONIALS[1].name}
-                  </p>
-                  <p className="hp-body-sm">{TESTIMONIALS[1].role}</p>
-                </div>
-              </div>
-            </div>
-          </div>
+          <TestimonialSlider items={TESTIMONIALS} />
         </div>
       </section>
 
@@ -400,9 +366,14 @@ export default function HomePage() {
           </h2>
         </div>
         <div className="hp-dark-cta-media" data-reveal="up">
-          <div className="hp-placeholder absolute inset-0" style={{ background: "#2a2a2a", color: "#888" }}>
-            Feature Image Placeholder
-          </div>
+          <Image
+            src="/images/black-fab.png"
+            alt="GetPanted black fabric"
+            fill
+            sizes="(max-width: 899px) 100vw, 33vw"
+            quality={90}
+            className="object-cover"
+          />
         </div>
         <div className="px-6 md:px-12 py-14 md:py-20 flex flex-col justify-center gap-6" data-reveal="right">
           <p className="font-barlow" style={{ fontSize: "16px", lineHeight: 1.7, color: "rgba(255,255,255,0.7)", maxWidth: "36ch" }}>

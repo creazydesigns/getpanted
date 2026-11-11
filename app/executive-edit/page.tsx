@@ -13,9 +13,9 @@ import "./executive-edit.css";
 import "@/app/storefront.css";
 
 export const metadata = {
-  title: "The Executive Edit — Pre-Order | GetPanted",
+  title: "Curated Collection Pre-Order | GetPanted",
   description:
-    "A curated box of five trousers for women who dress with intention. Pre-order open 1–15 November 2026.",
+    "A curated collection of five trousers for women who dress with intention. Pre-order open 1–15 November 2026.",
 };
 
 const PILLARS = [
@@ -29,30 +29,11 @@ const PILLARS = [
   },
   {
     title: "Versatility",
-    body: "Five pieces that mix and match so you get more outfits than pairs in the box.",
+    body: "Five pieces that mix and match so you get more outfits than pairs in the collection.",
   },
   {
     title: "Curation",
     body: "You choose the colours and sizes. We handle the editing so your wardrobe feels intentional, not accidental.",
-  },
-];
-
-const STEPS = [
-  {
-    title: "Choose your box",
-    body: "Classic or Signature — pick the edit that matches how you dress.",
-  },
-  {
-    title: "Build your five",
-    body: "Select five styles and a size for each from the available colourways.",
-  },
-  {
-    title: "Pay in full",
-    body: "Secure your place in the November production run with full payment via Paystack.",
-  },
-  {
-    title: "Receive your edit",
-    body: `Delivery begins in the ${EE_PREORDER.deliveryLabel}. Updates by email and WhatsApp.`,
   },
 ];
 
@@ -67,51 +48,49 @@ const GALLERY_CAPTIONS = [
 export default function ExecutiveEditPage() {
   return (
     <main className="ee-page font-barlow overflow-x-hidden min-h-screen">
-      <section className="ee-section ee-hero ee-wrap" id="top">
-        <div>
-          <p className="ee-eyebrow">The Executive Edit</p>
-          <h1 className="ee-h1">Five trousers. One intentional wardrobe.</h1>
-          <p className="ee-lead" style={{ marginTop: "1.25rem" }}>
-            A curated pre-order box for professional women who want fewer pieces and more ways to
-            wear them. You choose the colours and sizes. Delivery is included.
+      <section className="ee-hero-bleed" id="top">
+        <Image
+          src={EE_HERO_IMAGE}
+          alt="GetPanted curated collection"
+          fill
+          priority
+          className="ee-hero-bleed-img object-cover"
+          sizes="100vw"
+          style={{ zIndex: 0 }}
+        />
+        <div className="ee-hero-veil" aria-hidden />
+        <div className="ee-hero-grain" aria-hidden />
+        <div className="ee-hero-copy ee-reveal">
+          <p className="ee-brand">GetPanted</p>
+          <h1 className="ee-h1 ee-h1-on-dark">Five trousers. One intentional wardrobe.</h1>
+          <p className="ee-lead ee-lead-on-dark">
+            A curated pre-order collection for professional women who want fewer pieces and more ways
+            to wear them. You choose the colours and sizes. Delivery is included.
           </p>
           <div className="ee-hero-actions">
-            <a href="#boxes" className="btn-hp-dark">
-              Choose your box
-            </a>
-            <a href="#how" className="btn-hp-outline">
-              How pre-ordering works
+            <a href="#boxes" className="ee-btn-primary">
+              Choose your collection
             </a>
           </div>
-          <p className="ee-hero-meta">
+          <p className="ee-hero-meta ee-hero-meta-on-dark">
             Pre-order {EE_PREORDER.windowLabel} · Delivery from {EE_PREORDER.deliveryLabel}
           </p>
         </div>
-        <div className="ee-hero-media">
-          <Image
-            src={EE_HERO_IMAGE}
-            alt="GetPanted The Executive Edit"
-            fill
-            priority
-            className="object-cover object-center"
-            sizes="(max-width: 900px) 100vw, 50vw"
-          />
-        </div>
       </section>
 
-      <section className="ee-section ee-surface" id="idea">
+      <section className="ee-section ee-section-idea" id="idea">
         <div className="ee-wrap ee-split">
-          <div>
+          <div className="ee-reveal">
             <p className="ee-eyebrow">The idea</p>
             <h2 className="ee-h2">Your wardrobe deserves more intention.</h2>
           </div>
-          <div>
-            <p className="ee-body">
-              Most workwear shopping ends in one more pair that almost works. The Executive Edit is
-              different: five trousers chosen by you, styled as a set, so getting dressed for work
-              feels simpler — and sharper.
+          <div className="ee-reveal ee-reveal-delay">
+            <p className="ee-body ee-body-lg">
+              Most workwear shopping ends in one more pair that almost works. This curated
+              collection is different: five trousers chosen by you, styled as a set, so getting
+              dressed for work feels simpler — and sharper.
             </p>
-            <p className="ee-body" style={{ marginTop: "1rem" }}>
+            <p className="ee-body" style={{ marginTop: "1.25rem" }}>
               Pre-order locks your selections into our November production run. You pay in full now;
               we deliver from the {EE_PREORDER.deliveryLabel}.
             </p>
@@ -119,23 +98,31 @@ export default function ExecutiveEditPage() {
         </div>
       </section>
 
-      <section className="ee-section" id="boxes">
+      <section className="ee-section ee-section-boxes" id="boxes">
         <div className="ee-wrap">
-          <p className="ee-eyebrow">Choose your box</p>
-          <h2 className="ee-h2" style={{ marginBottom: "0.75rem" }}>
-            Classic or Signature
-          </h2>
-          <p className="ee-lead" style={{ marginBottom: "2rem" }}>
-            Both boxes include five pieces, your size for each, a styling guide, and delivery.
-          </p>
+          <div className="ee-section-head ee-reveal">
+            <p className="ee-eyebrow">Choose your collection</p>
+            <h2 className="ee-h2">Classic or Signature</h2>
+            <p className="ee-lead">
+              Both collections include five pieces, your size for each, a styling guide, and
+              delivery.
+            </p>
+          </div>
           <div className="ee-packages">
-            {Object.values(EE_PACKAGES).map((pkg) => (
-              <article key={pkg.id} className="ee-package">
-                <p className="ee-eyebrow" style={{ marginBottom: 0 }}>
-                  {pkg.shortName}
-                </p>
+            {Object.values(EE_PACKAGES).map((pkg, i) => (
+              <article
+                key={pkg.id}
+                className={`ee-package ee-reveal${i === 1 ? " ee-package-featured" : ""}`}
+                style={{ animationDelay: `${0.08 + i * 0.08}s` }}
+              >
+                <div className="ee-package-top">
+                  <p className="ee-eyebrow" style={{ marginBottom: 0 }}>
+                    {pkg.shortName}
+                  </p>
+                  {i === 1 && <span className="ee-package-tag">Most range</span>}
+                </div>
                 <p className="ee-package-price">{pkg.priceLabel}</p>
-                <p className="ee-body" style={{ marginBottom: "1rem", fontSize: "0.95rem" }}>
+                <p className="ee-body" style={{ marginBottom: "1.25rem", fontSize: "0.95rem" }}>
                   {pkg.description}
                 </p>
                 <ul>
@@ -143,7 +130,10 @@ export default function ExecutiveEditPage() {
                     <li key={item}>{item}</li>
                   ))}
                 </ul>
-                <Link href={`/executive-edit/checkout?package=${pkg.id}`} className="btn-hp-dark">
+                <Link
+                  href={`/executive-edit/checkout?package=${pkg.id}`}
+                  className={i === 1 ? "ee-btn-primary" : "ee-btn-secondary"}
+                >
                   {pkg.cta}
                 </Link>
               </article>
@@ -152,15 +142,20 @@ export default function ExecutiveEditPage() {
         </div>
       </section>
 
-      <section className="ee-section ee-surface" id="different">
+      <section className="ee-section ee-section-pillars" id="different">
         <div className="ee-wrap">
-          <p className="ee-eyebrow">What makes this different</p>
-          <h2 className="ee-h2" style={{ marginBottom: "2rem" }}>
-            Built for how you actually dress
-          </h2>
+          <div className="ee-section-head ee-reveal">
+            <p className="ee-eyebrow">What makes this different</p>
+            <h2 className="ee-h2">Built for how you actually dress</h2>
+          </div>
           <div className="ee-pillars">
-            {PILLARS.map((p) => (
-              <div key={p.title} className="ee-pillar">
+            {PILLARS.map((p, i) => (
+              <div
+                key={p.title}
+                className="ee-pillar ee-reveal"
+                style={{ animationDelay: `${0.06 + i * 0.07}s` }}
+              >
+                <span className="ee-pillar-index">0{i + 1}</span>
                 <h3>{p.title}</h3>
                 <p className="ee-body" style={{ fontSize: "0.95rem" }}>
                   {p.body}
@@ -171,19 +166,23 @@ export default function ExecutiveEditPage() {
         </div>
       </section>
 
-      <section className="ee-section" id="gallery">
+      <section className="ee-section ee-section-gallery" id="gallery">
         <div className="ee-wrap">
-          <p className="ee-eyebrow">See the possibilities</p>
-          <h2 className="ee-h2" style={{ marginBottom: "0.75rem" }}>
-            Straight Pants colourways
-          </h2>
-          <p className="ee-lead" style={{ marginBottom: "2rem" }}>
-            Classic is five from these colourways. Signature starts here and expands as new
-            silhouettes launch.
-          </p>
+          <div className="ee-section-head ee-reveal">
+            <p className="ee-eyebrow">See the possibilities</p>
+            <h2 className="ee-h2">Straight Pants colourways</h2>
+            <p className="ee-lead">
+              Classic is five from these colourways. Signature starts here and expands as new
+              silhouettes launch.
+            </p>
+          </div>
           <div className="ee-gallery">
             {EE_STRAIGHT_STYLES.map((style, i) => (
-              <figure key={style.slug} className="ee-gallery-item">
+              <figure
+                key={style.slug}
+                className="ee-gallery-item ee-reveal"
+                style={{ animationDelay: `${0.05 + i * 0.06}s` }}
+              >
                 <div className="ee-gallery-media">
                   <Image
                     src={style.image}
@@ -205,36 +204,13 @@ export default function ExecutiveEditPage() {
         </div>
       </section>
 
-      <section className="ee-section ee-surface" id="how">
-        <div className="ee-wrap">
-          <p className="ee-eyebrow">How pre-ordering works</p>
-          <h2 className="ee-h2" style={{ marginBottom: "0.75rem" }}>
-            Four clear steps
-          </h2>
-          <p className="ee-lead" style={{ marginBottom: "2rem" }}>
-            Window: {EE_PREORDER.windowLabel}. Delivery from {EE_PREORDER.deliveryLabel}. Shipping
-            included in the package price.
-          </p>
-          <div className="ee-steps">
-            {STEPS.map((step) => (
-              <div key={step.title} className="ee-step">
-                <h3>{step.title}</h3>
-                <p className="ee-body" style={{ fontSize: "0.9rem" }}>
-                  {step.body}
-                </p>
-              </div>
-            ))}
+      <section className="ee-section ee-section-faq" id="faq">
+        <div className="ee-wrap ee-faq-wrap">
+          <div className="ee-section-head ee-reveal">
+            <p className="ee-eyebrow">FAQs</p>
+            <h2 className="ee-h2">Before you order</h2>
           </div>
-        </div>
-      </section>
-
-      <section className="ee-section" id="faq">
-        <div className="ee-wrap" style={{ maxWidth: 720 }}>
-          <p className="ee-eyebrow">FAQs</p>
-          <h2 className="ee-h2" style={{ marginBottom: "1.5rem" }}>
-            Before you order
-          </h2>
-          <div className="ee-faq">
+          <div className="ee-faq ee-reveal ee-reveal-delay">
             {EE_FAQS.map((item) => (
               <details key={item.q}>
                 <summary>{item.q}</summary>
@@ -242,7 +218,7 @@ export default function ExecutiveEditPage() {
               </details>
             ))}
           </div>
-          <p className="ee-body" style={{ marginTop: "1.5rem", fontSize: 14 }}>
+          <p className="ee-body" style={{ marginTop: "1.75rem", fontSize: 14 }}>
             Questions?{" "}
             <a href={EE_CONTACT.whatsapp} target="_blank" rel="noopener noreferrer">
               WhatsApp
@@ -257,24 +233,26 @@ export default function ExecutiveEditPage() {
       </section>
 
       <section className="ee-section ee-final" id="cta">
-        <div className="ee-wrap">
-          <p className="ee-eyebrow" style={{ color: "var(--ee-beige)" }}>
-            Pre-order closes 15 November 2026
-          </p>
-          <h2 className="ee-h2">Secure your Executive Edit</h2>
-          <p className="ee-lead" style={{ marginTop: "1rem" }}>
+        <div className="ee-final-glow" aria-hidden />
+        <div className="ee-wrap ee-final-inner ee-reveal">
+          <p className="ee-eyebrow ee-eyebrow-on-dark">Pre-order closes 15 November 2026</p>
+          <p className="ee-brand ee-brand-sm">GetPanted</p>
+          <h2 className="ee-h2 ee-h2-on-dark">Secure your curated collection</h2>
+          <p className="ee-lead ee-lead-on-dark" style={{ marginTop: "1rem" }}>
             Full payment now. Delivery from the {EE_PREORDER.deliveryLabel}. Choose Classic or
             Signature and build your five.
           </p>
           <div className="ee-hero-actions" style={{ justifyContent: "center" }}>
-            <Link href="/executive-edit/checkout?package=classic" className="btn-hp-dark">
+            <Link href="/executive-edit/checkout?package=classic" className="ee-btn-primary">
               Choose Classic
             </Link>
-            <Link href="/executive-edit/checkout?package=signature" className="btn-hp-outline">
+            <Link href="/executive-edit/checkout?package=signature" className="ee-btn-ghost">
               Choose Signature
             </Link>
           </div>
-          <p className="ee-hero-meta">Delivery included · Pay securely with Paystack</p>
+          <p className="ee-hero-meta ee-hero-meta-on-dark">
+            Delivery included · Pay securely with Paystack
+          </p>
         </div>
       </section>
 

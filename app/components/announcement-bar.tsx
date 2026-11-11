@@ -16,7 +16,7 @@ export function AnnouncementBar() {
     <div
       className="font-barlow-cond font-bold uppercase text-center"
       style={{
-        background: "#5C2D8F",
+        background: "#1A1A1A",
         color: "#FFFFFF",
         fontSize: 11,
         padding: "9px 16px",

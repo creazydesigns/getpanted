@@ -28,7 +28,7 @@ export function ToastStack() {
           <button
             type="button"
             onClick={() => dismissToast(toast.id)}
-            className="ml-3 transition-colors hover:text-[#8B52CC]"
+            className="ml-3 transition-colors hover:text-[#1A1A1A]"
             style={{ color: "rgba(255,255,255,0.55)" }}
             aria-label="Dismiss notification"
           >
@@ -87,7 +87,7 @@ export function MiniCartDrawer() {
           <button
             type="button"
             onClick={closeMiniCart}
-            className="font-barlow-cond font-bold uppercase transition-colors hover:text-[#5C2D8F]"
+            className="font-barlow-cond font-bold uppercase transition-colors hover:text-[#1A1A1A]"
             style={{ fontSize: "11px", letterSpacing: "0.14em", color: "#6B6B6B" }}
           >
             Close
@@ -111,7 +111,7 @@ export function MiniCartDrawer() {
                 href="/collections"
                 onClick={closeMiniCart}
                 className="font-barlow-cond font-bold uppercase text-white mt-6 inline-block transition-opacity hover:opacity-80"
-                style={{ fontSize: "11px", letterSpacing: "0.14em", padding: "12px 28px", background: "#5C2D8F" }}
+                style={{ fontSize: "11px", letterSpacing: "0.14em", padding: "12px 28px", background: "#1A1A1A" }}
               >
                 Browse Collections
               </Link>
@@ -152,7 +152,7 @@ export function MiniCartDrawer() {
                     <button
                       type="button"
                       onClick={() => updateCartQuantity(item.id, item.quantity - 1, item.size)}
-                      className="flex items-center justify-center transition-colors hover:border-[#5C2D8F] hover:text-[#5C2D8F]"
+                      className="flex items-center justify-center transition-colors hover:border-[#1A1A1A] hover:text-[#1A1A1A]"
                       style={{ width: "28px", height: "28px", border: "1px solid #E0E0E0", color: "#1A1A1A", fontSize: "14px" }}
                     >
                       −
@@ -166,7 +166,7 @@ export function MiniCartDrawer() {
                     <button
                       type="button"
                       onClick={() => updateCartQuantity(item.id, item.quantity + 1, item.size)}
-                      className="flex items-center justify-center transition-colors hover:border-[#5C2D8F] hover:text-[#5C2D8F]"
+                      className="flex items-center justify-center transition-colors hover:border-[#1A1A1A] hover:text-[#1A1A1A]"
                       style={{ width: "28px", height: "28px", border: "1px solid #E0E0E0", color: "#1A1A1A", fontSize: "14px" }}
                     >
                       +
@@ -192,7 +192,7 @@ export function MiniCartDrawer() {
               </span>
               <span
                 className="font-barlow-cond font-bold"
-                style={{ fontSize: "16px", color: "#5C2D8F" }}
+                style={{ fontSize: "16px", color: "#1A1A1A" }}
               >
                 {formatNaira(cartSubtotal)}
               </span>
@@ -220,7 +220,7 @@ export function MiniCartDrawer() {
                   fontSize: "11px",
                   letterSpacing: "0.12em",
                   padding: "13px",
-                  background: "#5C2D8F",
+                  background: "#1A1A1A",
                 }}
               >
                 Checkout

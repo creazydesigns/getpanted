@@ -160,8 +160,8 @@ export const EE_SELECTION_COUNT = 5;
 
 export const EE_FAQS: { q: string; a: string }[] = [
   {
-    q: "What is The Executive Edit?",
-    a: "A curated box of five trousers designed to help professional women build a more intentional work wardrobe.",
+    q: "What is this curated collection?",
+    a: "A curated collection of five trousers designed to help professional women build a more intentional work wardrobe.",
   },
   {
     q: "What is the difference between Classic and Signature?",

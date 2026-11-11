@@ -6,8 +6,8 @@
   --hp-soft: #f2f2f2;
   --hp-soft-2: #f7f7f7;
   --hp-placeholder: #e8e8e8;
-  --hp-accent: #5c2d8f;
-  --hp-accent-hover: #8b52cc;
+  --hp-accent: #1a1a1a;
+  --hp-accent-hover: #000000;
   --hp-border: #e8e8e8;
   background: var(--hp-paper);
   color: var(--hp-ink);
@@ -284,7 +284,6 @@
 
 @media (max-width: 639px) {
   .hp-editorial-panel { margin: 16px; padding: 20px 18px; }
-  .hp-quote-feature { min-height: 360px; }
   .hp-dark-cta-media { min-height: 280px; }
   /* Room above the headline so the bounce-in isn't clipped */
   .hp-presence-banner {
@@ -431,21 +430,21 @@
   transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
 }
 .btn-hp-primary {
-  background: var(--hp-accent);
+  background: var(--hp-ink);
   color: #fff;
 }
-.btn-hp-primary:hover { background: var(--hp-accent-hover); }
+.btn-hp-primary:hover { background: #000; }
 .btn-hp-dark {
   background: var(--hp-ink);
   color: #fff;
 }
-.btn-hp-dark:hover { background: var(--hp-accent); }
+.btn-hp-dark:hover { background: #000; }
 .btn-hp-light {
   background: #fff;
   color: var(--hp-ink);
 }
 .btn-hp-light:hover {
-  background: var(--hp-accent);
+  background: var(--hp-ink);
   color: #fff;
 }
 .btn-hp-outline {
@@ -459,10 +458,10 @@
 }
 
 .btn-subscribe {
-  background: var(--hp-accent);
+  background: var(--hp-ink);
   transition: background 0.3s ease;
 }
-.btn-subscribe:hover { background: var(--hp-accent-hover); }
+.btn-subscribe:hover { background: #000; }
 
 .hp-cat-grid {
   display: grid;
@@ -558,21 +557,11 @@
   display: flex;
   align-items: flex-end;
 }
-/* Pant-side crop of presence-banner.jpg — face excluded */
 .hp-editorial-photo {
   position: absolute;
   inset: 0;
   background-color: #e8e8e8;
-  background-image: url("/images/presence-banner.jpg");
-  background-repeat: no-repeat;
-  background-size: 160%;
-  background-position: 8% 92%;
-}
-@media (min-width: 768px) {
-  .hp-editorial-photo {
-    background-size: 145%;
-    background-position: 5% 90%;
-  }
+  overflow: hidden;
 }
 .hp-editorial-title {
   font-family: "Barlow Condensed", sans-serif;
@@ -635,41 +624,100 @@
   .hp-pillar:last-child { border-right: none; }
 }
 
-.hp-quotes {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 24px;
+.hp-testimonial {
+  max-width: 40rem;
+  margin: 0 auto;
+  text-align: center;
 }
-@media (min-width: 900px) {
-  .hp-quotes {
-    grid-template-columns: 1fr 0.9fr 1fr;
-    gap: 0;
-    align-items: stretch;
-  }
+
+.hp-testimonial-slide {
+  animation: hp-testimonial-in 0.45s ease both;
 }
-.hp-quote-card {
-  padding: 32px 24px;
+
+.hp-testimonial-quote {
+  margin: 0;
+  font-size: clamp(1.125rem, 2.4vw, 1.375rem);
+  line-height: 1.65;
+  color: #1a1a1a;
+}
+
+.hp-testimonial-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 1.25rem;
+  border-radius: 999px;
+  background: #ececec;
+  color: #1a1a1a;
+}
+
+.hp-testimonial-initials {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  line-height: 1;
+}
+
+.hp-testimonial-name {
+  margin: 1.5rem 0 0;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #1a1a1a;
+}
+
+.hp-testimonial-role {
+  margin: 0.35rem 0 0;
+  font-size: 13px;
+  color: #6b6b6b;
+}
+
+.hp-testimonial-dots {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.4rem;
+  margin-top: 1.75rem;
 }
-@media (min-width: 900px) {
-  .hp-quote-card {
-    padding: 40px 36px;
-    border-right: 1px solid var(--hp-border);
+
+.hp-testimonial-dot {
+  width: 7px;
+  height: 7px;
+  padding: 0;
+  border: none;
+  border-radius: 999px;
+  background: #cfcfcf;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.hp-testimonial-dot.is-active {
+  background: #1a1a1a;
+  transform: scale(1.15);
+}
+
+@keyframes hp-testimonial-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
   }
-  .hp-quote-card:last-of-type { border-right: none; }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
-.hp-quote-feature {
-  position: relative;
-  min-height: 420px;
-  background: var(--hp-placeholder);
-}
-.hp-quote-overlay {
-  position: absolute;
-  inset: auto 20px 20px 20px;
-  padding: 24px;
-  background: rgba(26, 26, 26, 0.78);
-  color: #fff;
+
+@media (prefers-reduced-motion: reduce) {
+  .hp-testimonial-slide {
+    animation: none;
+  }
+  .hp-testimonial-dot {
+    transition: none;
+  }
 }
 
 .hp-dark-cta {
@@ -794,7 +842,7 @@
 .hp-chip.is-active {
   border-color: var(--hp-accent);
   color: var(--hp-accent);
-  background: rgba(92, 45, 143, 0.04);
+  background: rgba(26, 26, 26, 0.04);
 }
 
 .hp-soft-band {

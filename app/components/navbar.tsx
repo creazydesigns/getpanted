@@ -114,7 +114,7 @@ export function Navbar() {
               {wishlistCount > 0 && (
                 <span
                   className="absolute -top-1 -right-1.5 min-w-4 h-4 px-1 text-white text-[9px] font-medium flex items-center justify-center"
-                  style={{ background: "#5C2D8F" }}
+                  style={{ background: "#1A1A1A" }}
                 >
                   {wishlistCount}
                 </span>
@@ -137,7 +137,7 @@ export function Navbar() {
               {cartCount > 0 && (
                 <span
                   className="absolute -top-1 -right-1.5 min-w-4 h-4 px-1 text-white text-[9px] font-medium flex items-center justify-center"
-                  style={{ background: "#5C2D8F" }}
+                  style={{ background: "#1A1A1A" }}
                 >
                   {cartCount}
                 </span>
@@ -231,7 +231,7 @@ export function Navbar() {
               <Link
                 href="/collections"
                 className="block w-full text-center text-white font-barlow-cond font-bold text-[11px] tracking-[0.16em] uppercase py-3 transition-opacity duration-200 hover:opacity-80"
-                style={{ background: "#5C2D8F" }}
+                style={{ background: "#1A1A1A" }}
               >
                 Shop Now
               </Link>

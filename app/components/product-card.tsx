@@ -77,13 +77,13 @@ export function ProductCard({ product, quickAdd = false }: ProductCardProps) {
             });
           }}
           className="absolute top-3 right-3 z-[2] w-8 h-8 flex items-center justify-center transition-opacity duration-300 opacity-0 group-hover:opacity-100"
-          style={{ background: "rgba(255,255,255,0.92)", color: wishlisted ? "#5C2D8F" : "#1A1A1A" }}
+          style={{ background: "rgba(255,255,255,0.92)", color: "#1A1A1A" }}
         >
           <svg
             width="14"
             height="14"
             viewBox="0 0 24 24"
-            fill={wishlisted ? "#5C2D8F" : "none"}
+            fill={wishlisted ? "#1A1A1A" : "none"}
             stroke="currentColor"
             strokeWidth="1.5"
           >
@@ -139,9 +139,9 @@ export function ProductCard({ product, quickAdd = false }: ProductCardProps) {
                   style={{
                     fontSize: "11px",
                     letterSpacing: "0.08em",
-                    border: `1px solid ${selectedSize === s ? "#5C2D8F" : "#E8E8E8"}`,
-                    color: selectedSize === s ? "#5C2D8F" : "#1A1A1A",
-                    background: selectedSize === s ? "rgba(92,45,143,0.06)" : "#FFFFFF",
+                    border: `1px solid ${selectedSize === s ? "#1A1A1A" : "#E8E8E8"}`,
+                    color: selectedSize === s ? "#1A1A1A" : "#1A1A1A",
+                    background: selectedSize === s ? "#F2F2F2" : "#FFFFFF",
                   }}
                 >
                   {s}

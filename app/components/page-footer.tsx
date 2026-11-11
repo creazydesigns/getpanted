@@ -127,7 +127,7 @@ export function PageFooter() {
                     disabled={nlLoading}
                     className="font-barlow-cond font-bold uppercase text-white disabled:opacity-60"
                     style={{
-                      background: "#5C2D8F",
+                      background: "#1A1A1A",
                       padding: "12px 16px",
                       fontSize: "11px",
                       letterSpacing: "0.12em",

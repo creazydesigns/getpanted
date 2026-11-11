@@ -11,10 +11,10 @@
   padding: 14px 20px;
   border: none;
   border-radius: 999px;
-  background: #5C2D8F;
+  background: #1A1A1A;
   color: #fff;
   cursor: pointer;
-  box-shadow: 0 8px 32px rgba(92, 45, 143, 0.35);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
   transition: transform 0.2s ease, background 0.2s ease;
   font-family: 'Barlow Condensed', sans-serif;
   font-weight: 700;
@@ -23,7 +23,7 @@
   text-transform: uppercase;
 }
 .tara-launcher:hover {
-  background: #8B52CC;
+  background: #000000;
   transform: translateY(-2px);
 }
 .tara-launcher-icon {
@@ -81,7 +81,7 @@
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: #5C2D8F;
+  background: #1A1A1A;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -149,7 +149,7 @@
 }
 .tara-bubble p { margin: 0; }
 .tara-bubble.user {
-  background: #5C2D8F;
+  background: #1A1A1A;
   color: #fff;
   border-bottom-right-radius: 4px;
 }
@@ -238,9 +238,9 @@
   align-items: center;
   justify-content: center;
   padding: 8px 14px;
-  border: 1px solid #5C2D8F;
+  border: 1px solid #1A1A1A;
   background: transparent;
-  color: #5C2D8F;
+  color: #1A1A1A;
   font-family: 'Barlow Condensed', sans-serif;
   font-weight: 700;
   font-size: 11px;
@@ -252,11 +252,11 @@
 }
 .tara-handoff-btn.primary,
 .tara-handoff-btn.primary:hover {
-  background: #5C2D8F;
+  background: #1A1A1A;
   color: #fff;
 }
 .tara-handoff-btn:hover:not(.primary) {
-  background: #5C2D8F;
+  background: #1A1A1A;
   color: #fff;
 }
 
@@ -333,7 +333,7 @@
 .tara-send-btn {
   padding: 10px 20px;
   border: none;
-  background: #5C2D8F;
+  background: #1A1A1A;
   color: #fff;
   font-family: 'Barlow Condensed', sans-serif;
   font-weight: 700;
@@ -343,7 +343,7 @@
   cursor: pointer;
   transition: background 0.2s ease;
 }
-.tara-send-btn:hover:not(:disabled) { background: #8B52CC; }
+.tara-send-btn:hover:not(:disabled) { background: #000000; }
 .tara-send-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
 .tara-handoff-form-title {

@@ -115,6 +115,26 @@ export const EE_STRAIGHT_STYLES: ExecutiveStyleOption[] = [
     sizes: [...EE_STRAIGHT_SIZES],
     available: true,
   },
+  {
+    slug: "straight-pants-navy",
+    name: "Straight Pants — Navy",
+    colorName: "Navy",
+    colorHex: "#1F2A5A",
+    silhouette: "straight",
+    image: "/images/straight-pants/new%20straight/navblue.jpg",
+    sizes: [...EE_STRAIGHT_SIZES],
+    available: true,
+  },
+  {
+    slug: "straight-pants-charcoal",
+    name: "Straight Pants — Charcoal",
+    colorName: "Charcoal",
+    colorHex: "#3A3D42",
+    silhouette: "straight",
+    image: "/images/straight-pants/new%20straight/grey.jpg",
+    sizes: [...EE_STRAIGHT_SIZES],
+    available: true,
+  },
 ];
 
 /** Signature-only: wide-leg pleated trousers. */
@@ -286,7 +306,7 @@ export const EE_PACKAGES: Record<
     description:
       "For the woman who wants more variety in silhouette and more ways to express her personal style at work.",
     includes: [
-      "Five pairs of trousers — mix straight-leg, pleated and flared in any of 16 colourways",
+      "Five pairs of trousers — mix straight-leg, pleated and flared in any of 18 colourways",
       "Size selection for each piece",
       "A styling guide for more combinations",
       "Delivery calculated at checkout",

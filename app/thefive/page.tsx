@@ -45,6 +45,8 @@ const GALLERY_CAPTIONS = [
   "White — crisp contrast under blazers and knits",
   "Army Green — unexpected polish for midweek looks",
   "Black — the forever staple, five ways",
+  "Navy — a sharp alternative to black for the office",
+  "Charcoal — tailored and quietly modern",
 ];
 
 const GALLERY_GROUPS = [
@@ -198,7 +200,7 @@ export default function ExecutiveEditPage() {
         <div className="ee-wrap">
           <div className="ee-section-head ee-reveal">
             <p className="ee-eyebrow">See the possibilities</p>
-            <h2 className="ee-h2">Build your five from 16 colourways</h2>
+            <h2 className="ee-h2">Build your five from 18 colourways</h2>
             <p className="ee-lead">
               Classic is five straight-leg pairs. Signature lets you mix straight, pleated and
               flared in any combination.

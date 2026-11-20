@@ -331,6 +331,45 @@
   padding-bottom: 0;
 }
 
+/* Hero hierarchy: wordmark (small, tracked) > headline (dominant) > subline (supporting) */
+.ee-hero-brand {
+  font-size: clamp(0.8rem, 2.2vw, 0.95rem);
+  letter-spacing: 0.34em;
+  margin-bottom: 0.9rem;
+  color: rgba(255, 253, 249, 0.85);
+}
+
+.ee-hero-title {
+  font-family: "Barlow Condensed", sans-serif;
+  font-weight: 800;
+  font-size: clamp(3.4rem, 14vw, 7.5rem);
+  line-height: 0.88;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--ee-white);
+  text-shadow: none;
+}
+
+.ee-hero-sub {
+  margin: 0.2rem auto 0;
+  max-width: 30rem;
+  font-family: "Barlow", sans-serif;
+  font-weight: 500;
+  font-size: clamp(1rem, 2.8vw, 1.2rem);
+  letter-spacing: 0.02em;
+  line-height: 1.5;
+  color: rgba(255, 253, 249, 0.92);
+}
+
+.ee-hero-sub::before {
+  content: "";
+  display: block;
+  width: 48px;
+  height: 1px;
+  margin: 0 auto 0.55rem;
+  background: var(--ee-gold);
+}
+
 .ee-hero-cta {
   display: flex;
   flex-direction: column;
@@ -665,6 +704,56 @@
   text-transform: uppercase;
   color: var(--ee-chocolate);
   margin-bottom: 0.3rem;
+}
+
+.ee-gallery-group {
+  margin-top: 2.75rem;
+}
+
+.ee-gallery-group:first-of-type {
+  margin-top: 0;
+}
+
+.ee-gallery-group-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.65rem;
+  border-bottom: 1px solid var(--ee-border);
+}
+
+.ee-gallery-group-head h3 {
+  font-family: "Barlow Condensed", sans-serif;
+  font-weight: 800;
+  font-size: 1.35rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ee-chocolate);
+}
+
+.ee-gallery-group-head span {
+  font-family: "Barlow Condensed", sans-serif;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ee-gold);
+}
+
+.ee-style-group-title {
+  margin: 1.1rem 0 0.6rem;
+  font-family: "Barlow Condensed", sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ee-gold);
+}
+
+.ee-style-group-title:first-child {
+  margin-top: 0;
 }
 
 /* —— Size chart —— */

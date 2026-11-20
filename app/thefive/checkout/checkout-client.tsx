@@ -7,9 +7,19 @@ import {
   EE_SELECTION_COUNT,
   type ExecutivePackageId,
   type ExecutiveStyleOption,
+  EE_SILHOUETTE_LABELS,
   formatNaira,
   getPackage,
 } from "@/lib/executive-edit/constants";
+
+const SILHOUETTE_ORDER: ExecutiveStyleOption["silhouette"][] = ["straight", "pleated", "flared"];
+
+/** "Black" for straight-leg, "Black · Pleated" etc. so colours stay unambiguous. */
+function slotLabel(slot: { slug: string; colorName: string }, styles: ExecutiveStyleOption[]) {
+  const style = styles.find((s) => s.slug === slot.slug);
+  if (!style || style.silhouette === "straight") return slot.colorName;
+  return `${slot.colorName} · ${style.silhouette === "pleated" ? "Pleated" : "Flared"}`;
+}
 
 export type SelectionSlot = {
   slug: string;
@@ -226,7 +236,7 @@ export function ExecutiveEditCheckoutClient({ initialPackage }: Props) {
               className={`ee-chip${activeSlot === i ? " is-active" : ""}`}
               onClick={() => setActiveSlot(i)}
             >
-              {slot ? `${i + 1}. ${slot.colorName}${slot.size ? ` / ${slot.size}` : ""}` : `Slot ${i + 1}`}
+              {slot ? `${i + 1}. ${slotLabel(slot, pkg.styles)}${slot.size ? ` / ${slot.size}` : ""}` : `Slot ${i + 1}`}
             </button>
           ))}
         </div>
@@ -238,8 +248,16 @@ export function ExecutiveEditCheckoutClient({ initialPackage }: Props) {
           </Link>
         </p>
 
+        {SILHOUETTE_ORDER.map((silhouette) => {
+          const groupStyles = getPackage(packageId).styles.filter((s) => s.silhouette === silhouette);
+          if (groupStyles.length === 0) return null;
+          return (
+            <div key={silhouette}>
+              {pkg.styles.some((s) => s.silhouette !== "straight") && (
+                <p className="ee-style-group-title">{EE_SILHOUETTE_LABELS[silhouette]}</p>
+              )}
         <div className="ee-style-grid">
-          {getPackage(packageId).styles.map((style) => {
+          {groupStyles.map((style) => {
             const selected = slots[activeSlot]?.slug === style.slug;
             return (
               <button
@@ -265,7 +283,7 @@ export function ExecutiveEditCheckoutClient({ initialPackage }: Props) {
                     {style.colorName}
                   </strong>
                   <p className="ee-body" style={{ fontSize: 13, margin: "2px 0 0" }}>
-                    {style.silhouette} leg
+                    {EE_SILHOUETTE_LABELS[style.silhouette]}
                     {!style.available && <span className="ee-coming"> · Coming soon</span>}
                   </p>
                 </div>
@@ -273,10 +291,13 @@ export function ExecutiveEditCheckoutClient({ initialPackage }: Props) {
             );
           })}
         </div>
+            </div>
+          );
+        })}
 
         {activeStyle && (
           <div style={{ marginTop: 16 }}>
-            <p className="ee-eyebrow">Size for {activeStyle.colorName}</p>
+            <p className="ee-eyebrow">Size for {slotLabel(activeStyle, pkg.styles)}</p>
             <div className="ee-size-chips">
               {activeStyle.sizes.map((size) => (
                 <button
@@ -380,7 +401,7 @@ export function ExecutiveEditCheckoutClient({ initialPackage }: Props) {
           slot ? (
             <div className="ee-summary-row" key={`${slot.slug}-${i}`}>
               <span>
-                {i + 1}. {slot.colorName}
+                {i + 1}. {slotLabel(slot, pkg.styles)}
                 {slot.size ? ` · Size ${slot.size}` : " · Size needed"}
               </span>
             </div>

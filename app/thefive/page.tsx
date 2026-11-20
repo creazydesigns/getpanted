@@ -6,6 +6,8 @@ import {
   EE_HERO_IMAGE_MOBILE,
   EE_PACKAGES,
   EE_PREORDER,
+  EE_FLARED_STYLES,
+  EE_PLEATED_STYLES,
   EE_SIZE_CHART,
   EE_STRAIGHT_STYLES,
 } from "@/lib/executive-edit/constants";
@@ -45,6 +47,27 @@ const GALLERY_CAPTIONS = [
   "Black — the forever staple, five ways",
 ];
 
+const GALLERY_GROUPS = [
+  {
+    id: "straight",
+    title: "Straight Pants",
+    note: "Classic and Signature",
+    styles: EE_STRAIGHT_STYLES,
+  },
+  {
+    id: "pleated",
+    title: "Pleated Pants",
+    note: "Signature only",
+    styles: EE_PLEATED_STYLES,
+  },
+  {
+    id: "flared",
+    title: "Flared Pants",
+    note: "Signature only",
+    styles: EE_FLARED_STYLES,
+  },
+] as const;
+
 export default function ExecutiveEditPage() {
   return (
     <main className="ee-page font-barlow overflow-x-hidden min-h-screen">
@@ -71,8 +94,9 @@ export default function ExecutiveEditPage() {
         </div>
         <div className="ee-hero-veil ee-hero-veil-subtle" aria-hidden />
         <div className="ee-hero-copy ee-hero-copy-headlines ee-reveal">
-          <p className="ee-brand">GetPanted</p>
-          <h1 className="ee-h1 ee-h1-on-dark">Five trousers. One intentional wardrobe.</h1>
+          <p className="ee-brand ee-hero-brand">GetPanted</p>
+          <h1 className="ee-hero-title">The Mix</h1>
+          <p className="ee-hero-sub">Five Trousers. One Intentional Wardrobe.</p>
           <div className="ee-hero-cta">
             <a href="#boxes" className="ee-btn-hero">
               Pre-Order Now
@@ -174,37 +198,48 @@ export default function ExecutiveEditPage() {
         <div className="ee-wrap">
           <div className="ee-section-head ee-reveal">
             <p className="ee-eyebrow">See the possibilities</p>
-            <h2 className="ee-h2">Straight Pants colourways</h2>
+            <h2 className="ee-h2">Build your five from 16 colourways</h2>
             <p className="ee-lead">
-              Classic is five from these colourways. Signature starts here and expands as new
-              silhouettes launch.
+              Classic is five straight-leg pairs. Signature lets you mix straight, pleated and
+              flared in any combination.
             </p>
           </div>
-          <div className="ee-gallery">
-            {EE_STRAIGHT_STYLES.map((style, i) => (
-              <figure
-                key={style.slug}
-                className="ee-gallery-item ee-reveal"
-                style={{ animationDelay: `${0.05 + i * 0.06}s` }}
-              >
-                <div className="ee-gallery-media">
-                  <Image
-                    src={style.image}
-                    alt={style.name}
-                    fill
-                    className="object-cover object-center"
-                    sizes="(max-width: 768px) 50vw, 33vw"
-                  />
-                </div>
-                <figcaption className="ee-gallery-caption">
-                  <strong>{style.colorName}</strong>
-                  <span className="ee-body" style={{ fontSize: 13 }}>
-                    {GALLERY_CAPTIONS[i] ?? style.name}
-                  </span>
-                </figcaption>
-              </figure>
-            ))}
-          </div>
+
+          {GALLERY_GROUPS.map((group) => (
+            <div key={group.id} className="ee-gallery-group">
+              <div className="ee-gallery-group-head ee-reveal">
+                <h3>{group.title}</h3>
+                <span>{group.note}</span>
+              </div>
+              <div className="ee-gallery">
+                {group.styles.map((style, i) => (
+                  <figure
+                    key={style.slug}
+                    className="ee-gallery-item ee-reveal"
+                    style={{ animationDelay: `${0.05 + i * 0.05}s` }}
+                  >
+                    <div className="ee-gallery-media">
+                      <Image
+                        src={style.image}
+                        alt={style.name}
+                        fill
+                        className="object-cover object-center"
+                        sizes="(max-width: 768px) 50vw, 33vw"
+                      />
+                    </div>
+                    <figcaption className="ee-gallery-caption">
+                      <strong>{style.colorName}</strong>
+                      <span className="ee-body" style={{ fontSize: 13 }}>
+                        {group.id === "straight"
+                          ? (GALLERY_CAPTIONS[i] ?? style.name)
+                          : style.name}
+                      </span>
+                    </figcaption>
+                  </figure>
+                ))}
+              </div>
+            </div>
+          ))}
         </div>
       </section>
 

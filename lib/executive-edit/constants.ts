@@ -117,29 +117,134 @@ export const EE_STRAIGHT_STYLES: ExecutiveStyleOption[] = [
   },
 ];
 
-/** Signature may expand with pleated/flared when those products go live. */
-export const EE_SIGNATURE_EXTRA: ExecutiveStyleOption[] = [
+/** Signature-only: wide-leg pleated trousers. */
+export const EE_PLEATED_STYLES: ExecutiveStyleOption[] = [
   {
-    slug: "pleated-coming-soon",
-    name: "Pleated Trouser",
-    colorName: "Assorted",
-    colorHex: "#8B7355",
+    slug: "pleated-pants-black",
+    name: "Pleated Pants — Black",
+    colorName: "Black",
+    colorHex: "#1A1A1A",
     silhouette: "pleated",
-    image: "/images/straight-pants/beige-detail.png",
-    sizes: [],
-    available: false,
+    image: "/images/pleated-pants/Black-pleated.jpg",
+    sizes: [...EE_STRAIGHT_SIZES],
+    available: true,
   },
   {
-    slug: "flared-coming-soon",
-    name: "Flared Trouser",
-    colorName: "Assorted",
-    colorHex: "#5C4033",
-    silhouette: "flared",
-    image: "/images/straight-pants/coffee-brown-detail.png",
-    sizes: [],
-    available: false,
+    slug: "pleated-pants-navy",
+    name: "Pleated Pants — Navy",
+    colorName: "Navy",
+    colorHex: "#1F2A5A",
+    silhouette: "pleated",
+    image: "/images/pleated-pants/Navy-pleated.jpg",
+    sizes: [...EE_STRAIGHT_SIZES],
+    available: true,
+  },
+  {
+    slug: "pleated-pants-blue",
+    name: "Pleated Pants — Denim Blue",
+    colorName: "Denim Blue",
+    colorHex: "#3C5F94",
+    silhouette: "pleated",
+    image: "/images/pleated-pants/blue-pleated.jpg",
+    sizes: [...EE_STRAIGHT_SIZES],
+    available: true,
+  },
+  {
+    slug: "pleated-pants-ash",
+    name: "Pleated Pants — Ash",
+    colorName: "Ash",
+    colorHex: "#A6A8AD",
+    silhouette: "pleated",
+    image: "/images/pleated-pants/ash-pleated.jpg",
+    sizes: [...EE_STRAIGHT_SIZES],
+    available: true,
+  },
+  {
+    slug: "pleated-pants-green",
+    name: "Pleated Pants — Olive Green",
+    colorName: "Olive Green",
+    colorHex: "#4F5B25",
+    silhouette: "pleated",
+    image: "/images/pleated-pants/green-pleated.jpg",
+    sizes: [...EE_STRAIGHT_SIZES],
+    available: true,
+  },
+  {
+    slug: "pleated-pants-wine",
+    name: "Pleated Pants — Wine",
+    colorName: "Wine",
+    colorHex: "#6B1427",
+    silhouette: "pleated",
+    image: "/images/pleated-pants/wine-pleated.jpg",
+    sizes: [...EE_STRAIGHT_SIZES],
+    available: true,
+  },
+  {
+    slug: "pleated-pants-chocolate",
+    name: "Pleated Pants — Chocolate",
+    colorName: "Chocolate",
+    colorHex: "#5A3022",
+    silhouette: "pleated",
+    image: "/images/pleated-pants/template-luxe.jpg",
+    sizes: [...EE_STRAIGHT_SIZES],
+    available: true,
   },
 ];
+
+/** Signature-only: wrap-front flared trousers. */
+export const EE_FLARED_STYLES: ExecutiveStyleOption[] = [
+  {
+    slug: "flared-pants-pink",
+    name: "Flared Pants — Pink",
+    colorName: "Pink",
+    colorHex: "#F2A3C4",
+    silhouette: "flared",
+    image: "/images/flare-pants/pink-flare.jpg",
+    sizes: [...EE_STRAIGHT_SIZES],
+    available: true,
+  },
+  {
+    slug: "flared-pants-mustard",
+    name: "Flared Pants — Mustard",
+    colorName: "Mustard",
+    colorHex: "#E9A62A",
+    silhouette: "flared",
+    image: "/images/flare-pants/mustard-flare.jpg",
+    sizes: [...EE_STRAIGHT_SIZES],
+    available: true,
+  },
+  {
+    slug: "flared-pants-blue",
+    name: "Flared Pants — Sky Blue",
+    colorName: "Sky Blue",
+    colorHex: "#5BB8F5",
+    silhouette: "flared",
+    image: "/images/flare-pants/blue-flare.jpg",
+    sizes: [...EE_STRAIGHT_SIZES],
+    available: true,
+  },
+  {
+    slug: "flared-pants-white",
+    name: "Flared Pants — White",
+    colorName: "White",
+    colorHex: "#F5F5F5",
+    silhouette: "flared",
+    image: "/images/flare-pants/white-flare.jpg",
+    sizes: [...EE_STRAIGHT_SIZES],
+    available: true,
+  },
+];
+
+export const EE_SIGNATURE_EXTRA: ExecutiveStyleOption[] = [
+  ...EE_PLEATED_STYLES,
+  ...EE_FLARED_STYLES,
+];
+
+export const EE_SILHOUETTE_LABELS: Record<ExecutiveStyleOption["silhouette"], string> = {
+  straight: "Straight leg",
+  pleated: "Pleated wide leg",
+  flared: "Flared wrap leg",
+};
 
 export const EE_PACKAGES: Record<
   ExecutivePackageId,
@@ -181,7 +286,7 @@ export const EE_PACKAGES: Record<
     description:
       "For the woman who wants more variety in silhouette and more ways to express her personal style at work.",
     includes: [
-      "Five pairs of trousers — choose from available straight-leg colourways now; pleated and flared unlock as they launch",
+      "Five pairs of trousers — mix straight-leg, pleated and flared in any of 16 colourways",
       "Size selection for each piece",
       "A styling guide for more combinations",
       "Delivery calculated at checkout",
@@ -200,7 +305,7 @@ export const EE_FAQS: { q: string; a: string }[] = [
   },
   {
     q: "What is the difference between Classic and Signature?",
-    a: "Classic is five straight-leg trousers you choose by colour. Signature is five trousers with room for straight-leg now, and pleated or flared pieces as those styles become available.",
+    a: "Classic is five straight-leg trousers you choose by colour. Signature lets you mix straight-leg, pleated and flared trousers across all available colourways.",
   },
   {
     q: "Can I choose my colours and styles?",

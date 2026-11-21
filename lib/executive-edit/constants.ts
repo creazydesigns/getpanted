@@ -341,7 +341,7 @@ export const EE_FAQS: { q: string; a: string }[] = [
   },
   {
     q: "Is delivery included in the package price?",
-    a: "No. Delivery is calculated at checkout based on your delivery address, then added to your total before Paystack payment.",
+    a: "No. Delivery is a flat rate added at checkout: ₦4,000 for Lagos Mainland and ₦6,000 for Lagos Island, then included in your Paystack total.",
   },
   {
     q: "Why am I paying before delivery?",

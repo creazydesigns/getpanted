@@ -7,13 +7,23 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
+        source: "/thefive",
+        destination: "/themix",
+        permanent: true,
+      },
+      {
+        source: "/thefive/:path*",
+        destination: "/themix/:path*",
+        permanent: true,
+      },
+      {
         source: "/executive-edit",
-        destination: "/thefive",
+        destination: "/themix",
         permanent: true,
       },
       {
         source: "/executive-edit/:path*",
-        destination: "/thefive/:path*",
+        destination: "/themix/:path*",
         permanent: true,
       },
     ];

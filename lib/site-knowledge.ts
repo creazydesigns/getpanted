@@ -60,7 +60,7 @@ ${sizes}
 
 Shipping & delivery
 - Shipping is always charged (no free shipping threshold).
-- Fee is calculated at checkout from the delivery address using distance-based bands from our Lagos hub.
+- Fee is a flat rate at checkout: ₦4,000 Lagos Mainland, ₦6,000 Lagos Island.
 - Typical Lagos metro: about ₦2,500–₦5,000; farther cities cost more based on distance.
 - Do not share the exact office/warehouse address with customers.
 - Estimated delivery after dispatch: 5–7 business days (from order confirmation emails).

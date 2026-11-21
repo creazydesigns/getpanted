@@ -243,7 +243,7 @@ export function ExecutiveEditCheckoutClient({ initialPackage }: Props) {
 
         <p className="ee-body" style={{ marginBottom: 12, fontSize: 14 }}>
           Editing slot {activeSlot + 1}. Select a colourway, then a size.{" "}
-          <Link href="/thefive#size-chart" style={{ textDecoration: "underline" }}>
+          <Link href="/themix#size-chart" style={{ textDecoration: "underline" }}>
             View size chart
           </Link>
         </p>
@@ -431,7 +431,7 @@ export function ExecutiveEditCheckoutClient({ initialPackage }: Props) {
           {loading ? "Redirecting to Paystack…" : `Pay ${formatNaira(total)} with Paystack`}
         </button>
         <p style={{ marginTop: 12, textAlign: "center" }}>
-          <Link href="/thefive" className="ee-body" style={{ fontSize: 13, textDecoration: "underline" }}>
+          <Link href="/themix" className="ee-body" style={{ fontSize: 13, textDecoration: "underline" }}>
             Back to landing page
           </Link>
         </p>

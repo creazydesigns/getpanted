@@ -161,7 +161,7 @@ export default function ExecutiveEditPage() {
                   ))}
                 </ul>
                 <Link
-                  href={`/thefive/checkout?package=${pkg.id}`}
+                  href={`/themix/checkout?package=${pkg.id}`}
                   className={i === 1 ? "ee-btn-primary" : "ee-btn-secondary"}
                 >
                   {pkg.cta}
@@ -324,10 +324,10 @@ export default function ExecutiveEditPage() {
             Signature and build your five.
           </p>
           <div className="ee-hero-actions" style={{ justifyContent: "center" }}>
-            <Link href="/thefive/checkout?package=classic" className="ee-btn-primary">
+            <Link href="/themix/checkout?package=classic" className="ee-btn-primary">
               Choose Classic
             </Link>
-            <Link href="/thefive/checkout?package=signature" className="ee-btn-ghost">
+            <Link href="/themix/checkout?package=signature" className="ee-btn-ghost">
               Choose Signature
             </Link>
           </div>
